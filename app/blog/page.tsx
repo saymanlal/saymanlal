@@ -1,29 +1,90 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
-import { Calendar, Clock, Eye, Heart, Tag, Search } from 'lucide-react';
-import blogData from '@/lib/data/blog-posts.json';
+import { Calendar, Clock, Eye, Heart, Tag, Search, BookOpen } from 'lucide-react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  cover_image?: string;
+  published: boolean;
+  status: 'draft' | 'published';
+  tags: string[];
+  read_time: number;
+  views: number;
+  likes: number;
+  published_at?: string;
+  created_at: string;
+}
 
 export default function BlogPage() {
   const { settings } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClientComponentClient();
   const isDeveloper = settings.theme === 'developer';
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setBlogPosts(data || []);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
 
   // Get all unique tags
   const allTags = Array.from(
-    new Set(blogData.posts.flatMap(post => post.tags))
+    new Set(blogPosts.flatMap(post => post.tags))
   );
 
   // Filter posts based on search and tag
-  const filteredPosts = blogData.posts.filter(post => {
+  const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+                         (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesTag = !selectedTag || post.tags.includes(selectedTag);
     return matchesSearch && matchesTag && post.published;
   });
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen section-padding">
+        <div className="container-custom">
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen section-padding">
@@ -125,10 +186,10 @@ export default function BlogPage() {
                 whileHover={{ y: -5 }}
               >
                 {/* Cover Image */}
-                {post.coverImage && (
+                {post.cover_image && (
                   <div className="relative overflow-hidden">
                     <img
-                      src={post.coverImage}
+                      src={post.cover_image}
                       alt={post.title}
                       className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                     />
@@ -145,12 +206,12 @@ export default function BlogPage() {
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-4 w-4" />
                       <span>
-                        {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
+                        {formatDate(post.published_at || post.created_at)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
-                      <span>{post.readTime} min read</span>
+                      <span>{post.read_time} min read</span>
                     </div>
                   </div>
 

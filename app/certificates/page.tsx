@@ -1,36 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
 import { Calendar, ExternalLink, Award, Filter, Search, CheckCircle } from 'lucide-react';
-import certificatesData from '@/lib/data/certificates.json';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+interface Certificate {
+  id: string;
+  title: string;
+  organization: string;
+  credential_id?: string;
+  credential_url?: string;
+  image_url: string;
+  issue_date: string;
+  expiry_date?: string;
+  verified: boolean;
+  skills: string[];
+  created_at: string;
+}
 
 export default function CertificatesPage() {
   const { settings } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClientComponentClient();
   const isDeveloper = settings.theme === 'developer';
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('certificates')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setCertificates(data || []);
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCertificates();
+  }, []);
 
   // Get unique organizations and years for filtering
   const organizations = Array.from(
-    new Set(certificatesData.certificates.map(cert => cert.organization))
+    new Set(certificates.map(cert => cert.organization))
   );
   
   const years = Array.from(
-    new Set(certificatesData.certificates.map(cert => 
-      new Date(cert.issueDate).getFullYear().toString()
+    new Set(certificates.map(cert => 
+      new Date(cert.issue_date).getFullYear().toString()
     ))
   ).sort((a, b) => parseInt(b) - parseInt(a));
 
   // Filter certificates
-  const filteredCertificates = certificatesData.certificates.filter(cert => {
+  const filteredCertificates = certificates.filter(cert => {
     const matchesSearch = cert.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          cert.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          cert.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesOrg = !selectedOrg || cert.organization === selectedOrg;
-    const matchesYear = !selectedYear || new Date(cert.issueDate).getFullYear().toString() === selectedYear;
+    const matchesYear = !selectedYear || new Date(cert.issue_date).getFullYear().toString() === selectedYear;
     return matchesSearch && matchesOrg && matchesYear;
   });
 
@@ -45,6 +83,18 @@ export default function CertificatesPage() {
     if (!expiryDate) return false;
     return new Date(expiryDate) < new Date();
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen section-padding">
+        <div className="container-custom">
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen section-padding">
@@ -184,10 +234,10 @@ export default function CertificatesPage() {
                 whileHover={{ y: -5 }}
               >
                 {/* Certificate Image */}
-                {certificate.imageUrl && (
+                {certificate.image_url && (
                   <div className="relative overflow-hidden">
                     <img
-                      src={certificate.imageUrl}
+                      src={certificate.image_url}
                       alt={certificate.title}
                       className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                     />
@@ -235,27 +285,27 @@ export default function CertificatesPage() {
                   }`}>
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-4 w-4" />
-                      <span>Issued: {formatDate(certificate.issueDate)}</span>
+                      <span>Issued: {formatDate(certificate.issue_date)}</span>
                     </div>
                   </div>
 
-                  {certificate.expiryDate && (
+                  {certificate.expiry_date && (
                     <div className={`text-sm mb-4 ${
-                      isExpired(certificate.expiryDate)
+                      isExpired(certificate.expiry_date)
                         ? 'text-red-500'
                         : isDeveloper ? 'text-gray-400' : 'text-gray-600'
                     }`}>
-                      Expires: {formatDate(certificate.expiryDate)}
-                      {isExpired(certificate.expiryDate) && ' (Expired)'}
+                      Expires: {formatDate(certificate.expiry_date)}
+                      {isExpired(certificate.expiry_date) && ' (Expired)'}
                     </div>
                   )}
 
                   {/* Credential ID */}
-                  {certificate.credentialId && (
+                  {certificate.credential_id && (
                     <div className={`text-xs mb-4 ${
                       isDeveloper ? 'text-gray-400 font-mono' : 'text-gray-500'
                     }`}>
-                      ID: {certificate.credentialId}
+                      ID: {certificate.credential_id}
                     </div>
                   )}
 
@@ -285,9 +335,9 @@ export default function CertificatesPage() {
                   {/* Actions */}
                   <div className="flex justify-between items-center">
                     <div className="flex space-x-2">
-                      {certificate.credentialUrl && (
+                      {certificate.credential_url && (
                         <a
-                          href={certificate.credentialUrl}
+                          href={certificate.credential_url}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
@@ -304,7 +354,7 @@ export default function CertificatesPage() {
                     <span className={`text-xs ${
                       isDeveloper ? 'text-gray-400' : 'text-gray-500'
                     }`}>
-                      {new Date(certificate.createdAt).getFullYear()}
+                      {new Date(certificate.created_at).getFullYear()}
                     </span>
                   </div>
                 </div>
@@ -350,7 +400,7 @@ export default function CertificatesPage() {
                 <div className={`text-3xl font-bold mb-2 ${
                   isDeveloper ? 'text-green-400' : 'text-blue-600'
                 }`}>
-                  {certificatesData.certificates.length}
+                  {certificates.length}
                 </div>
                 <div className={`text-sm ${
                   isDeveloper ? 'text-gray-300' : 'text-gray-600'
@@ -362,7 +412,7 @@ export default function CertificatesPage() {
                 <div className={`text-3xl font-bold mb-2 ${
                   isDeveloper ? 'text-green-400' : 'text-blue-600'
                 }`}>
-                  {certificatesData.certificates.filter(c => c.verified).length}
+                  {certificates.filter(c => c.verified).length}
                 </div>
                 <div className={`text-sm ${
                   isDeveloper ? 'text-gray-300' : 'text-gray-600'
@@ -386,7 +436,7 @@ export default function CertificatesPage() {
                 <div className={`text-3xl font-bold mb-2 ${
                   isDeveloper ? 'text-green-400' : 'text-blue-600'
                 }`}>
-                  {certificatesData.certificates.filter(c => !c.expiryDate || new Date(c.expiryDate) > new Date()).length}
+                  {certificates.filter(c => !c.expiry_date || new Date(c.expiry_date) > new Date()).length}
                 </div>
                 <div className={`text-sm ${
                   isDeveloper ? 'text-gray-300' : 'text-gray-600'

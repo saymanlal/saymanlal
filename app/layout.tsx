@@ -6,6 +6,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import MatrixRain from '@/components/ui/matrix-rain';
 import personalInfo from '@/lib/data/personal-info.json';
+import SupabaseProvider from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -108,16 +109,18 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <ThemeProvider>
-          <div className="min-h-screen flex flex-col">
-            <MatrixRain />
-            <Header />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <SupabaseProvider>
+          <ThemeProvider>
+            <div className="min-h-screen flex flex-col">
+              <MatrixRain />
+              <Header />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </ThemeProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );

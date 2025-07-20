@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
-import { Github, ExternalLink, Code, Brain, Rocket, Terminal, Zap, Globe } from 'lucide-react';
+import { 
+  Github, ExternalLink, Code, Brain, Rocket, Terminal, Zap, Globe,
+  Mail, BookOpen, Cpu, Shield, Lock, Database, Network, ChartLine,
+  Users, Briefcase, Lightbulb, Award, Clock, Star, Layers, Settings,
+  ChevronRight, ChevronDown, Circle, Square, Triangle
+} from 'lucide-react';
 import ThemeToggle from '@/components/ui/theme-toggle';
 import personalInfo from '@/lib/data/personal-info.json';
 import projectsData from '@/lib/data/projects.json';
@@ -14,56 +19,101 @@ export default function HomePage() {
   const [terminalText, setTerminalText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [skillsInView, setSkillsInView] = useState(false);
   const isDeveloper = settings.theme === 'developer';
+  const skillsSectionRef = useRef<HTMLDivElement>(null);
 
   const animatedWords = ['Leadership', 'Innovation', 'AI', 'Web3', 'Vision', 'Future'];
 
-  // Enhanced typewriter effect for developer mode
+  // Intersection Observer for skills section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSkillsInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (skillsSectionRef.current) {
+      observer.observe(skillsSectionRef.current);
+    }
+
+    return () => {
+      if (skillsSectionRef.current) {
+        observer.unobserve(skillsSectionRef.current);
+      }
+    };
+  }, []);
+
+  // Enhanced terminal effect with cursor
   useEffect(() => {
     if (!isDeveloper) return;
 
     const commands = [
-      '> initializing quantum_terminal...',
-      '> loading user profile...',
-      '> whoami',
-      'CodeChemist@quantum:~$ Sayman Lal',
-      '> cat /etc/mission.txt',
-      'Building the decentralized future with AI',
-      '> ls /skills',
-      'AI/ML  Web3  TypeScript  Python  Solidity',
-      '> echo $STATUS',
-      'READY_TO_BUILD_THE_FUTURE',
-      '> quantum_mode --active',
-      'Welcome to the Matrix, CodeChemist.',
-      '> _'
+      `> initializing the terminal...`,
+      `> establishing neural interface...`,
+      `> syncing with CodeChemist mainframe...`,
+      ``,
+      `> whoami`,
+      `CodeChemist@2007:~$ Sayman Lal`,
+      ``,
+      `> cat /etc/mission.txt`,
+      `// "Engineering the autonomous web with Artificial Intelligence."`,
+      ``,
+      `> ls /skills`,
+      `AI/ML  |  Web3  |  MERN  |  Python  |  Cloud  |  Systems Design`,
+      ``,
+      `> echo $STATUS`,
+      `>>> SYSTEM ONLINE — Ready to disrupt convention.`,
+      ``,
+      `> developer_mode --activate`,
+      `⚡ All Protocols Engaged.`,
+      `⌁ Welcome to my verse, CodeChemist.`
     ];
 
     let commandIndex = 0;
     let charIndex = 0;
     let currentCommand = '';
+    let animationFrameId: number;
+    let lastUpdateTime = 0;
+    const frameRate = 1000 / 15;
 
-    const typeWriter = () => {
-      if (commandIndex < commands.length) {
-        if (charIndex < commands[commandIndex].length) {
-          currentCommand += commands[commandIndex].charAt(charIndex);
-          setTerminalText(currentCommand);
-          charIndex++;
-          setTimeout(typeWriter, 50);
-        } else {
-          currentCommand += '\n';
-          setTerminalText(currentCommand);
-          commandIndex++;
-          charIndex = 0;
-          setTimeout(typeWriter, 800);
+    const typeWriter = (timestamp: number) => {
+      if (timestamp - lastUpdateTime > frameRate) {
+        lastUpdateTime = timestamp;
+        
+        if (commandIndex < commands.length) {
+          if (charIndex < commands[commandIndex].length) {
+            currentCommand += commands[commandIndex].charAt(charIndex);
+            setTerminalText(currentCommand);
+            charIndex++;
+          } else {
+            currentCommand += '\n';
+            setTerminalText(currentCommand);
+            commandIndex++;
+            charIndex = 0;
+          }
         }
+      }
+      
+      if (commandIndex < commands.length) {
+        animationFrameId = requestAnimationFrame(typeWriter);
       }
     };
 
-    const timer = setTimeout(typeWriter, 500);
-    return () => clearTimeout(timer);
+    const startDelay = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(typeWriter);
+    }, 500);
+
+    return () => {
+      clearTimeout(startDelay);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [isDeveloper]);
 
-  // Animated words for entrepreneur mode
+  // Word rotation animation
   useEffect(() => {
     if (isDeveloper) return;
 
@@ -72,7 +122,7 @@ export default function HomePage() {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isDeveloper]);
+  }, [isDeveloper, animatedWords.length]);
 
   // Cursor blink effect
   useEffect(() => {
@@ -85,6 +135,38 @@ export default function HomePage() {
   const featuredProjects = projectsData.projects.filter(p => p.featured).slice(0, 3);
   const topSkills = skillsData.categories.slice(0, 3);
 
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const staggerContainer = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const progressBarAnimation = {
+    hidden: { width: 0 },
+    visible: (width: number) => ({
+      width: `${width}%`,
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut"
+      }
+    })
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -93,19 +175,21 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Content */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
             >
               {isDeveloper ? (
-                // Developer Mode - Enhanced Terminal Style
-                <div className="terminal-window min-h-[400px]">
+                <motion.div 
+                  className="terminal-window min-h-[400px] overflow-hidden"
+                  variants={fadeInUp}
+                >
                   <div className="terminal-header">
                     <div className="flex items-center mb-4">
                       <div className="flex space-x-2">
                         <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                         <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                        <span className="ml-4 text-sm text-green-500 font-mono">quantum_terminal.exe</span>
+                        <span className="ml-4 text-sm text-green-500 font-mono">krushn@2007</span>
                         <div className="ml-auto flex items-center space-x-2">
                           <Terminal className="h-4 w-4 text-green-400" />
                           <span className="text-xs text-green-400">ACTIVE</span>
@@ -114,39 +198,32 @@ export default function HomePage() {
                       <span className="ml-4 text-sm text-green-300">terminal.js</span>
                     </div>
                   </div>
-                  <div className="p-6 bg-black">
+                  <div className="p-6 bg-black h-[350px] overflow-y-auto terminal-content">
                     <pre className="text-green-400 font-mono text-sm leading-relaxed whitespace-pre-wrap crt-effect">
                       {terminalText}
                       {showCursor && <span className="bg-green-400 text-black animate-pulse">█</span>}
                     </pre>
                   </div>
-                </div>
+                </motion.div>
               ) : (
-                // Entrepreneur Mode - Enhanced Business Style
                 <div className="space-y-6">
                   <motion.h1
-                    className="text-5xl md:text-7xl font-bold text-elevated font-display"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+                    className="text-5xl md:text-7xl font-bold text-gray-900 font-display"
+                    variants={fadeInUp}
                   >
                     Sayman Lal
                   </motion.h1>
 
                   <motion.p
                     className="text-2xl md:text-3xl text-gray-600 font-light"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
+                    variants={fadeInUp}
                   >
-                    AI Developer & Entrepreneur
+                    Developer | Author | Entrepreneur
                   </motion.p>
 
                   <motion.div
                     className="text-xl md:text-2xl font-medium h-8 flex items-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
+                    variants={fadeInUp}
                   >
                     <span className="text-gray-500 mr-2">Driving</span>
                     <motion.span
@@ -163,33 +240,33 @@ export default function HomePage() {
 
                   <motion.p
                     className="text-xl text-gray-600 max-w-2xl leading-relaxed"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
+                    variants={fadeInUp}
                   >
                     {personalInfo.bio}
                   </motion.p>
 
                   <motion.div
                     className="flex flex-wrap gap-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.0 }}
+                    variants={fadeInUp}
                   >
-                    <a
+                    <motion.a
                       href="/contact"
-                      className="btn-elevated flex items-center space-x-2 text-lg px-8 py-4"
+                      className="flex items-center space-x-2 text-lg px-8 py-4 rounded-lg border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <span>Get In Touch</span>
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                    <a
+                      <Mail className="h-4 w-4" />
+                    </motion.a>
+                    <motion.a
                       href="/projects"
-                      className="btn-outline flex items-center space-x-2 text-lg px-8 py-4"
+                      className="flex items-center space-x-2 text-lg px-8 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <span>View Projects</span>
-                      <Code className="h-4 w-4" />
-                    </a>
+                      <BookOpen className="h-4 w-4" />
+                    </motion.a>
                   </motion.div>
                 </div>
               )}
@@ -206,110 +283,110 @@ export default function HomePage() {
                 <ThemeToggle />
               </div>
 
-              {/* Enhanced Stats Grid */}
-              <div className={`grid grid-cols-2 gap-6 ${isDeveloper ? 'text-green-400' : 'text-blue-600'
-                }`}>
-                <div className={`p-6 rounded-xl text-center ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                  }`}>
-                  <div className={`text-4xl font-bold mb-2 ${isDeveloper ? 'font-quantum' : ''}`}>127</div>
-                  <div className="text-sm opacity-80">Repositories</div>
-                </div>
-                <div className={`p-6 rounded-xl text-center ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                  }`}>
-                  <div className={`text-4xl font-bold mb-2 ${isDeveloper ? 'font-quantum' : ''}`}>5+</div>
-                  <div className="text-sm opacity-80">Years</div>
-                </div>
-                <div className={`p-6 rounded-xl text-center ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                  }`}>
-                  <div className={`text-4xl font-bold mb-2 ${isDeveloper ? 'font-quantum' : ''}`}>2.8K</div>
-                  <div className="text-sm opacity-80">Followers</div>
-                </div>
-                <div className={`p-6 rounded-xl text-center ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                  }`}>
-                  <div className={`text-4xl font-bold mb-2 ${isDeveloper ? 'font-quantum' : ''}`}>∞</div>
-                  <div className="text-sm opacity-80">Possibilities</div>
-                </div>
+              <div className={`grid grid-cols-2 gap-6 ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
+                {[
+                  { value: 127, label: 'Repositories', icon: <Database className="h-6 w-6" /> },
+                  { value: '5+', label: 'Years', icon: <Clock className="h-6 w-6" /> },
+                  { value: '2.8K', label: 'Followers', icon: <Users className="h-6 w-6" /> },
+                  { value: '∞', label: 'Possibilities', icon: <Lightbulb className="h-6 w-6" /> }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    className={`p-6 rounded-xl text-center ${isDeveloper ? 'bg-gray-800/30 border border-green-400/20' : 'bg-white border border-gray-200 shadow-lg'}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 + 0.4 }}
+                    whileHover={{ y: -5 }}
+                  >
+                    <div className="flex justify-center mb-2">
+                      {stat.icon}
+                    </div>
+                    <div className={`text-4xl font-bold mb-2 ${isDeveloper ? 'font-mono' : ''}`}>
+                      {stat.value}
+                    </div>
+                    <div className="text-sm opacity-80">{stat.label}</div>
+                  </motion.div>
+                ))}
               </div>
 
-              {/* Platform Stats */}
-              <div className={`p-6 rounded-xl ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                }`}>
-                <h3 className={`text-lg font-semibold mb-4 ${isDeveloper ? 'text-green-400 font-quantum' : 'text-gray-900'
-                  }`}>
+              <motion.div
+                className={`p-6 rounded-xl ${isDeveloper ? 'bg-gray-800/30 border border-green-400/20' : 'bg-white border border-gray-200 shadow-lg'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                whileHover={{ y: -5 }}
+              >
+                <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
+                  <Award className="h-5 w-5" />
                   Platform Rankings
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                      LeetCode
-                    </span>
-                    <span className={`text-sm font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
-                      Top 5%
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                      HackerRank
-                    </span>
-                    <span className={`text-sm font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
-                      5 Star
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                      CodeChef
-                    </span>
-                    <span className={`text-sm font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
-                      2156 Rating
-                    </span>
-                  </div>
+                  {[
+                    { platform: 'LeetCode', rank: 'Top 5%', icon: <Cpu className="h-4 w-4" /> },
+                    { platform: 'HackerRank', rank: '5 Star', icon: <Star className="h-4 w-4" /> },
+                    { platform: 'CodeChef', rank: '2156 Rating', icon: <ChartLine className="h-4 w-4" /> }
+                  ].map((item, index) => (
+                    <div key={index} className="flex justify-between items-center">
+                      <span className={`text-sm flex items-center gap-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {item.icon}
+                        {item.platform}
+                      </span>
+                      <span className={`text-sm font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
+                        {item.rank}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Core Expertise Preview */}
-      <section className={`section-padding ${isDeveloper ? 'bg-gray-900/50' : 'bg-gray-50'
-        }`}>
+      <section 
+        ref={skillsSectionRef}
+        className={`section-padding ${isDeveloper ? 'bg-gray-900/50' : 'bg-gray-50'}`}
+      >
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className={`mb-4 ${isDeveloper ? 'text-green-400 neon-text font-quantum' : 'text-gray-900'
-              }`}>
+            <h2 className={`mb-4 flex justify-center items-center gap-3 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
+              <Layers className="h-8 w-8" />
               Core Expertise
             </h2>
-            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-              } max-w-2xl mx-auto`}>
+            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
               Specialized in cutting-edge technologies that drive innovation and create value.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
             {topSkills.map((category, index) => (
               <motion.div
                 key={category.id}
-                className={`p-6 rounded-xl card-hover ${isDeveloper
-                  ? 'quantum-card'
-                  : 'bg-white border border-gray-200 shadow-lg'
-                  }`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
+                className={`p-6 rounded-xl card-hover ${isDeveloper ? 'bg-gray-800/30 border border-green-400/20' : 'bg-white border border-gray-200 shadow-lg'}`}
+                variants={fadeInUp}
+                whileHover={{ y: -5 }}
               >
                 <div className="text-center mb-6">
-                  <div className={`text-4xl mb-4 ${isDeveloper ? 'filter drop-shadow-lg' : ''}`}>
+                  <motion.div 
+                    className={`text-4xl mb-4 ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}
+                    whileHover={{ scale: 1.2 }}
+                  >
                     {category.icon}
-                  </div>
-                  <h3 className={`text-xl font-semibold mb-3 ${isDeveloper ? 'text-green-400 font-quantum' : 'text-gray-900'
-                    }`}>
+                  </motion.div>
+                  <h3 className={`text-xl font-semibold mb-3 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
                     {category.name}
                   </h3>
                 </div>
@@ -317,21 +394,20 @@ export default function HomePage() {
                 <div className="space-y-3">
                   {category.skills.slice(0, 3).map((skill) => (
                     <div key={skill.name} className="flex items-center justify-between">
-                      <span className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                        }`}>
+                      <span className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                         {skill.name}
                       </span>
                       <div className="flex items-center space-x-2">
-                        <div className={`w-16 h-2 rounded-full ${isDeveloper ? 'bg-gray-700' : 'bg-gray-200'
-                          }`}>
-                          <div
-                            className={`h-full rounded-full transition-all duration-1000 ${isDeveloper ? 'bg-green-400' : 'bg-blue-500'
-                              }`}
-                            style={{ width: `${skill.level}%` }}
+                        <div className={`w-16 h-2 rounded-full ${isDeveloper ? 'bg-gray-700' : 'bg-gray-200'}`}>
+                          <motion.div
+                            className={`h-full rounded-full ${isDeveloper ? 'bg-green-400' : 'bg-blue-500'}`}
+                            custom={skill.level}
+                            initial="hidden"
+                            animate={skillsInView ? "visible" : "hidden"}
+                            variants={progressBarAnimation}
                           />
                         </div>
-                        <span className={`text-xs font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'
-                          }`}>
+                        <span className={`text-xs font-medium ${isDeveloper ? 'text-green-400' : 'text-blue-600'}`}>
                           {skill.level}%
                         </span>
                       </div>
@@ -351,19 +427,18 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="text-center mt-12">
-            <a
+            <motion.a
               href="/skills"
-              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper
-                ? 'btn-quantum'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
+              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <span>Explore All Skills</span>
-              <Brain className="h-4 w-4" />
-            </a>
+              <ChevronRight className="h-4 w-4" />
+            </motion.a>
           </div>
         </div>
       </section>
@@ -376,123 +451,120 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className={`mb-4 ${isDeveloper ? 'text-green-400 neon-text font-quantum' : 'text-gray-900'
-              }`}>
+            <h2 className={`mb-4 flex justify-center items-center gap-3 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
+              <Briefcase className="h-8 w-8" />
               Featured Projects
             </h2>
-            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-              } max-w-2xl mx-auto`}>
+            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
               Showcasing innovative solutions in AI, Web3, and cutting-edge technology.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
             {featuredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                className={`p-6 rounded-xl card-hover ${isDeveloper
-                  ? 'quantum-card'
-                  : 'bg-white border border-gray-200 shadow-lg'
-                  }`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
+                className={`p-6 rounded-xl card-hover ${isDeveloper ? 'bg-gray-800/30 border border-green-400/20' : 'bg-white border border-gray-200 shadow-lg'}`}
+                variants={fadeInUp}
+                whileHover={{ y: -5 }}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className={`text-xl font-semibold ${isDeveloper ? 'text-green-400 font-quantum' : 'text-gray-900'
-                    }`}>
+                  <h3 className={`text-xl font-semibold ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
                     {project.title}
                   </h3>
                   <div className="flex space-x-2">
                     {project.githubUrl && (
-                      <a
+                      <motion.a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`p-2 rounded-lg transition-all duration-200 ${isDeveloper
-                          ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10'
-                          : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                          }`}
+                        className={`p-2 rounded-lg transition-all duration-200 ${isDeveloper ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                       >
                         <Github className="h-4 w-4" />
-                      </a>
+                      </motion.a>
                     )}
                     {project.demoUrl && (
-                      <a
+                      <motion.a
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`p-2 rounded-lg transition-all duration-200 ${isDeveloper
-                          ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10'
-                          : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                          }`}
+                        className={`p-2 rounded-lg transition-all duration-200 ${isDeveloper ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                       >
                         <ExternalLink className="h-4 w-4" />
-                      </a>
+                      </motion.a>
                     )}
                   </div>
                 </div>
-                <p className={`mb-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
+                <p className={`mb-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.slice(0, 3).map((tech) => (
-                    <span
+                    <motion.span
                       key={tech}
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${isDeveloper
-                        ? 'bg-green-400/20 text-green-400 border border-green-400/30'
-                        : 'bg-blue-50 text-blue-600 border border-blue-200'
-                        }`}
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30' : 'bg-blue-50 text-blue-600 border border-blue-200'}`}
+                      whileHover={{ scale: 1.05 }}
                     >
                       {tech}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="text-center mt-12">
-            <a
+            <motion.a
               href="/projects"
-              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper
-                ? 'btn-quantum'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
+              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <span>View All Projects</span>
-              <Rocket className="h-4 w-4" />
-            </a>
+              <ChevronRight className="h-4 w-4" />
+            </motion.a>
           </div>
         </div>
       </section>
 
       {/* Companies Section */}
-      <section className={`section-padding ${isDeveloper ? 'bg-gray-900/50' : 'bg-gray-50'
-        }`}>
+      <section className={`section-padding ${isDeveloper ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className={`mb-4 ${isDeveloper ? 'text-green-400 neon-text font-quantum' : 'text-gray-900'
-              }`}>
+            <h2 className={`mb-4 flex justify-center items-center gap-3 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
+              <Settings className="h-8 w-8" />
               Building the Future
             </h2>
-            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-              } max-w-2xl mx-auto`}>
+            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
               Leading innovative companies that democratize AI and secure the decentralized web.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+          >
             {[
               {
                 name: 'AIALCHEMIST',
@@ -509,24 +581,19 @@ export default function HomePage() {
                 description: 'Leading blockchain security firm specializing in smart contract auditing',
                 stats: '$100M+ audited',
                 color: isDeveloper ? 'text-cyan-400' : 'text-purple-600',
-                icon: Globe,
+                icon: Shield,
                 url: 'https://vasiliades.dev'
               }
             ].map((company, index) => (
               <motion.div
                 key={company.name}
-                className={`p-8 rounded-xl card-hover ${isDeveloper ? 'quantum-card' : 'elevated-card'
-                  }`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
+                className={`p-8 rounded-xl card-hover ${isDeveloper ? 'bg-gray-800/30 border border-green-400/20' : 'bg-white border border-gray-200 shadow-lg'}`}
+                variants={fadeInUp}
+                whileHover={{ y: -5 }}
               >
-
                 <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h3 className={`text-2xl font-bold mb-2 ${isDeveloper ? 'text-green-400 font-quantum' : 'text-gray-900'
-                      }`}>
+                    <h3 className={`text-2xl font-bold mb-2 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
                       {company.name}
                     </h3>
                     <p className={`text-sm font-medium ${company.color}`}>
@@ -536,8 +603,7 @@ export default function HomePage() {
                   <company.icon className={`h-8 w-8 ${company.color}`} />
                 </div>
 
-                <p className={`mb-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
+                <p className={`mb-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                   {company.description}
                 </p>
 
@@ -545,34 +611,32 @@ export default function HomePage() {
                   <span className={`text-lg font-semibold ${company.color}`}>
                     {company.stats}
                   </span>
-                  <a
+                  <motion.a
                     href={company.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isDeveloper
-                      ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}
+                    className={`inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <span>Visit</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
+                    <ChevronRight className="h-3 w-3" />
+                  </motion.a>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="text-center mt-12">
-            <a
+            <motion.a
               href="/teams"
-              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper
-                ? 'btn-quantum'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
+              className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <span>Meet the Teams</span>
-              <Zap className="h-4 w-4" />
-            </a>
+              <ChevronRight className="h-4 w-4" />
+            </motion.a>
           </div>
         </div>
       </section>

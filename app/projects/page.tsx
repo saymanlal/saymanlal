@@ -1,27 +1,67 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
 import { Github, ExternalLink, Calendar, Tag, Star } from 'lucide-react';
-import projectsData from '@/lib/data/projects.json';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 type ProjectCategory = 'all' | 'featured' | 'personal' | 'aialchemist' | 'vasiliades';
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  long_description?: string;
+  image_url?: string;
+  project_url?: string;
+  github_url?: string;
+  demo_url?: string;
+  status: 'planned' | 'in-progress' | 'completed';
+  featured: boolean;
+  category: 'personal' | 'aialchemist' | 'vasiliades';
+  technologies: string[];
+  created_at: string;
+}
 
 export default function ProjectsPage() {
   const { settings } = useTheme();
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClientComponentClient();
   const isDeveloper = settings.theme === 'developer';
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setProjects(data || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   const categories = [
-    { id: 'all' as ProjectCategory, name: 'All Projects', count: projectsData.projects.length },
-    { id: 'featured' as ProjectCategory, name: 'Featured', count: projectsData.projects.filter(p => p.featured).length },
-    { id: 'personal' as ProjectCategory, name: 'Personal', count: projectsData.projects.filter(p => p.category === 'personal').length },
-    { id: 'aialchemist' as ProjectCategory, name: 'AIALCHEMIST', count: projectsData.projects.filter(p => p.category === 'aialchemist').length },
-    { id: 'vasiliades' as ProjectCategory, name: 'VASILIADES', count: projectsData.projects.filter(p => p.category === 'vasiliades').length },
+    { id: 'all' as ProjectCategory, name: 'All Projects', count: projects.length },
+    { id: 'featured' as ProjectCategory, name: 'Featured', count: projects.filter(p => p.featured).length },
+    { id: 'personal' as ProjectCategory, name: 'Personal', count: projects.filter(p => p.category === 'personal').length },
+    { id: 'aialchemist' as ProjectCategory, name: 'AIALCHEMIST', count: projects.filter(p => p.category === 'aialchemist').length },
+    { id: 'vasiliades' as ProjectCategory, name: 'VASILIADES', count: projects.filter(p => p.category === 'vasiliades').length },
   ];
 
-  const filteredProjects = projectsData.projects.filter(project => {
+  const filteredProjects = projects.filter(project => {
     if (activeCategory === 'all') return true;
     if (activeCategory === 'featured') return project.featured;
     return project.category === activeCategory;
@@ -39,6 +79,18 @@ export default function ProjectsPage() {
         return isDeveloper ? 'text-gray-400 bg-gray-400/20' : 'text-gray-600 bg-gray-50';
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen section-padding">
+        <div className="container-custom">
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen section-padding">
@@ -119,10 +171,10 @@ export default function ProjectsPage() {
               whileHover={{ y: -5 }}
             >
               {/* Project Image */}
-              {project.imageUrl && (
+              {project.image_url && (
                 <div className="mb-4 rounded-lg overflow-hidden">
                   <img
-                    src={project.imageUrl}
+                    src={project.image_url}
                     alt={project.title}
                     className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                   />
@@ -152,14 +204,14 @@ export default function ProjectsPage() {
                       isDeveloper ? 'text-gray-400' : 'text-gray-500'
                     }`}>
                       <Calendar className="h-3 w-3 inline mr-1" />
-                      {new Date(project.createdAt).getFullYear()}
+                      {new Date(project.created_at).getFullYear()}
                     </span>
                   </div>
                 </div>
                 <div className="flex space-x-2">
-                  {project.githubUrl && (
+                  {project.github_url && (
                     <a
-                      href={project.githubUrl}
+                      href={project.github_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`p-2 rounded-lg transition-all duration-200 ${
@@ -172,9 +224,9 @@ export default function ProjectsPage() {
                       <Github className="h-4 w-4" />
                     </a>
                   )}
-                  {project.demoUrl && (
+                  {project.demo_url && (
                     <a
-                      href={project.demoUrl}
+                      href={project.demo_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`p-2 rounded-lg transition-all duration-200 ${
@@ -232,7 +284,7 @@ export default function ProjectsPage() {
                    project.category === 'vasiliades' ? 'VASILIADES' : 
                    project.category.charAt(0).toUpperCase() + project.category.slice(1)}
                 </span>
-                {project.longDescription && (
+                {project.long_description && (
                   <button
                     className={`text-xs font-medium transition-colors duration-200 ${
                       isDeveloper

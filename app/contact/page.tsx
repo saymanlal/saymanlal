@@ -5,6 +5,20 @@ import { motion } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, Download } from 'lucide-react';
 import personalInfo from '@/lib/data/personal-info.json';
+import dynamic from 'next/dynamic';
+
+const Map = dynamic(() => import('@/components/ui/LeafletMap'), {
+  ssr: false,
+  loading: () => (
+    <div className={`h-64 flex items-center justify-center ${
+      useTheme().settings.theme === 'developer' ? 'bg-gray-900' : 'bg-gray-100'
+    }`}>
+      <MapPin className={`h-12 w-12 mx-auto ${
+        useTheme().settings.theme === 'developer' ? 'text-green-400' : 'text-gray-400'
+      }`} />
+    </div>
+  )
+});
 
 export default function ContactPage() {
   const { settings } = useTheme();
@@ -21,7 +35,6 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
     setTimeout(() => {
       alert('Thank you for your message! I\'ll get back to you soon.');
       setFormData({ name: '', email: '', subject: '', message: '' });
@@ -51,7 +64,6 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Header */}
           <div className="text-center mb-16">
             <h1 className={`mb-4 ${
               isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
@@ -66,14 +78,12 @@ export default function ContactPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
             <motion.div
               className="space-y-8"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {/* Contact Details */}
               <div className={`p-8 rounded-xl ${
                 isDeveloper 
                   ? 'glass-dark border-green-500/30' 
@@ -146,14 +156,13 @@ export default function ContactPage() {
                       <span className={`${
                         isDeveloper ? 'text-gray-300' : 'text-gray-600'
                       }`}>
-                        {personalInfo.location}
+                        Jabalpur(M.P.), India
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Social Links */}
               <div className={`p-8 rounded-xl ${
                 isDeveloper 
                   ? 'glass-dark border-green-500/30' 
@@ -197,7 +206,6 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Download Resume */}
               <div className="text-center">
                 <a
                   href={personalInfo.resumeUrl}
@@ -215,7 +223,6 @@ export default function ContactPage() {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -362,7 +369,6 @@ export default function ContactPage() {
             </motion.div>
           </div>
 
-          {/* Map Placeholder */}
           <motion.div
             className={`mt-12 rounded-xl overflow-hidden ${
               isDeveloper ? 'border-2 border-green-500/30' : 'border border-gray-200'
@@ -371,25 +377,12 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className={`h-64 flex items-center justify-center ${
-              isDeveloper ? 'bg-gray-900' : 'bg-gray-100'
-            }`}>
-              <div className="text-center">
-                <MapPin className={`h-12 w-12 mx-auto mb-4 ${
-                  isDeveloper ? 'text-green-400' : 'text-gray-400'
-                }`} />
-                <p className={`text-lg font-medium ${
-                  isDeveloper ? 'text-green-400' : 'text-gray-600'
-                }`}>
-                  {personalInfo.location}
-                </p>
-                <p className={`text-sm ${
-                  isDeveloper ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  Interactive map coming soon
-                </p>
-              </div>
-            </div>
+            <Map 
+              isDeveloper={isDeveloper}
+              location="Jabalpur- 482001"
+              coordinates={[23.1676, 79.9331]} // MGM School coordinates
+              zoom={16} // Close zoom level
+            />
           </motion.div>
         </motion.div>
       </div>

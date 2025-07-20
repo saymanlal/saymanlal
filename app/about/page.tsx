@@ -146,7 +146,7 @@ export default function AboutPage() {
                 <h3 className={`text-2xl font-bold mb-6 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// About CodeChemist' : 'My Story'}
+                  {isDeveloper ? 'Hi, CodeChemist\'s' : 'My Info'}
                 </h3>
                 <div className={`prose prose-lg ${
                   isDeveloper ? 'prose-invert' : ''
@@ -154,12 +154,12 @@ export default function AboutPage() {
                   <p className={`leading-relaxed ${
                     isDeveloper ? 'text-gray-300' : 'text-gray-600'
                   }`}>
-                    {personalInfo.bio}
+                    I'm Sayman Lal, a passionate {personalInfo.bio}
                   </p>
                   <p className={`leading-relaxed ${
                     isDeveloper ? 'text-gray-300' : 'text-gray-600'
                   }`}>
-                    With over 5 years of experience in cutting-edge technology development, I specialize in creating 
+                    With over 3 years of experience in cutting-edge technology development, I specialize in creating 
                     intelligent solutions that bridge the gap between complex technical challenges and real-world applications. 
                     My journey spans from building neural networks for computer vision to architecting decentralized 
                     financial systems.
@@ -167,7 +167,7 @@ export default function AboutPage() {
                   <p className={`leading-relaxed ${
                     isDeveloper ? 'text-gray-300' : 'text-gray-600'
                   }`}>
-                    As the founder of AIALCHEMIST and VASILIADES, I'm passionate about democratizing access to AI 
+                    As the founder and lead of AIALCHEMIST and TEAM VASILIADES, I'm passionate about democratizing access to AI 
                     technology and empowering the next generation of developers to build the future we envision.
                   </p>
                 </div>
@@ -182,7 +182,7 @@ export default function AboutPage() {
                 <h3 className={`text-2xl font-bold mb-6 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// Connect' : 'Let\'s Connect'}
+                  {isDeveloper ? 'Connect' : 'Let\'s Connect'}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {personalInfo.socials.map((social) => (
@@ -221,15 +221,15 @@ export default function AboutPage() {
                 <h3 className={`text-2xl font-bold mb-6 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// Fun Facts' : 'Quick Facts'}
+                  {isDeveloper ? 'Fun Facts' : 'Quick Facts'}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
-                    { label: 'Favorite Programming Language', value: 'Python 🐍', icon: '💻' },
-                    { label: 'Coffee Consumed Daily', value: '5+ cups ☕', icon: '☕' },
+                    { label: 'Favorite Programming Language', value: 'Java', icon: '💻' },
+                    { label: 'Coffee Consumed Daily', value: '2+ cups ☕', icon: '☕' },
                     { label: 'Favorite AI Framework', value: 'TensorFlow', icon: '🧠' },
                     { label: 'Preferred IDE', value: 'VS Code', icon: '⚡' },
-                    { label: 'Years of Experience', value: '5+ years', icon: '📅' },
+                    { label: 'Years of Experience', value: '3+ years', icon: '📅' },
                     { label: 'Passion Project', value: 'AI for Good', icon: '🌟' },
                   ].map((fact, index) => (
                     <motion.div
