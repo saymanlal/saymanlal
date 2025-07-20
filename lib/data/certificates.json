@@ -1,0 +1,81 @@
+{
+  "certificates": [
+    {
+      "id": "1",
+      "title": "AWS Certified Solutions Architect - Professional",
+      "organization": "Amazon Web Services",
+      "issueDate": "2024-03-15",
+      "expiryDate": "2027-03-15",
+      "credentialId": "AWS-PSA-123456",
+      "credentialUrl": "https://aws.amazon.com/verification",
+      "imageUrl": "https://images.pexels.com/photos/5935791/pexels-photo-5935791.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["AWS", "Cloud Architecture", "DevOps", "Scalability"],
+      "verified": true,
+      "createdAt": "2024-03-15T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "title": "TensorFlow Developer Certificate",
+      "organization": "Google",
+      "issueDate": "2024-01-20",
+      "expiryDate": "2027-01-20",
+      "credentialId": "TF-DEV-789012",
+      "credentialUrl": "https://developers.google.com/certification",
+      "imageUrl": "https://images.pexels.com/photos/5935794/pexels-photo-5935794.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["TensorFlow", "Machine Learning", "Deep Learning", "Python"],
+      "verified": true,
+      "createdAt": "2024-01-20T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "title": "Certified Kubernetes Administrator",
+      "organization": "Cloud Native Computing Foundation",
+      "issueDate": "2023-11-10",
+      "expiryDate": "2026-11-10",
+      "credentialId": "CKA-345678",
+      "credentialUrl": "https://training.linuxfoundation.org/certification/verify/",
+      "imageUrl": "https://images.pexels.com/photos/5935793/pexels-photo-5935793.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["Kubernetes", "Container Orchestration", "DevOps", "Linux"],
+      "verified": true,
+      "createdAt": "2023-11-10T00:00:00Z"
+    },
+    {
+      "id": "4",
+      "title": "Blockchain Development Specialization",
+      "organization": "University of California, Berkeley",
+      "issueDate": "2023-09-05",
+      "credentialId": "BLOCKCHAIN-901234",
+      "credentialUrl": "https://coursera.org/verify/specialization/",
+      "imageUrl": "https://images.pexels.com/photos/5935792/pexels-photo-5935792.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["Blockchain", "Solidity", "Web3", "Smart Contracts"],
+      "verified": true,
+      "createdAt": "2023-09-05T00:00:00Z"
+    },
+    {
+      "id": "5",
+      "title": "Advanced React Developer",
+      "organization": "Meta",
+      "issueDate": "2023-07-22",
+      "expiryDate": "2026-07-22",
+      "credentialId": "META-REACT-567890",
+      "credentialUrl": "https://developers.facebook.com/certification/",
+      "imageUrl": "https://images.pexels.com/photos/5935790/pexels-photo-5935790.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["React", "JavaScript", "TypeScript", "Frontend Development"],
+      "verified": true,
+      "createdAt": "2023-07-22T00:00:00Z"
+    },
+    {
+      "id": "6",
+      "title": "Azure AI Engineer Associate",
+      "organization": "Microsoft",
+      "issueDate": "2023-05-30",
+      "expiryDate": "2026-05-30",
+      "credentialId": "AZ-AI-234567",
+      "credentialUrl": "https://learn.microsoft.com/en-us/certifications/",
+      "imageUrl": "https://images.pexels.com/photos/5935795/pexels-photo-5935795.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "skills": ["Azure", "AI", "Machine Learning", "Cognitive Services"],
+      "verified": true,
+      "createdAt": "2023-05-30T00:00:00Z"
+    }
+  ]
+}

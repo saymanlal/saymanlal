@@ -1,0 +1,331 @@
+{
+  "categories": [
+    {
+      "id": "ai-ml",
+      "name": "AI & Machine Learning",
+      "icon": "🧠",
+      "color": "#00ff88",
+      "skills": [
+        {
+          "name": "TensorFlow",
+          "level": 95,
+          "icon": "🔥",
+          "description": "Deep learning framework for building neural networks",
+          "yearsOfExperience": 4,
+          "projects": 15,
+          "certifications": ["TensorFlow Developer Certificate"]
+        },
+        {
+          "name": "PyTorch",
+          "level": 90,
+          "icon": "⚡",
+          "description": "Dynamic neural network framework",
+          "yearsOfExperience": 3,
+          "projects": 12,
+          "certifications": []
+        },
+        {
+          "name": "OpenAI GPT",
+          "level": 88,
+          "icon": "🤖",
+          "description": "Large language model integration and fine-tuning",
+          "yearsOfExperience": 2,
+          "projects": 8,
+          "certifications": []
+        },
+        {
+          "name": "Computer Vision",
+          "level": 85,
+          "icon": "👁️",
+          "description": "Image processing and object detection",
+          "yearsOfExperience": 3,
+          "projects": 10,
+          "certifications": []
+        },
+        {
+          "name": "Natural Language Processing",
+          "level": 82,
+          "icon": "💬",
+          "description": "Text analysis and language understanding",
+          "yearsOfExperience": 3,
+          "projects": 9,
+          "certifications": []
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend Development",
+      "icon": "🎨",
+      "color": "#00ccff",
+      "skills": [
+        {
+          "name": "React",
+          "level": 95,
+          "icon": "⚛️",
+          "description": "Component-based UI library",
+          "yearsOfExperience": 5,
+          "projects": 25,
+          "certifications": ["Meta React Developer"]
+        },
+        {
+          "name": "Next.js",
+          "level": 92,
+          "icon": "▲",
+          "description": "Full-stack React framework",
+          "yearsOfExperience": 4,
+          "projects": 20,
+          "certifications": []
+        },
+        {
+          "name": "TypeScript",
+          "level": 90,
+          "icon": "📘",
+          "description": "Typed JavaScript for better development",
+          "yearsOfExperience": 4,
+          "projects": 30,
+          "certifications": []
+        },
+        {
+          "name": "Tailwind CSS",
+          "level": 88,
+          "icon": "🎨",
+          "description": "Utility-first CSS framework",
+          "yearsOfExperience": 3,
+          "projects": 22,
+          "certifications": []
+        },
+        {
+          "name": "Framer Motion",
+          "level": 85,
+          "icon": "🎭",
+          "description": "Animation library for React",
+          "yearsOfExperience": 2,
+          "projects": 15,
+          "certifications": []
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "name": "Backend Development",
+      "icon": "⚙️",
+      "color": "#ff0066",
+      "skills": [
+        {
+          "name": "Node.js",
+          "level": 90,
+          "icon": "🟢",
+          "description": "JavaScript runtime for server-side development",
+          "yearsOfExperience": 5,
+          "projects": 28,
+          "certifications": []
+        },
+        {
+          "name": "Python",
+          "level": 95,
+          "icon": "🐍",
+          "description": "Versatile programming language",
+          "yearsOfExperience": 6,
+          "projects": 35,
+          "certifications": []
+        },
+        {
+          "name": "FastAPI",
+          "level": 88,
+          "icon": "🚀",
+          "description": "Modern Python web framework",
+          "yearsOfExperience": 3,
+          "projects": 18,
+          "certifications": []
+        },
+        {
+          "name": "PostgreSQL",
+          "level": 85,
+          "icon": "🐘",
+          "description": "Advanced relational database",
+          "yearsOfExperience": 4,
+          "projects": 20,
+          "certifications": []
+        },
+        {
+          "name": "GraphQL",
+          "level": 80,
+          "icon": "📊",
+          "description": "Query language for APIs",
+          "yearsOfExperience": 2,
+          "projects": 12,
+          "certifications": []
+        }
+      ]
+    },
+    {
+      "id": "web3",
+      "name": "Web3 & Blockchain",
+      "icon": "⛓️",
+      "color": "#8b5cf6",
+      "skills": [
+        {
+          "name": "Solidity",
+          "level": 88,
+          "icon": "💎",
+          "description": "Smart contract programming language",
+          "yearsOfExperience": 3,
+          "projects": 15,
+          "certifications": ["Blockchain Development Specialization"]
+        },
+        {
+          "name": "Web3.js",
+          "level": 85,
+          "icon": "🌐",
+          "description": "Ethereum JavaScript API",
+          "yearsOfExperience": 3,
+          "projects": 18,
+          "certifications": []
+        },
+        {
+          "name": "Ethereum",
+          "level": 82,
+          "icon": "💰",
+          "description": "Decentralized platform for smart contracts",
+          "yearsOfExperience": 3,
+          "projects": 12,
+          "certifications": []
+        },
+        {
+          "name": "IPFS",
+          "level": 78,
+          "icon": "📁",
+          "description": "Distributed file storage system",
+          "yearsOfExperience": 2,
+          "projects": 8,
+          "certifications": []
+        },
+        {
+          "name": "DeFi Protocols",
+          "level": 80,
+          "icon": "🏦",
+          "description": "Decentralized finance applications",
+          "yearsOfExperience": 2,
+          "projects": 10,
+          "certifications": []
+        }
+      ]
+    },
+    {
+      "id": "devops",
+      "name": "DevOps & Cloud",
+      "icon": "☁️",
+      "color": "#f59e0b",
+      "skills": [
+        {
+          "name": "AWS",
+          "level": 88,
+          "icon": "☁️",
+          "description": "Amazon Web Services cloud platform",
+          "yearsOfExperience": 4,
+          "projects": 22,
+          "certifications": ["AWS Solutions Architect Professional"]
+        },
+        {
+          "name": "Docker",
+          "level": 85,
+          "icon": "🐳",
+          "description": "Containerization platform",
+          "yearsOfExperience": 4,
+          "projects": 25,
+          "certifications": []
+        },
+        {
+          "name": "Kubernetes",
+          "level": 78,
+          "icon": "⚓",
+          "description": "Container orchestration platform",
+          "yearsOfExperience": 2,
+          "projects": 12,
+          "certifications": ["Certified Kubernetes Administrator"]
+        },
+        {
+          "name": "Terraform",
+          "level": 75,
+          "icon": "🏗️",
+          "description": "Infrastructure as code tool",
+          "yearsOfExperience": 2,
+          "projects": 10,
+          "certifications": []
+        },
+        {
+          "name": "CI/CD",
+          "level": 82,
+          "icon": "🔄",
+          "description": "Continuous integration and deployment",
+          "yearsOfExperience": 3,
+          "projects": 20,
+          "certifications": []
+        }
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "AI Innovation Award",
+      "organization": "TechCrunch Disrupt",
+      "year": 2024,
+      "description": "Recognized for breakthrough AI development tools"
+    },
+    {
+      "title": "Top 1% Developer",
+      "organization": "GitHub",
+      "year": 2023,
+      "description": "Based on contributions and community impact"
+    },
+    {
+      "title": "Blockchain Pioneer",
+      "organization": "Ethereum Foundation",
+      "year": 2023,
+      "description": "Early contributor to DeFi ecosystem"
+    }
+  ],
+  "platforms": [
+    {
+      "name": "GitHub",
+      "username": "saymanlal",
+      "url": "https://github.com/saymanlal",
+      "stats": {
+        "repositories": 127,
+        "followers": 2847,
+        "contributions": 1250
+      }
+    },
+    {
+      "name": "LeetCode",
+      "username": "codechemist",
+      "url": "https://leetcode.com/codechemist",
+      "stats": {
+        "problemsSolved": 450,
+        "ranking": "Top 5%",
+        "contests": 25
+      }
+    },
+    {
+      "name": "HackerRank",
+      "username": "saymanlal",
+      "url": "https://hackerrank.com/saymanlal",
+      "stats": {
+        "badges": 15,
+        "ranking": "5 Star",
+        "domains": 8
+      }
+    },
+    {
+      "name": "CodeChef",
+      "username": "codechemist",
+      "url": "https://codechef.com/users/codechemist",
+      "stats": {
+        "rating": 2156,
+        "stars": 5,
+        "contests": 42
+      }
+    }
+  ]
+}

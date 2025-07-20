@@ -1,0 +1,264 @@
+{
+  "organizations": [
+    {
+      "id": "aialchemist",
+      "name": "AIALCHEMIST",
+      "description": "Democratizing AI development with cutting-edge tools and platforms that make machine learning accessible to developers worldwide.",
+      "mission": "To empower every developer with AI capabilities, regardless of their background or experience level.",
+      "website": "https://aialchemist.dev",
+      "logoUrl": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=200",
+      "founded": "2024-01-15",
+      "location": "San Francisco, CA",
+      "industry": "Artificial Intelligence",
+      "size": "10-50 employees",
+      "funding": "Seed Stage",
+      "valuation": "$5M",
+      "members": [
+        {
+          "id": "1",
+          "name": "Sayman Lal",
+          "role": "Founder & CEO",
+          "bio": "AI researcher and entrepreneur passionate about democratizing machine learning technology.",
+          "imageUrl": "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "sayman@aialchemist.dev",
+          "socials": [
+            {
+              "platform": "GitHub",
+              "url": "https://github.com/saymanlal",
+              "icon": "github",
+              "color": "#333"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/saymanlal",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            },
+            {
+              "platform": "Twitter",
+              "url": "https://twitter.com/codechemist",
+              "icon": "twitter",
+              "color": "#1DA1F2"
+            }
+          ],
+          "organization": "aialchemist",
+          "active": true,
+          "joinDate": "2024-01-15",
+          "createdAt": "2024-01-15T00:00:00Z"
+        },
+        {
+          "id": "2",
+          "name": "Dr. Sarah Chen",
+          "role": "Chief Technology Officer",
+          "bio": "Former Google AI researcher with expertise in large language models and distributed systems.",
+          "imageUrl": "https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "sarah@aialchemist.dev",
+          "socials": [
+            {
+              "platform": "GitHub",
+              "url": "https://github.com/sarahchen",
+              "icon": "github",
+              "color": "#333"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/sarahchen",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            }
+          ],
+          "organization": "aialchemist",
+          "active": true,
+          "joinDate": "2024-02-01",
+          "createdAt": "2024-02-01T00:00:00Z"
+        },
+        {
+          "id": "3",
+          "name": "Marcus Rodriguez",
+          "role": "Head of Product",
+          "bio": "Product leader with 10+ years experience building developer tools and AI platforms.",
+          "imageUrl": "https://images.pexels.com/photos/3777931/pexels-photo-3777931.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "marcus@aialchemist.dev",
+          "socials": [
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/marcusrodriguez",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            },
+            {
+              "platform": "Twitter",
+              "url": "https://twitter.com/marcusbuilds",
+              "icon": "twitter",
+              "color": "#1DA1F2"
+            }
+          ],
+          "organization": "aialchemist",
+          "active": true,
+          "joinDate": "2024-03-01",
+          "createdAt": "2024-03-01T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "vasiliades",
+      "name": "VASILIADES",
+      "description": "Leading blockchain security firm specializing in smart contract auditing, DeFi protocol security, and Web3 infrastructure protection.",
+      "mission": "To secure the decentralized future by providing world-class blockchain security services and tools.",
+      "website": "https://vasiliades.dev",
+      "logoUrl": "https://images.pexels.com/photos/8728382/pexels-photo-8728382.jpeg?auto=compress&cs=tinysrgb&w=200",
+      "founded": "2023-09-10",
+      "location": "Remote-First",
+      "industry": "Blockchain Security",
+      "size": "5-20 employees",
+      "funding": "Bootstrapped",
+      "valuation": "$2M",
+      "members": [
+        {
+          "id": "4",
+          "name": "Sayman Lal",
+          "role": "Co-Founder & CTO",
+          "bio": "Blockchain security expert with deep knowledge of smart contract vulnerabilities and DeFi protocols.",
+          "imageUrl": "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "sayman@vasiliades.dev",
+          "socials": [
+            {
+              "platform": "GitHub",
+              "url": "https://github.com/saymanlal",
+              "icon": "github",
+              "color": "#333"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/saymanlal",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            }
+          ],
+          "organization": "vasiliades",
+          "active": true,
+          "joinDate": "2023-09-10",
+          "createdAt": "2023-09-10T00:00:00Z"
+        },
+        {
+          "id": "5",
+          "name": "Elena Vasiliades",
+          "role": "Co-Founder & CEO",
+          "bio": "Former Ethereum Foundation security researcher and smart contract auditing pioneer.",
+          "imageUrl": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "elena@vasiliades.dev",
+          "socials": [
+            {
+              "platform": "GitHub",
+              "url": "https://github.com/elenavasiliades",
+              "icon": "github",
+              "color": "#333"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/elenavasiliades",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            },
+            {
+              "platform": "Twitter",
+              "url": "https://twitter.com/elenavasiliades",
+              "icon": "twitter",
+              "color": "#1DA1F2"
+            }
+          ],
+          "organization": "vasiliades",
+          "active": true,
+          "joinDate": "2023-09-10",
+          "createdAt": "2023-09-10T00:00:00Z"
+        },
+        {
+          "id": "6",
+          "name": "Alex Thompson",
+          "role": "Senior Security Engineer",
+          "bio": "Penetration testing expert with focus on blockchain and smart contract security.",
+          "imageUrl": "https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=400",
+          "email": "alex@vasiliades.dev",
+          "socials": [
+            {
+              "platform": "GitHub",
+              "url": "https://github.com/alexthompson",
+              "icon": "github",
+              "color": "#333"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/in/alexthompson",
+              "icon": "linkedin",
+              "color": "#0077B5"
+            }
+          ],
+          "organization": "vasiliades",
+          "active": true,
+          "joinDate": "2023-11-15",
+          "createdAt": "2023-11-15T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "organization": "aialchemist",
+      "title": "Y Combinator Graduate",
+      "description": "Successfully completed Y Combinator W24 batch",
+      "date": "2024-03-15",
+      "impact": "$500K seed funding raised"
+    },
+    {
+      "organization": "aialchemist",
+      "title": "TechCrunch Disrupt Winner",
+      "description": "Won AI Innovation Award at TechCrunch Disrupt 2024",
+      "date": "2024-03-20",
+      "impact": "$50K prize + investor meetings"
+    },
+    {
+      "organization": "vasiliades",
+      "title": "$100M+ Audited",
+      "description": "Successfully audited over $100M in smart contract value",
+      "date": "2024-06-01",
+      "impact": "Zero critical vulnerabilities in production"
+    },
+    {
+      "organization": "vasiliades",
+      "title": "DeFi Security Leader",
+      "description": "Recognized as top DeFi security firm by DeFiPulse",
+      "date": "2024-01-10",
+      "impact": "Industry recognition and partnerships"
+    }
+  ],
+  "partnerships": [
+    {
+      "organization": "aialchemist",
+      "partner": "Google Cloud",
+      "type": "Technology Partnership",
+      "description": "Strategic partnership for AI infrastructure and scaling",
+      "startDate": "2024-02-01"
+    },
+    {
+      "organization": "aialchemist",
+      "partner": "OpenAI",
+      "type": "Integration Partnership",
+      "description": "Official integration partner for GPT-4 developer tools",
+      "startDate": "2024-01-20"
+    },
+    {
+      "organization": "vasiliades",
+      "partner": "Ethereum Foundation",
+      "type": "Security Partnership",
+      "description": "Official security audit partner for Ethereum ecosystem",
+      "startDate": "2023-10-01"
+    },
+    {
+      "organization": "vasiliades",
+      "partner": "Chainlink",
+      "type": "Oracle Security",
+      "description": "Security auditing for Chainlink oracle networks",
+      "startDate": "2023-12-15"
+    }
+  ]
+}

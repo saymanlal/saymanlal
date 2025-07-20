@@ -1,0 +1,76 @@
+{
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "Sarah Johnson",
+      "role": "CTO",
+      "company": "TechCorp Solutions",
+      "content": "Sayman's expertise in AI and blockchain is exceptional. He delivered a cutting-edge solution that exceeded our expectations and transformed our business processes. His ability to translate complex technical concepts into practical solutions is remarkable.",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/sarahjohnsontech",
+      "featured": true,
+      "createdAt": "2024-10-15T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Michael Chen",
+      "role": "Product Manager",
+      "company": "FinTech Innovations",
+      "content": "Working with Sayman on our DeFi project was a game-changer. His deep understanding of Web3 technologies and attention to detail resulted in a robust platform that our users love. Highly recommended!",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3777931/pexels-photo-3777931.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/michaelchenpm",
+      "featured": true,
+      "createdAt": "2024-09-28T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Emily Rodriguez",
+      "role": "Founder & CEO",
+      "company": "AI Startup Hub",
+      "content": "Sayman's AI development skills are top-notch. He built our entire ML pipeline and deployment infrastructure. The platform scales beautifully and has been running flawlessly in production.",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/emilyrodriguezceo",
+      "featured": true,
+      "createdAt": "2024-08-20T00:00:00Z"
+    },
+    {
+      "id": "4",
+      "name": "David Park",
+      "role": "Lead Developer",
+      "company": "CloudTech Systems",
+      "content": "Collaborating with Sayman was an incredible learning experience. His code quality is exceptional, and his architectural decisions have stood the test of time. A true professional.",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/davidparkdev",
+      "featured": false,
+      "createdAt": "2024-07-10T00:00:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Lisa Thompson",
+      "role": "VP of Engineering",
+      "company": "DataFlow Analytics",
+      "content": "Sayman delivered a complex AI analytics platform ahead of schedule and under budget. His expertise in machine learning and cloud architecture is impressive. We couldn't be happier with the results.",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/lisathompsonvp",
+      "featured": false,
+      "createdAt": "2024-06-05T00:00:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Alex Kumar",
+      "role": "Blockchain Consultant",
+      "company": "Crypto Advisors",
+      "content": "Sayman's smart contract development and security expertise is unmatched. He identified and fixed critical vulnerabilities in our protocol, saving us from potential security breaches.",
+      "rating": 5,
+      "imageUrl": "https://images.pexels.com/photos/3771097/pexels-photo-3771097.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "linkedinUrl": "https://linkedin.com/in/alexkumarblockchain",
+      "featured": false,
+      "createdAt": "2024-05-18T00:00:00Z"
+    }
+  ]
+}

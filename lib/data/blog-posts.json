@@ -1,0 +1,52 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "The Future of AI in Web Development",
+      "slug": "future-ai-web-development",
+      "excerpt": "Exploring how artificial intelligence is revolutionizing the way we build and maintain web applications.",
+      "content": "# The Future of AI in Web Development\n\nArtificial Intelligence is transforming every aspect of software development...",
+      "coverImage": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "tags": ["AI", "Web Development", "Machine Learning", "Future Tech"],
+      "published": true,
+      "publishedAt": "2024-11-01T00:00:00Z",
+      "readTime": 8,
+      "views": 1250,
+      "likes": 89,
+      "createdAt": "2024-11-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Building Scalable DeFi Applications",
+      "slug": "building-scalable-defi-applications",
+      "excerpt": "A comprehensive guide to designing and implementing high-performance decentralized finance applications.",
+      "content": "# Building Scalable DeFi Applications\n\nDecentralized Finance (DeFi) has emerged as one of the most exciting...",
+      "coverImage": "https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "tags": ["DeFi", "Blockchain", "Solidity", "Web3"],
+      "published": true,
+      "publishedAt": "2024-10-15T00:00:00Z",
+      "readTime": 12,
+      "views": 890,
+      "likes": 67,
+      "createdAt": "2024-10-15T00:00:00Z",
+      "updatedAt": "2024-10-15T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "title": "Optimizing Neural Networks for Production",
+      "slug": "optimizing-neural-networks-production",
+      "excerpt": "Learn advanced techniques for deploying and optimizing neural networks in production environments.",
+      "content": "# Optimizing Neural Networks for Production\n\nDeploying machine learning models to production requires...",
+      "coverImage": "https://images.pexels.com/photos/8728380/pexels-photo-8728380.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "tags": ["Neural Networks", "Production", "MLOps", "Optimization"],
+      "published": true,
+      "publishedAt": "2024-09-20T00:00:00Z",
+      "readTime": 10,
+      "views": 720,
+      "likes": 45,
+      "createdAt": "2024-09-20T00:00:00Z",
+      "updatedAt": "2024-09-20T00:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "Sayman Lal",
+  "alias": "CodeChemist",
+  "title": "AI Developer & Entrepreneur",
+  "bio": "Passionate AI & Web3 Developer, Author, and Founder of AIALCHEMIST & VASILIADES. I create intelligent solutions that bridge the gap between cutting-edge technology and real-world applications.",
+  "email": "contact@sayman.dev",
+  "phone": "+1 (555) 123-4567",
+  "location": "San Francisco, CA",
+  "website": "https://sayman.dev",
+  "imageUrl": "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400",
+  "resumeUrl": "/resume-sayman-lal.pdf",
+  "socials": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/saymanlal",
+      "icon": "github",
+      "color": "#333"
+    },
+    {
+      "platform": "Twitter",
+      "url": "https://twitter.com/codechemist",
+      "icon": "twitter",
+      "color": "#1DA1F2"
+    },
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com/in/saymanlal",
+      "icon": "linkedin",
+      "color": "#0077B5"
+    },
+    {
+      "platform": "Dev.to",
+      "url": "https://dev.to/codechemist",
+      "icon": "dev",
+      "color": "#0A0A23"
+    },
+    {
+      "platform": "Medium",
+      "url": "https://medium.com/@sayman",
+      "icon": "medium",
+      "color": "#00AB6C"
+    },
+    {
+      "platform": "CodeChef",
+      "url": "https://codechef.com/users/codechemist",
+      "icon": "code",
+      "color": "#5B4638"
+    }
+  ]
+}
