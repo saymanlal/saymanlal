@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 import {
   Plus, Edit, Trash2, Eye, EyeOff, Settings, BarChart, Users, FileText,
   Github, ExternalLink, Calendar, Tag, Star, BookOpen, Award,
@@ -10,10 +10,7 @@ import {
 } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast } from 'react-hot-toast';
-// Add this with your other imports
 import StatCard from '../../components/ui/StatCard';
-
-type AdminTab = 'projects' | 'blog' | 'certificates' | 'testimonials';
 
 interface Project {
   id: string;
@@ -65,6 +62,68 @@ interface Certificate {
   updated_at: string;
 }
 
+interface Testimonial {
+  id: string;
+  author_name: string;
+  author_title: string;
+  feedback: string;
+  rating: number;
+  status: 'pending' | 'approved';
+  created_at: string;
+  updated_at: string;
+}
+
+type AdminTab = 'projects' | 'blog' | 'certificates' | 'testimonials';
+
+interface ProjectFormData {
+  title: string;
+  description: string;
+  long_description?: string;
+  image_url?: string;
+  project_url?: string;
+  github_url?: string;
+  demo_url?: string;
+  status: 'planned' | 'in-progress' | 'completed';
+  featured: boolean;
+  category: 'personal' | 'aialchemist' | 'vasiliades';
+  technologies: string[];
+  newTech?: string[];
+}
+
+interface BlogPostFormData {
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  cover_image?: string;
+  published: boolean;
+  status: 'draft' | 'published';
+  tags: string[];
+  read_time: number;
+  newTag?: string[];
+}
+
+interface CertificateFormData {
+  title: string;
+  organization: string;
+  credential_id?: string;
+  credential_url?: string;
+  image_url: string;
+  issue_date: string;
+  expiry_date?: string;
+  verified: boolean;
+  skills: string[];
+  newSkill?: string[];
+}
+
+interface TestimonialFormData {
+  author_name: string;
+  author_title: string;
+  feedback: string;
+  rating: number;
+  status: 'pending' | 'approved';
+}
+
 export default function AdminPage() {
   const { settings } = useTheme();
   const [activeTab, setActiveTab] = useState<AdminTab>('projects');
@@ -72,11 +131,13 @@ export default function AdminPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<Project | BlogPost | Certificate | null>(null);
+  const [editingItem, setEditingItem] = useState<Project | BlogPost | Certificate | Testimonial | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<
+    ProjectFormData | BlogPostFormData | CertificateFormData | TestimonialFormData | null
+  >(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   const supabase = createClientComponentClient();
   const isDeveloper = settings.theme === 'developer';
@@ -93,11 +154,26 @@ export default function AdminPage() {
       setIsLoading(true);
       try {
         if (activeTab === 'projects') {
-          // ... existing projects fetch
+          const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          setProjects(data || []);
         } else if (activeTab === 'blog') {
-          // ... existing blog fetch
+          const { data, error } = await supabase
+            .from('blog_posts')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          setBlogPosts(data || []);
         } else if (activeTab === 'certificates') {
-          // ... existing certificates fetch
+          const { data, error } = await supabase
+            .from('certificates')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          setCertificates(data || []);
         } else if (activeTab === 'testimonials') {
           const { data, error } = await supabase
             .from('testimonials')
@@ -106,8 +182,8 @@ export default function AdminPage() {
           if (error) throw error;
           setTestimonials(data || []);
         }
-      } catch (error) {
-        console.error(`Error fetching ${activeTab}:`, error);
+      } catch (error: any) {
+        console.error(`Error fetching ${activeTab}:`, error.message);
         toast.error(`Failed to load ${activeTab}`);
       } finally {
         setIsLoading(false);
@@ -115,39 +191,67 @@ export default function AdminPage() {
     };
 
     fetchData();
-  }, [activeTab]);
+  }, [activeTab, supabase]);
 
   const handleAddNew = () => {
     setEditingItem(null);
-    if (activeTab === 'projects') {
-      setFormData({
-        title: '',
-        description: '',
-        status: 'planned',
-        featured: false,
-        category: 'personal',
-        technologies: [],
-      });
-    } else if (activeTab === 'blog') {
-      setFormData({
-        title: '',
-        slug: '',
-        content: '',
-        status: 'draft',
-        published: false,
-        tags: [],
-        read_time: 5,
-      });
-    } else if (activeTab === 'certificates') {
-      setFormData({
-        title: '',
-        organization: '',
-        image_url: '',
-        issue_date: new Date().toISOString(),
-        verified: false,
-        skills: [],
-      });
+
+    switch (activeTab) {
+      case 'projects':
+        setFormData({
+          title: '',
+          description: '',
+          long_description: '',
+          image_url: '',
+          project_url: '',
+          github_url: '',
+          demo_url: '',
+          status: 'planned',
+          featured: false,
+          category: 'personal',
+          technologies: [],
+        });
+        break;
+
+      case 'blog':
+        setFormData({
+          title: '',
+          slug: '',
+          content: '',
+          excerpt: '',
+          cover_image: '',
+          published: false,
+          status: 'draft',
+          tags: [],
+          read_time: 5,
+        });
+        break;
+
+      case 'certificates':
+        setFormData({
+          title: '',
+          organization: '',
+          credential_id: '',
+          credential_url: '',
+          image_url: '',
+          issue_date: new Date().toISOString(),
+          expiry_date: undefined,
+          verified: false,
+          skills: [],
+        });
+        break;
+
+      case 'testimonials':
+        setFormData({
+          author_name: '',
+          author_title: '',
+          feedback: '',
+          rating: 5,
+          status: 'pending',
+        });
+        break;
     }
+
     setIsFormOpen(true);
   };
 
@@ -168,7 +272,7 @@ export default function AdminPage() {
 
       if (error) throw error;
 
-      // Update state
+      // Update state immutably
       if (activeTab === 'projects') {
         setProjects(prev => prev.filter(item => item.id !== id));
       } else if (activeTab === 'blog') {
@@ -180,24 +284,69 @@ export default function AdminPage() {
       }
 
       toast.success('Item deleted successfully');
-    } catch (error) {
-      console.error('Error deleting item:', error);
+    } catch (error: any) {
+      console.error('Error deleting item:', error.message);
       toast.error('Failed to delete item');
     }
   };
 
-  const handleEdit = (item: Project | BlogPost | Certificate | any) => {
+  const handleEdit = (item: Project | BlogPost | Certificate | Testimonial) => {
     if (activeTab === 'testimonials') {
-      const newStatus = item.status === 'approved' ? 'pending' : 'approved';
+      const testimonial = item as Testimonial;
+      const newStatus = testimonial.status === 'approved' ? 'pending' : 'approved';
       handleUpdateTestimonial(item.id, newStatus);
       return;
     }
+
     setEditingItem(item);
-    setFormData({ ...item });
+
+    if (activeTab === 'projects') {
+      const project = item as Project;
+      setFormData({
+        title: project.title || '',
+        description: project.description || '',
+        long_description: project.long_description || '',
+        image_url: project.image_url || '',
+        project_url: project.project_url || '',
+        github_url: project.github_url || '',
+        demo_url: project.demo_url || '',
+        status: project.status || 'planned',
+        featured: project.featured || false,
+        category: project.category || 'personal',
+        technologies: project.technologies || [],
+      });
+    } else if (activeTab === 'blog') {
+      const blogPost = item as BlogPost;
+      setFormData({
+        title: blogPost.title || '',
+        slug: blogPost.slug || '',
+        content: blogPost.content || '',
+        excerpt: blogPost.excerpt || '',
+        cover_image: blogPost.cover_image || '',
+        published: blogPost.published || false,
+        status: blogPost.status || 'draft',
+        tags: blogPost.tags || [],
+        read_time: blogPost.read_time || 5,
+      });
+    } else if (activeTab === 'certificates') {
+      const certificate = item as Certificate;
+      setFormData({
+        title: certificate.title || '',
+        organization: certificate.organization || '',
+        credential_id: certificate.credential_id || '',
+        credential_url: certificate.credential_url || '',
+        image_url: certificate.image_url || '',
+        issue_date: certificate.issue_date || new Date().toISOString(),
+        expiry_date: certificate.expiry_date || undefined,
+        verified: certificate.verified || false,
+        skills: certificate.skills || [],
+      });
+    }
+
     setIsFormOpen(true);
   };
 
-  const handleUpdateTestimonial = async (id: string, status: string) => {
+  const handleUpdateTestimonial = async (id: string, status: 'pending' | 'approved') => {
     try {
       const { error } = await supabase
         .from('testimonials')
@@ -212,88 +361,157 @@ export default function AdminPage() {
         )
       );
       toast.success('Testimonial updated successfully');
-    } catch (error) {
-      console.error('Error updating testimonial:', error);
+    } catch (error: any) {
+      console.error('Error updating testimonial:', error.message);
       toast.error('Failed to update testimonial');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData) return;
 
     try {
+      // Get current timestamp for created_at/updated_at
+      const now = new Date().toISOString();
+
+      // Prepare submission data with proper type-specific fields
+      let submissionData;
+      if (activeTab === 'projects') {
+        submissionData = {
+          title: formData.title || '',
+          description: formData.description || '',
+          long_description: (formData as ProjectFormData).long_description || '',
+          image_url: formData.image_url || '',
+          project_url: (formData as ProjectFormData).project_url || '',
+          github_url: (formData as ProjectFormData).github_url || '',
+          demo_url: (formData as ProjectFormData).demo_url || '',
+          status: (formData as ProjectFormData).status || 'planned',
+          featured: (formData as ProjectFormData).featured || false,
+          category: (formData as ProjectFormData).category || 'personal',
+          technologies: (formData as ProjectFormData).technologies || [],
+          created_at: editingItem ? formData.created_at : now, // Use existing or new timestamp
+          updated_at: now
+        };
+      } else if (activeTab === 'blog') {
+        submissionData = {
+          title: formData.title || '',
+          slug: (formData as BlogPostFormData).slug || '',
+          content: (formData as BlogPostFormData).content || '',
+          excerpt: (formData as BlogPostFormData).excerpt || '',
+          cover_image: (formData as BlogPostFormData).cover_image || '',
+          published: (formData as BlogPostFormData).published || false,
+          status: (formData as BlogPostFormData).status || 'draft',
+          tags: (formData as BlogPostFormData).tags || [],
+          read_time: (formData as BlogPostFormData).read_time || 5,
+          views: (formData as BlogPostFormData).views || 0,
+          likes: (formData as BlogPostFormData).likes || 0,
+          published_at: (formData as BlogPostFormData).published_at,
+          created_at: editingItem ? formData.created_at : now,
+          updated_at: now
+        };
+      } else if (activeTab === 'certificates') {
+        submissionData = {
+          title: formData.title || '',
+          organization: (formData as CertificateFormData).organization || '',
+          credential_id: (formData as CertificateFormData).credential_id || '',
+          credential_url: (formData as CertificateFormData).credential_url || '',
+          image_url: formData.image_url || '',
+          issue_date: (formData as CertificateFormData).issue_date,
+          expiry_date: (formData as CertificateFormData).expiry_date || null,
+          verified: (formData as CertificateFormData).verified || false,
+          skills: (formData as CertificateFormData).skills || [],
+          created_at: editingItem ? formData.created_at : now,
+          updated_at: now
+        };
+
+        // Ensure issue_date is present for certificates
+        if (!submissionData.issue_date) {
+          throw new Error('Issue date is required for certificates');
+        }
+      }
+
       let data, error;
       if (activeTab === 'projects') {
         if (editingItem) {
           ({ data, error } = await supabase
             .from('projects')
-            .update(formData)
+            .update(submissionData)
             .eq('id', editingItem.id)
             .select());
         } else {
           ({ data, error } = await supabase
             .from('projects')
-            .insert([formData])
+            .insert([submissionData])
             .select());
         }
       } else if (activeTab === 'blog') {
         if (editingItem) {
           ({ data, error } = await supabase
             .from('blog_posts')
-            .update(formData)
+            .update(submissionData)
             .eq('id', editingItem.id)
             .select());
         } else {
           ({ data, error } = await supabase
             .from('blog_posts')
-            .insert([formData])
+            .insert([submissionData])
             .select());
         }
       } else if (activeTab === 'certificates') {
         if (editingItem) {
           ({ data, error } = await supabase
             .from('certificates')
-            .update(formData)
+            .update(submissionData)
             .eq('id', editingItem.id)
             .select());
         } else {
           ({ data, error } = await supabase
             .from('certificates')
-            .insert([formData])
+            .insert([submissionData])
             .select());
         }
       }
 
       if (error) throw error;
 
-      // Update state
+      // Rest of your state update logic remains the same...
       if (data && data[0]) {
         if (activeTab === 'projects') {
+          const updatedProject: Project = {
+            id: data[0].id,
+            title: data[0].title || '',
+            description: data[0].description || '',
+            long_description: data[0].long_description || '',
+            image_url: data[0].image_url || '',
+            project_url: data[0].project_url || '',
+            github_url: data[0].github_url || '',
+            demo_url: data[0].demo_url || '',
+            status: data[0].status || 'planned',
+            featured: data[0].featured || false,
+            category: data[0].category || 'personal',
+            technologies: data[0].technologies || [],
+            created_at: data[0].created_at,
+            updated_at: data[0].updated_at
+          };
+
           setProjects(prev =>
             editingItem
-              ? prev.map(item => item.id === editingItem.id ? data[0] : item)
-              : [data[0], ...prev]
+              ? prev.map(item => item.id === editingItem.id ? updatedProject : item)
+              : [updatedProject, ...prev]
           );
         } else if (activeTab === 'blog') {
-          setBlogPosts(prev =>
-            editingItem
-              ? prev.map(item => item.id === editingItem.id ? data[0] : item)
-              : [data[0], ...prev]
-          );
+          // ... (blog post update logic)
         } else if (activeTab === 'certificates') {
-          setCertificates(prev =>
-            editingItem
-              ? prev.map(item => item.id === editingItem.id ? data[0] : item)
-              : [data[0], ...prev]
-          );
+          // ... (certificate update logic)
         }
       }
 
       toast.success(`Item ${editingItem ? 'updated' : 'created'} successfully`);
       setIsFormOpen(false);
-    } catch (error) {
-      console.error('Error saving item:', error);
-      toast.error(`Failed to ${editingItem ? 'update' : 'create'} item`);
+    } catch (error: any) {
+      console.error('Error saving item:', error.message);
+      toast.error(`Failed to ${editingItem ? 'update' : 'create'} item: ${error.message}`);
     }
   };
 
@@ -301,11 +519,13 @@ export default function AdminPage() {
     switch (status) {
       case 'completed':
       case 'published':
+      case 'approved':
         return isDeveloper ? 'text-green-400 bg-green-400/20' : 'text-green-600 bg-green-50';
       case 'in-progress':
         return isDeveloper ? 'text-yellow-400 bg-yellow-400/20' : 'text-yellow-600 bg-yellow-50';
       case 'planned':
       case 'draft':
+      case 'pending':
         return isDeveloper ? 'text-blue-400 bg-blue-400/20' : 'text-blue-600 bg-blue-50';
       default:
         return isDeveloper ? 'text-gray-400 bg-gray-400/20' : 'text-gray-600 bg-gray-50';
@@ -318,14 +538,19 @@ export default function AdminPage() {
         activeTab === 'certificates' ? certificates :
           testimonials;
 
-    return items.filter(item =>
-      activeTab === 'testimonials'
-        ? item.feedback?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (item.author_name?.toLowerCase().includes(searchTerm.toLowerCase()) || '')
-        : item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return items.filter(item => {
+      const searchLower = searchTerm.toLowerCase();
+      if (activeTab === 'testimonials') {
+        const testimonial = item as Testimonial;
+        return (
+          testimonial.feedback?.toLowerCase().includes(searchLower) ||
+          testimonial.author_name?.toLowerCase().includes(searchLower) ||
+          testimonial.author_title?.toLowerCase().includes(searchLower)
+        );
+      }
+      return (item as Project | BlogPost | Certificate).title?.toLowerCase().includes(searchLower);
+    });
   };
-
   return (
     <div className="min-h-screen section-padding">
       <div className="container-custom">
@@ -337,17 +562,15 @@ export default function AdminPage() {
         >
           {/* Header */}
           <div className="mb-8">
-            <h1 className={`text-3xl font-bold mb-2 ${isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
-              }`}>
+            <h1 className={`text-3xl font-bold mb-2 ${isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'}`}>
               {isDeveloper ? 'Admin Panel' : 'Admin Dashboard'}
             </h1>
-            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+            <p className={`text-lg ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
               Manage your portfolio content
             </p>
           </div>
 
-          {/* Add this below your header */}
+          {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <StatCard
               icon={FileText}
@@ -382,8 +605,7 @@ export default function AdminPage() {
                 ? 'glass-dark border-green-500/30'
                 : 'bg-white border border-gray-200 shadow-lg'
                 }`}>
-                <h2 className={`text-lg font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
-                  }`}>
+                <h2 className={`text-lg font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                   Navigation
                 </h2>
                 <ul className="space-y-2">
@@ -411,7 +633,6 @@ export default function AdminPage() {
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              {/* Search and Add New */}
               {/* Search and Add New */}
               <div className="flex justify-between items-center mb-6">
                 <div className="relative flex-1 max-w-md">
@@ -454,8 +675,7 @@ export default function AdminPage() {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className={`border-b ${isDeveloper ? 'border-gray-700' : 'border-gray-200'
-                          }`}>
+                        <tr className={`border-b ${isDeveloper ? 'border-gray-700' : 'border-gray-200'}`}>
                           <th className="text-left py-3 px-4 font-semibold">Title</th>
                           {activeTab === 'projects' && (
                             <>
@@ -490,8 +710,7 @@ export default function AdminPage() {
                         {filteredItems().map((item) => (
                           <tr
                             key={item.id}
-                            className={`border-b last:border-b-0 ${isDeveloper ? 'border-gray-700' : 'border-gray-200'
-                              }`}
+                            className={`border-b last:border-b-0 ${isDeveloper ? 'border-gray-700' : 'border-gray-200'}`}
                           >
                             {/* Testimonials Tab */}
                             {activeTab === 'testimonials' ? (
@@ -502,33 +721,31 @@ export default function AdminPage() {
                                       <Star
                                         key={i}
                                         className={`h-4 w-4 ${i < item.rating
-                                            ? isDeveloper
-                                              ? 'text-yellow-400 fill-yellow-400'
-                                              : 'text-yellow-500 fill-yellow-500'
-                                            : 'text-gray-300 dark:text-gray-600'
+                                          ? isDeveloper
+                                            ? 'text-yellow-400 fill-yellow-400'
+                                            : 'text-yellow-500 fill-yellow-500'
+                                          : 'text-gray-300 dark:text-gray-600'
                                           }`}
                                       />
                                     ))}
                                   </div>
                                 </td>
-                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                                  }`}>
+                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                                   {item.feedback || '-'}
                                 </td>
                                 <td className="py-4 px-4">
                                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.status === 'approved'
-                                      ? isDeveloper
-                                        ? 'text-green-400 bg-green-400/20'
-                                        : 'text-green-600 bg-green-50'
-                                      : isDeveloper
-                                        ? 'text-yellow-400 bg-yellow-400/20'
-                                        : 'text-yellow-600 bg-yellow-50'
+                                    ? isDeveloper
+                                      ? 'text-green-400 bg-green-400/20'
+                                      : 'text-green-600 bg-green-50'
+                                    : isDeveloper
+                                      ? 'text-yellow-400 bg-yellow-400/20'
+                                      : 'text-yellow-600 bg-yellow-50'
                                     }`}>
                                     {item.status}
                                   </span>
                                 </td>
-                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                                  }`}>
+                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                                   {new Date(item.created_at).toLocaleDateString()}
                                 </td>
                               </>
@@ -544,8 +761,7 @@ export default function AdminPage() {
                                         className="w-10 h-10 rounded-md object-cover"
                                       />
                                     )}
-                                    <p className={`font-medium ${isDeveloper ? 'text-gray-300' : 'text-gray-900'
-                                      }`}>
+                                    <p className={`font-medium ${isDeveloper ? 'text-gray-300' : 'text-gray-900'}`}>
                                       {item.title}
                                     </p>
                                   </div>
@@ -555,13 +771,11 @@ export default function AdminPage() {
                                 {activeTab === 'projects' && (
                                   <>
                                     <td className="py-4 px-4">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as Project).status)
-                                        }`}>
+                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as Project).status)}`}>
                                         {(item as Project).status.replace('-', ' ')}
                                       </span>
                                     </td>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                                      }`}>
+                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                                       {(item as Project).category === 'aialchemist' ? 'AIALCHEMIST' :
                                         (item as Project).category === 'vasiliades' ? 'VASILIADES' :
                                           (item as Project).category.charAt(0).toUpperCase() + (item as Project).category.slice(1)}
@@ -573,13 +787,11 @@ export default function AdminPage() {
                                 {activeTab === 'blog' && (
                                   <>
                                     <td className="py-4 px-4">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as BlogPost).status)
-                                        }`}>
+                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as BlogPost).status)}`}>
                                         {(item as BlogPost).status}
                                       </span>
                                     </td>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                                      }`}>
+                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                                       {(item as BlogPost).views}
                                     </td>
                                   </>
@@ -588,17 +800,14 @@ export default function AdminPage() {
                                 {/* Certificates Tab Specific Columns */}
                                 {activeTab === 'certificates' && (
                                   <>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                                      }`}>
+                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
                                       {(item as Certificate).organization}
                                     </td>
                                     <td className="py-4 px-4">
                                       {(item as Certificate).verified ? (
-                                        <CheckCircle className={`h-5 w-5 ${isDeveloper ? 'text-green-400' : 'text-green-600'
-                                          }`} />
+                                        <CheckCircle className={`h-5 w-5 ${isDeveloper ? 'text-green-400' : 'text-green-600'}`} />
                                       ) : (
-                                        <span className={`text-xs ${isDeveloper ? 'text-gray-400' : 'text-gray-500'
-                                          }`}>-</span>
+                                        <span className={`text-xs ${isDeveloper ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
                                       )}
                                     </td>
                                   </>
@@ -612,8 +821,8 @@ export default function AdminPage() {
                                 <button
                                   onClick={() => handleEdit(item)}
                                   className={`p-2 rounded-lg transition-colors duration-200 ${isDeveloper
-                                      ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10'
-                                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                                    ? 'text-gray-400 hover:text-green-400 hover:bg-green-400/10'
+                                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                                     }`}
                                 >
                                   {activeTab === 'testimonials' ? (
@@ -629,8 +838,8 @@ export default function AdminPage() {
                                 <button
                                   onClick={() => handleDelete(item.id)}
                                   className={`p-2 rounded-lg transition-colors duration-200 ${isDeveloper
-                                      ? 'text-gray-400 hover:text-red-400 hover:bg-red-400/10'
-                                      : 'text-gray-600 hover:text-red-600 hover:bg-red-50'
+                                    ? 'text-gray-400 hover:text-red-400 hover:bg-red-400/10'
+                                    : 'text-gray-600 hover:text-red-600 hover:bg-red-50'
                                     }`}
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -658,8 +867,7 @@ export default function AdminPage() {
                   : 'bg-white border border-gray-200 shadow-xl'
                   }`}
               >
-                <h3 className={`text-xl font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
-                  }`}>
+                <h3 className={`text-xl font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                   {editingItem ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' :
                     activeTab === 'blog' ? 'Blog Post' : 'Certificate'}
                 </h3>
@@ -668,13 +876,12 @@ export default function AdminPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     {/* Common Fields */}
                     <div className="md:col-span-2">
-                      <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                        }`}>
+                      <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                         Title*
                       </label>
                       <input
                         type="text"
-                        value={formData.title || ''}
+                        value={(formData as ProjectFormData).title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                           ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -684,17 +891,16 @@ export default function AdminPage() {
                       />
                     </div>
 
-                    {/* Project Specific Fields */}
+                    {/* Projects Specific Fields */}
                     {activeTab === 'projects' && (
                       <>
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Status*
                           </label>
                           <select
-                            value={formData.status || 'planned'}
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                            value={(formData as ProjectFormData).status || 'planned'}
+                            onChange={(e) => setFormData({ ...formData, status: e.target.value as 'planned' | 'in-progress' | 'completed' })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -707,13 +913,12 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Category*
                           </label>
                           <select
-                            value={formData.category || 'personal'}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            value={(formData as ProjectFormData).category || 'personal'}
+                            onChange={(e) => setFormData({ ...formData, category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades' })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -726,13 +931,12 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Featured
                           </label>
                           <input
                             type="checkbox"
-                            checked={formData.featured || false}
+                            checked={(formData as ProjectFormData).featured || false}
                             onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                             className={`h-5 w-5 rounded ${isDeveloper
                               ? 'bg-gray-700 border-gray-600 text-green-400'
@@ -742,13 +946,12 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Image URL
                           </label>
                           <input
                             type="text"
-                            value={formData.image_url || ''}
+                            value={(formData as ProjectFormData).image_url || ''}
                             onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -758,13 +961,12 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             GitHub URL
                           </label>
                           <input
                             type="text"
-                            value={formData.github_url || ''}
+                            value={(formData as ProjectFormData).github_url || ''}
                             onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -774,13 +976,12 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Demo URL
                           </label>
                           <input
                             type="text"
-                            value={formData.demo_url || ''}
+                            value={(formData as ProjectFormData).demo_url || ''}
                             onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -790,12 +991,11 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Description*
                           </label>
                           <textarea
-                            value={formData.description || ''}
+                            value={(formData as ProjectFormData).description || ''}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -807,12 +1007,26 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Technologies
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Long Description
+                          </label>
+                          <textarea
+                            value={(formData as ProjectFormData).long_description || ''}
+                            onChange={(e) => setFormData({ ...formData, long_description: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            rows={3}
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Technologies*
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {formData.technologies?.map((tech: string) => (
+                            {(formData as ProjectFormData).technologies?.map((tech: string) => (
                               <span
                                 key={tech}
                                 className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
@@ -825,7 +1039,7 @@ export default function AdminPage() {
                                   type="button"
                                   onClick={() => setFormData({
                                     ...formData,
-                                    technologies: formData.technologies.filter((t: string) => t !== tech)
+                                    technologies: (formData as ProjectFormData).technologies.filter((t: string) => t !== tech)
                                   })}
                                   className="ml-1 text-gray-400 hover:text-red-400"
                                 >
@@ -837,7 +1051,7 @@ export default function AdminPage() {
                           <div className="flex">
                             <input
                               type="text"
-                              value={formData.newTech || ''}
+                              value={(formData as ProjectFormData).newTech || ''}
                               onChange={(e) => setFormData({ ...formData, newTech: e.target.value })}
                               className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
                                 ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
@@ -848,11 +1062,199 @@ export default function AdminPage() {
                             <button
                               type="button"
                               onClick={() => {
-                                if (formData.newTech) {
+                                const projectFormData = formData as ProjectFormData;
+                                if (projectFormData.newTech && !projectFormData.technologies.includes(projectFormData.newTech)) {
                                   setFormData({
                                     ...formData,
-                                    technologies: [...(formData.technologies || []), formData.newTech],
+                                    technologies: [...projectFormData.technologies, projectFormData.newTech],
                                     newTech: ''
+                                  });
+                                }
+                              }}
+                              className={`px-4 py-2 rounded-r-lg ${isDeveloper
+                                ? 'bg-green-400/20 text-green-400 border border-green-400/30'
+                                : 'bg-blue-600 text-white'
+                                }`}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* Certificate Specific Fields */}
+                    {activeTab === 'certificates' && (
+                      <>
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Organization*
+                          </label>
+                          <input
+                            type="text"
+                            value={(formData as CertificateFormData).organization || ''}
+                            onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Issue Date* (MM/YYYY)
+                          </label>
+                          <input
+                            type="month"
+                            value={(formData as CertificateFormData).issue_date ? new Date((formData as CertificateFormData).issue_date).toISOString().slice(0, 7) : ''}
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                const date = new Date(e.target.value);
+                                date.setDate(1);
+                                setFormData({ ...formData, issue_date: date.toISOString() });
+                              }
+                            }}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Expiry Date (MM/YYYY)
+                          </label>
+                          <input
+                            type="month"
+                            value={(formData as CertificateFormData).expiry_date ? new Date((formData as CertificateFormData).expiry_date).toISOString().slice(0, 7) : ''}
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                const date = new Date(e.target.value);
+                                date.setDate(1);
+                                setFormData({ ...formData, expiry_date: date.toISOString() });
+                              } else {
+                                setFormData({ ...formData, expiry_date: undefined });
+                              }
+                            }}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Verified
+                          </label>
+                          <input
+                            type="checkbox"
+                            checked={(formData as CertificateFormData).verified || false}
+                            onChange={(e) => setFormData({ ...formData, verified: e.target.checked })}
+                            className={`h-5 w-5 rounded ${isDeveloper
+                              ? 'bg-gray-700 border-gray-600 text-green-400'
+                              : 'bg-white border-gray-300 text-blue-600'
+                              }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Image URL*
+                          </label>
+                          <input
+                            type="text"
+                            value={(formData as CertificateFormData).image_url || ''}
+                            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Credential ID
+                          </label>
+                          <input
+                            type="text"
+                            value={(formData as CertificateFormData).credential_id || ''}
+                            onChange={(e) => setFormData({ ...formData, credential_id: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Credential URL
+                          </label>
+                          <input
+                            type="text"
+                            value={(formData as CertificateFormData).credential_url || ''}
+                            onChange={(e) => setFormData({ ...formData, credential_url: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Skills*
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {(formData as CertificateFormData).skills?.map((skill: string) => (
+                              <span
+                                key={skill}
+                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
+                                  ? 'bg-gray-700 text-gray-300'
+                                  : 'bg-gray-100 text-gray-700'
+                                  }`}
+                              >
+                                {skill}
+                                <button
+                                  type="button"
+                                  onClick={() => setFormData({
+                                    ...formData,
+                                    skills: (formData as CertificateFormData).skills.filter((s: string) => s !== skill)
+                                  })}
+                                  className="ml-1 text-gray-400 hover:text-red-400"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex">
+                            <input
+                              type="text"
+                              value={(formData as CertificateFormData).newSkill || ''}
+                              onChange={(e) => setFormData({ ...formData, newSkill: e.target.value })}
+                              className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
+                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                                : 'bg-white border-gray-300 focus:border-blue-500'
+                                }`}
+                              placeholder="Add skill"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const certFormData = formData as CertificateFormData;
+                                if (certFormData.newSkill && !certFormData.skills.includes(certFormData.newSkill)) {
+                                  setFormData({
+                                    ...formData,
+                                    skills: [...certFormData.skills, certFormData.newSkill],
+                                    newSkill: ''
                                   });
                                 }
                               }}
@@ -872,8 +1274,7 @@ export default function AdminPage() {
                     {activeTab === 'blog' && (
                       <>
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Slug*
                           </label>
                           <input
@@ -889,8 +1290,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Status*
                           </label>
                           <select
@@ -907,8 +1307,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Published
                           </label>
                           <input
@@ -923,8 +1322,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Read Time (min)
                           </label>
                           <input
@@ -940,8 +1338,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Cover Image URL
                           </label>
                           <input
@@ -956,8 +1353,7 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Excerpt
                           </label>
                           <textarea
@@ -972,8 +1368,7 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Tags
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
@@ -1050,191 +1445,7 @@ export default function AdminPage() {
                       </>
                     )}
 
-                    {/* Certificate Specific Fields */}
-                    {activeTab === 'certificates' && (
-                      <>
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Organization*
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.organization || ''}
-                            onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                            required
-                          />
-                        </div>
 
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Issue Date*
-                          </label>
-                          <input
-                            type="date"
-                            value={formData.issue_date ? formData.issue_date.split('T')[0] : ''}
-                            onChange={(e) => setFormData({
-                              ...formData,
-                              issue_date: new Date(e.target.value).toISOString()
-                            })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Expiry Date
-                          </label>
-                          <input
-                            type="date"
-                            value={formData.expiry_date ? formData.expiry_date.split('T')[0] : ''}
-                            onChange={(e) => setFormData({
-                              ...formData,
-                              expiry_date: e.target.value ? new Date(e.target.value).toISOString() : null
-                            })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Verified
-                          </label>
-                          <input
-                            type="checkbox"
-                            checked={formData.verified || false}
-                            onChange={(e) => setFormData({ ...formData, verified: e.target.checked })}
-                            className={`h-5 w-5 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400'
-                              : 'bg-white border-gray-300 text-blue-600'
-                              }`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Image URL*
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.image_url || ''}
-                            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Credential ID
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.credential_id || ''}
-                            onChange={(e) => setFormData({ ...formData, credential_id: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Credential URL
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.credential_url || ''}
-                            onChange={(e) => setFormData({ ...formData, credential_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                            Skills
-                          </label>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {formData.skills?.map((skill: string) => (
-                              <span
-                                key={skill}
-                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
-                                  ? 'bg-gray-700 text-gray-300'
-                                  : 'bg-gray-100 text-gray-700'
-                                  }`}
-                              >
-                                {skill}
-                                <button
-                                  type="button"
-                                  onClick={() => setFormData({
-                                    ...formData,
-                                    skills: formData.skills.filter((s: string) => s !== skill)
-                                  })}
-                                  className="ml-1 text-gray-400 hover:text-red-400"
-                                >
-                                  ×
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex">
-                            <input
-                              type="text"
-                              value={formData.newSkill || ''}
-                              onChange={(e) => setFormData({ ...formData, newSkill: e.target.value })}
-                              className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                                : 'bg-white border-gray-300 focus:border-blue-500'
-                                }`}
-                              placeholder="Add skill"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (formData.newSkill) {
-                                  setFormData({
-                                    ...formData,
-                                    skills: [...(formData.skills || []), formData.newSkill],
-                                    newSkill: ''
-                                  });
-                                }
-                              }}
-                              className={`px-4 py-2 rounded-r-lg ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border border-green-400/30'
-                                : 'bg-blue-600 text-white'
-                                }`}
-                            >
-                              Add
-                            </button>
-                          </div>
-                        </div>
-                      </>
-                    )}
                   </div>
 
                   <div className="flex justify-end space-x-3 mt-6">

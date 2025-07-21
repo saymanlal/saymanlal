@@ -2,12 +2,12 @@
   "events": [
     {
       "id": "1",
-      "title": "Founded AIALCHEMIST",
-      "description": "Launched AI development platform to democratize machine learning for developers worldwide",
-      "date": "2024-01-15",
-      "type": "company",
-      "category": "Entrepreneurship",
-      "location": "San Francisco, CA",
+      "title": "Ambassador & Contributor at GSSoC 2025",
+      "description": "Contributed to AIALCHEMIST under GSSoC'25 to build an open-source AI platform for developers worldwide.",
+      "date": "2025-07-20",
+      "type": "open_source",
+      "category": "Open Source",
+      "location": "Remote",
       "imageUrl": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=400",
       "links": [
         {
@@ -22,29 +22,23 @@
     },
     {
       "id": "2",
-      "title": "TechCrunch Disrupt Winner",
-      "description": "Won AI Innovation Award for revolutionary developer tools that simplify machine learning deployment",
-      "date": "2024-03-20",
+      "title": "Best Book Award – Reflective Poetry",
+      "description": "Recognized for literary excellence in reflective poetry at a national literary summit.",
+      "date": "2025-07-04",
       "type": "award",
       "category": "Recognition",
-      "location": "San Francisco, CA",
+      "location": "Goa, IN",
       "imageUrl": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "links": [
-        {
-          "title": "TechCrunch Article",
-          "url": "https://techcrunch.com/ai-innovation-award",
-          "type": "article"
-        }
-      ],
-      "technologies": ["AI/ML", "Cloud Computing", "DevOps"],
-      "impact": "$50K prize + investor meetings",
+      "links": [],
+      "technologies": [],
+      "impact": "Literary recognition beyond tech domain",
       "featured": true
     },
     {
       "id": "3",
-      "title": "Launched VASILIADES",
-      "description": "Co-founded blockchain security firm specializing in smart contract auditing and DeFi protocols",
-      "date": "2023-09-10",
+      "title": "Formed TEAM VASILIADES",
+      "description": "Blockchain security startup specializing in smart contract auditing and DeFi protocol analysis.",
+      "date": "2024-12-11",
       "type": "company",
       "category": "Entrepreneurship",
       "location": "Remote",
@@ -62,57 +56,46 @@
     },
     {
       "id": "4",
-      "title": "AWS Solutions Architect Certification",
-      "description": "Achieved AWS Solutions Architect Professional certification, validating cloud architecture expertise",
-      "date": "2024-03-15",
+      "title": "Cisco C/C++ Certification",
+      "description": "Completed Cisco NetAcad's C/C++ programming track, reinforcing system-level programming foundations.",
+      "date": "2024-10-15",
       "type": "certification",
       "category": "Professional Development",
       "location": "Online",
       "imageUrl": "https://images.pexels.com/photos/5935791/pexels-photo-5935791.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "links": [
-        {
-          "title": "Verify Certification",
-          "url": "https://aws.amazon.com/verification",
-          "type": "verification"
-        }
-      ],
-      "technologies": ["AWS", "Cloud Architecture", "DevOps"],
-      "impact": "Enhanced cloud infrastructure skills",
+      "links": [],
+      "technologies": ["C", "C++", "Programming Fundamentals"],
+      "impact": "Strengthened low-level programming knowledge",
       "featured": false
     },
     {
       "id": "5",
-      "title": "Ethereum Hackathon Winner",
-      "description": "First place at ETHGlobal hackathon for innovative DeFi yield optimization protocol",
-      "date": "2023-11-18",
+      "title": "2nd Place – Genethon Hackathon",
+      "description": "Secured 2nd place for developing a genomics-inspired DeFi optimization protocol at Genethon.",
+      "date": "2024-12-23",
       "type": "hackathon",
       "category": "Competition",
-      "location": "New York, NY",
+      "location": "Jabalpur, IN",
       "imageUrl": "https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=400",
       "links": [
         {
           "title": "Project Demo",
           "url": "https://github.com/saymanlal/defi-optimizer",
           "type": "github"
-        },
-        {
-          "title": "ETHGlobal Profile",
-          "url": "https://ethglobal.com/showcase/defi-optimizer",
-          "type": "showcase"
         }
       ],
       "technologies": ["Solidity", "Web3.js", "DeFi", "React"],
-      "impact": "$25K prize + mentorship",
+      "impact": "Won $25K and received mentorship",
       "featured": true
     },
     {
       "id": "6",
-      "title": "Google AI Conference Speaker",
-      "description": "Keynote speaker on 'Democratizing AI Development' at Google I/O Developer Conference",
-      "date": "2023-05-10",
+      "title": "Speaker at NVIDIA x AIA",
+      "description": "Spoke on democratizing AI development in NVIDIA-hosted event by AIA.",
+      "date": "2025-06-20",
       "type": "speaking",
       "category": "Public Speaking",
-      "location": "Mountain View, CA",
+      "location": "Online",
       "imageUrl": "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=400",
       "links": [
         {
@@ -122,77 +105,45 @@
         }
       ],
       "technologies": ["AI/ML", "TensorFlow", "Developer Tools"],
-      "impact": "Reached 50K+ developers",
+      "impact": "Reached 50K+ developers worldwide",
       "featured": true
     },
     {
       "id": "7",
-      "title": "Open Source Contribution Milestone",
-      "description": "Reached 1000+ contributions to open source projects, including TensorFlow and React ecosystem",
-      "date": "2023-08-22",
-      "type": "milestone",
-      "category": "Open Source",
-      "location": "Global",
-      "imageUrl": "https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "links": [
-        {
-          "title": "GitHub Profile",
-          "url": "https://github.com/saymanlal",
-          "type": "github"
-        }
-      ],
-      "technologies": ["JavaScript", "Python", "TypeScript", "React"],
-      "impact": "Top 1% GitHub contributor",
+      "title": "Campus Ambassador – Techfest & Techniche for 2025",
+      "description": "Served as Campus Ambassador for Techfest (IIT Bombay) and Techniche (IIT Guwahati), promoting national tech fests.",
+      "date": "2025-06-01",
+      "type": "ambassador",
+      "category": "Outreach",
+      "location": "Remote",
+      "imageUrl": "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "links": [],
+      "technologies": [],
+      "impact": "Expanded student outreach across campuses",
       "featured": false
     },
     {
       "id": "8",
-      "title": "AI Research Publication",
-      "description": "Published research paper on 'Efficient Neural Architecture Search for Edge Devices' in top-tier conference",
-      "date": "2023-02-14",
-      "type": "publication",
-      "category": "Research",
-      "location": "Academic",
-      "imageUrl": "https://images.pexels.com/photos/8728380/pexels-photo-8728380.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "links": [
-        {
-          "title": "Read Paper",
-          "url": "https://arxiv.org/abs/2023.neural-arch-search",
-          "type": "paper"
-        }
-      ],
-      "technologies": ["Neural Networks", "Edge Computing", "Optimization"],
-      "impact": "100+ citations in 6 months",
+      "title": "B.Tech in AI & ML",
+      "description": "Currently pursuing B.Tech with specialization in Artificial Intelligence and Machine Learning.",
+      "date": "2024-09-11",
+      "type": "education",
+      "category": "Education",
+      "location": "Jabalpur, IN",
+      "imageUrl": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "links": [],
+      "technologies": ["AI/ML", "Data Structures", "Algorithms"],
+      "impact": "Solid academic grounding in core AI concepts",
       "featured": true
     },
     {
       "id": "9",
-      "title": "Startup Accelerator Graduate",
-      "description": "Completed Y Combinator program with AIALCHEMIST, securing seed funding and mentorship",
-      "date": "2022-12-15",
-      "type": "program",
-      "category": "Entrepreneurship",
-      "location": "Mountain View, CA",
-      "imageUrl": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400",
-      "links": [
-        {
-          "title": "Y Combinator Profile",
-          "url": "https://ycombinator.com/companies/aialchemist",
-          "type": "profile"
-        }
-      ],
-      "technologies": ["Business Development", "Product Strategy"],
-      "impact": "$500K seed funding raised",
-      "featured": true
-    },
-    {
-      "id": "10",
-      "title": "First AI Product Launch",
-      "description": "Launched first commercial AI product - automated code review system using GPT-4",
-      "date": "2022-06-01",
-      "type": "product",
-      "category": "Product Launch",
-      "location": "San Francisco, CA",
+      "title": "ISC 12th Board – CS & PCM",
+      "description": "Graduated ISC 12th Board with distinction in Computer Science & Mathematics and Science; launched first AI product during this time.",
+      "date": "2024-06-06",
+      "type": "education",
+      "category": "Education",
+      "location": "Jabalpur, IN",
       "imageUrl": "https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=400",
       "links": [
         {
@@ -201,17 +152,62 @@
           "type": "demo"
         }
       ],
-      "technologies": ["GPT-4", "Static Analysis", "DevOps"],
-      "impact": "1000+ developers using daily",
+      "technologies": ["GPT-4", "AI Code Review", "Static Analysis"],
+      "impact": "1000+ developers using the tool daily",
       "featured": false
+    },
+    {
+      "id": "10",
+      "title": "Founded AIALCHEMIST",
+      "description": "Launched AIALCHEMIST, an open-source AI/ML developer platform enabling rapid prototyping, code reviews, and model deployment.",
+      "date": "2025-04-04",
+      "type": "company",
+      "category": "Entrepreneurship",
+      "location": "Remote",
+      "imageUrl": "https://images.pexels.com/photos/7550350/pexels-photo-7550350.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "links": [
+        {
+          "title": "Visit AIALCHEMIST",
+          "url": "https://aialchemist.dev",
+          "type": "website"
+        }
+      ],
+      "technologies": ["AI/ML", "Python", "Next.js", "LangChain", "OpenAI API"],
+      "impact": "Used by 10,000+ developers across 30+ countries",
+      "featured": true
+    },
+    {
+      "id": "11",
+      "title": "Published 'Might Not the First, But Last'",
+      "description": "Released a deeply personal poetry collection exploring quiet, enduring love—‘Might Not the First, But Last’—published by Notion Press.",
+      "date": "2025-05-12",
+      "type": "publication",
+      "category": "Literature",
+      "location": "India",
+      "imageUrl": "https://images.pexels.com/photos/1112048/pexels-photo-1112048.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "links": [
+        {
+          "title": "Buy on Notion Press",
+          "url": "https://notionpress.com/in/read/might-not-the-first-but-last/",
+          "type": "purchase"
+        }
+      ],
+      "technologies": [],
+      "impact": "60 pages; rated 4.9/5 by 1,600+ readers",
+      "featured": true
     }
   ],
   "stats": {
-    "totalEvents": 10,
+    "totalEvents": 9,
     "companies": 2,
-    "awards": 3,
-    "certifications": 6,
-    "publications": 2,
-    "speakingEngagements": 5
+    "awards": 1,
+    "certifications": 1,
+    "publications": 1,
+    "speakingEngagements": 1,
+    "openSourceContributions": 1,
+    "education": 2,
+    "hackathons": 1,
+    "ambassadorships": 1,
+    "outreach": 1
   }
 }

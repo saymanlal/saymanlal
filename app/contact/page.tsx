@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, Download } from 'lucide-react';
-import personalInfo from '@/lib/data/personal-info.json';
+import personalInfo from '../../lib/data/personal-info.json';
 import dynamic from 'next/dynamic';
 
-const Map = dynamic(() => import('@/components/ui/LeafletMap'), {
+const Map = dynamic(() => import('../../components/ui/LeafletMap'), {
   ssr: false,
   loading: () => (
     <div className={`h-64 flex items-center justify-center ${
@@ -56,43 +56,56 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen section-padding">
+    <div className="min-h-[calc(100vh-64px)] py-8">
       <div className="container-custom">
         <motion.div
-          className="max-w-6xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
+          className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="text-center mb-16">
-            <h1 className={`mb-4 ${
-              isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
-            }`}>
+          {/* Header - Positioned higher */}
+          <div className="text-center mb-10">
+            <motion.h1 
+              className={`text-4xl font-bold mb-3 ${
+                isDeveloper ? 'text-green-400' : 'text-gray-900'
+              }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               Get In Touch
-            </h1>
-            <p className={`text-xl max-w-2xl mx-auto ${
-              isDeveloper ? 'text-gray-300' : 'text-gray-600'
-            }`}>
+            </motion.h1>
+            <motion.p
+              className={`text-xl max-w-2xl mx-auto ${
+                isDeveloper ? 'text-gray-300' : 'text-gray-600'
+              }`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
               Ready to bring your ideas to life? Let's discuss your next project!
-            </p>
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Column */}
             <motion.div
-              className="space-y-8"
-              initial={{ opacity: 0, x: -30 }}
+              className="space-y-6"
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <div className={`p-8 rounded-xl ${
+              {/* Contact Info Card */}
+              <div className={`p-6 rounded-xl ${
                 isDeveloper 
-                  ? 'glass-dark border-green-500/30' 
-                  : 'bg-white border border-gray-200 shadow-lg'
+                  ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
+                  : 'bg-white border-2 border-gray-200 shadow-xl'
               }`}>
-                <h2 className={`text-2xl font-bold mb-6 ${
+                <h2 className={`text-2xl font-bold mb-5 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// Contact Info' : 'Contact Information'}
+                  {isDeveloper ? 'Contact Info' : 'Contact Information'}
                 </h2>
                 
                 <div className="space-y-4">
@@ -163,15 +176,16 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className={`p-8 rounded-xl ${
+              {/* Social Links Card */}
+              <div className={`p-6 rounded-xl ${
                 isDeveloper 
-                  ? 'glass-dark border-green-500/30' 
-                  : 'bg-white border border-gray-200 shadow-lg'
+                  ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
+                  : 'bg-white border-2 border-gray-200 shadow-xl'
               }`}>
-                <h3 className={`text-xl font-bold mb-6 ${
+                <h3 className={`text-xl font-bold mb-5 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// Follow Me' : 'Connect With Me'}
+                  {isDeveloper ? 'Follow Me' : 'Connect With Me'}
                 </h3>
                 
                 <div className="grid grid-cols-1 gap-3">
@@ -183,7 +197,7 @@ export default function ContactPage() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center space-x-3 p-4 rounded-lg transition-all duration-200 ${
+                        className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
                           isDeveloper
                             ? 'bg-gray-800/50 hover:bg-green-400/10 text-gray-300 hover:text-green-400 border border-gray-700 hover:border-green-400/30'
                             : 'bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 border border-gray-200 hover:border-blue-200'
@@ -206,41 +220,45 @@ export default function ContactPage() {
                 </div>
               </div>
 
+              {/* Resume Download */}
               <div className="text-center">
-                <a
+                <motion.a
                   href={personalInfo.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                  className={`inline-flex items-center space-x-2 px-5 py-2.5 rounded-lg font-medium ${
                     isDeveloper
                       ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Download className="h-5 w-5" />
                   <span>Download Resume</span>
-                </a>
+                </motion.a>
               </div>
             </motion.div>
 
+            {/* Right Column - Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <div className={`p-8 rounded-xl ${
+              <div className={`p-6 rounded-xl ${
                 isDeveloper 
-                  ? 'glass-dark border-green-500/30' 
-                  : 'bg-white border border-gray-200 shadow-lg'
+                  ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
+                  : 'bg-white border-2 border-gray-200 shadow-xl'
               }`}>
-                <h2 className={`text-2xl font-bold mb-6 ${
+                <h2 className={`text-2xl font-bold mb-5 ${
                   isDeveloper ? 'text-green-400' : 'text-gray-900'
                 }`}>
-                  {isDeveloper ? '// Send Message' : 'Send a Message'}
+                  {isDeveloper ? 'Send Message' : 'Send a Message'}
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label 
                         htmlFor="name" 
@@ -257,7 +275,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
+                        className={`w-full px-4 py-2.5 rounded-lg border transition-all duration-200 ${
                           isDeveloper
                             ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
                             : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
@@ -281,7 +299,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
+                        className={`w-full px-4 py-2.5 rounded-lg border transition-all duration-200 ${
                           isDeveloper
                             ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
                             : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
@@ -307,7 +325,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
+                      className={`w-full px-4 py-2.5 rounded-lg border transition-all duration-200 ${
                         isDeveloper
                           ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
@@ -331,8 +349,8 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       required
-                      rows={6}
-                      className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 resize-none ${
+                      rows={5}
+                      className={`w-full px-4 py-2.5 rounded-lg border transition-all duration-200 resize-none ${
                         isDeveloper
                           ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
@@ -344,7 +362,7 @@ export default function ContactPage() {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    className={`w-full flex items-center justify-center space-x-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200 ${
                       isDeveloper
                         ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30 disabled:opacity-50'
                         : 'bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50'
@@ -369,19 +387,22 @@ export default function ContactPage() {
             </motion.div>
           </div>
 
+          {/* Map Section */}
           <motion.div
-            className={`mt-12 rounded-xl overflow-hidden ${
-              isDeveloper ? 'border-2 border-green-500/30' : 'border border-gray-200'
+            className={`mt-10 rounded-xl overflow-hidden ${
+              isDeveloper 
+                ? 'border-2 border-green-500/40 shadow-xl shadow-green-500/10' 
+                : 'border-2 border-gray-200 shadow-xl'
             }`}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
           >
             <Map 
               isDeveloper={isDeveloper}
               location="Jabalpur- 482001"
-              coordinates={[23.1676, 79.9331]} // MGM School coordinates
-              zoom={16} // Close zoom level
+              coordinates={[23.1676, 79.9331]}
+              zoom={16}
             />
           </motion.div>
         </motion.div>

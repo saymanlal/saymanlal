@@ -268,22 +268,22 @@
   ],
   "achievements": [
     {
-      "title": "AI Innovation Award",
-      "organization": "TechCrunch Disrupt",
+      "title": "Genethon 1st Runner Up",
+      "organization": "Gyan Ganga College",
       "year": 2024,
-      "description": "Recognized for breakthrough AI development tools"
+      "description": "Recognized for breakthrough Visualization Project"
     },
     {
-      "title": "Top 1% Developer",
-      "organization": "GitHub",
-      "year": 2023,
-      "description": "Based on contributions and community impact"
+      "title": "Top 10 teams",
+      "organization": "Baderia Global College",
+      "year": 2025,
+      "description": "Presented Decentrailzed voting system"
     },
     {
-      "title": "Blockchain Pioneer",
-      "organization": "Ethereum Foundation",
-      "year": 2023,
-      "description": "Early contributor to DeFi ecosystem"
+      "title": "Achiever in Coding Challenge",
+      "organization": "CodingNinja",
+      "year": 2025,
+      "description": "Aced the leaderboard in my college with rank #4"
     }
   ],
   "platforms": [
@@ -292,8 +292,8 @@
       "username": "saymanlal",
       "url": "https://github.com/saymanlal",
       "stats": {
-        "repositories": 127,
-        "followers": 2847,
+        "repositories": 17,
+        "followers": 100,
         "contributions": 1250
       }
     },
@@ -302,9 +302,9 @@
       "username": "codechemist",
       "url": "https://leetcode.com/codechemist",
       "stats": {
-        "problemsSolved": 450,
-        "ranking": "Top 5%",
-        "contests": 25
+        "problemsSolved": 150,
+        "ranking": "Top 75%",
+        "contests": 21
       }
     },
     {
@@ -312,9 +312,9 @@
       "username": "saymanlal",
       "url": "https://hackerrank.com/saymanlal",
       "stats": {
-        "badges": 15,
-        "ranking": "5 Star",
-        "domains": 8
+        "badges": 7,
+        "ranking": "4 Star",
+        "domains": 7
       }
     },
     {
@@ -323,8 +323,8 @@
       "url": "https://codechef.com/users/codechemist",
       "stats": {
         "rating": 2156,
-        "stars": 5,
-        "contests": 42
+        "stars": 4,
+        "contests": 15
       }
     }
   ]

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 import { 
   Calendar, MapPin, ExternalLink, Github, Award, Briefcase, 
   GraduationCap, Mic, Trophy, Rocket, Star, ChevronDown, ChevronUp,
   Users, Code, BookOpen, Zap, Globe, Feather, Layers, Clock
 } from 'lucide-react';
-import timelineData from '@/lib/data/timeline.json';
+import timelineData from '../../lib/data/timeline.json';
 
 type EventType = 'all' | 'company' | 'award' | 'certification' | 'hackathon' | 'speaking' | 'publication' | 'program' | 'product' | 'milestone';
 
