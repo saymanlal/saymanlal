@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_SUPABASE_URL": "https://pfczmzheviytywzahpuz.supabase.co",
-      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmY3ptemhldml5dHl3emFocHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5MzMzMTcsImV4cCI6MjA2ODUwOTMxN30.IAqxZWWpvsFHUvsFD2o8yJoYQv8KWD_W-sC1fQUZLjM"
-    }
-  },
   "rewrites": [
     {
       "source": "/sitelogo.webp",
