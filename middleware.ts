@@ -1,3 +1,4 @@
+// middleware.ts
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import type { NextRequest } from 'next/server'
@@ -5,17 +6,13 @@ import type { NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
-  // 1. Validate ENV variables first
+  // 1. Skip if no Supabase env vars (remove if you're certain they exist)
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    console.error('❌ Supabase env vars missing!')
-    return NextResponse.json(
-      { error: 'Configuration error' },
-      { status: 500 }
-    )
+    return response // Skip Supabase initialization
   }
 
   try {
-    // 2. Create Supabase client
+    // 2. Minimal client for non-auth usage
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -24,34 +21,24 @@ export async function middleware(request: NextRequest) {
           get(name: string) {
             return request.cookies.get(name)?.value
           },
-          set(name: string, value: string, options: any) { // Temporary 'any' for debugging
-            response.cookies.set({ name, value, ...options })
-          },
-          remove(name: string, options: any) {
-            response.cookies.set({ name, value: '', ...options })
-          }
+          // Minimal cookie handling
+          set() {}, 
+          remove() {} 
         }
       }
     )
 
-    // 3. Test authentication
-    const { data: { session }, error } = await supabase.auth.getSession()
-    
-    if (error) {
-      console.error('🔴 Auth error:', error)
-    }
+    // 3. Optional: Test connection (remove if not needed)
+    await supabase.from('any_table').select('*').limit(1)
 
     return response
 
-  } catch (err) {
-    console.error('🔥 Middleware crashed:', err)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+  } catch (error) {
+    console.error('Supabase connection failed (non-critical):', error)
+    return response // Still proceed without Supabase
   }
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+  matcher: [] // Empty array = middleware runs on no routes
 }
