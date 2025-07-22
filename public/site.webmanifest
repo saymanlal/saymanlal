@@ -1,0 +1,16 @@
+{
+    "name": "Sayman Lal",
+    "short_name": "worksofsayman",
+    "description": "Developer | Author | Entrepreneur",
+    "icons": [
+      {
+        "src": "/logos/sitelogo.webp",
+        "sizes": "512x512",
+        "type": "image/webp"
+      }
+    ],
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "display": "standalone"
+  }
+  
