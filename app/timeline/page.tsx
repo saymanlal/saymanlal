@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useTheme } from '../../lib/theme-context';
+import { useTheme } from '@/lib/theme-context';
 import { 
   Calendar, MapPin, ExternalLink, Github, Award, Briefcase, 
   GraduationCap, Mic, Trophy, Rocket, Star, ChevronDown, ChevronUp,

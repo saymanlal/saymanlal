@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../../lib/theme-context';
+import { useTheme } from '@/lib/theme-context';
 
 interface CommandHistory {
   command: string;

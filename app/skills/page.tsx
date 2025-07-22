@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../lib/theme-context';
+import { useTheme } from '@/lib/theme-context';
 import { 
   Trophy, Star, ExternalLink, Award, TrendingUp, Code, 
   Brain, Globe, Cloud, Wrench, Cpu, Database, 
   Lock, Server, GitBranch, Layers 
 } from 'lucide-react';
-import skillsData from '../../lib/data/skills.json';
+import skillsData from '@/lib/data/skills.json';
 import Image from 'next/image';
 
 interface Achievement {

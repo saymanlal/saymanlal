@@ -7,7 +7,7 @@ import {
   Globe, Code, Briefcase, ChevronDown
 } from 'lucide-react';
 import Image from 'next/image';
-import teamsData from '../../lib/data/teams.json';
+import teamsData from '@/lib/data/teams.json';
 
 const socialIcons: Record<string, React.ReactNode> = {
   GitHub: <Github size={16} />,

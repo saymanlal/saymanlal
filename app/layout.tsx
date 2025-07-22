@@ -5,6 +5,7 @@ import { ThemeProvider } from '../lib/theme-context';
 import Header from '../components/layout/header';
 import Footer from '../components/layout/footer';
 import MatrixRain from '../components/ui/matrix-rain';
+import SupabaseInitializer from '@/components/SupabaseInitializer'
 import personalInfo from '../lib/data/personal-info.json';
 import SupabaseProvider from './providers';
 import './globals.css';
@@ -275,16 +276,16 @@ const generateManifest = () => ({
   ]
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const structuredData = generateStructuredData();
-  const manifestContent = generateManifest();
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const structuredData = generateStructuredData()
+  const manifestContent = generateManifest()
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${inter.variable}`}>
+    <html 
+      lang="en" 
+      suppressHydrationWarning 
+      className={`${GeistSans.variable} ${GeistMono.variable} ${inter.variable}`}
+    >
       <head>
         {/* Favicon and PWA tags */}
         <link rel="manifest" href={`data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(manifestContent))}`} />
@@ -308,7 +309,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <SupabaseProvider>
+        <SupabaseInitializer>
           <ThemeProvider>
             <div className="min-h-screen flex flex-col relative overflow-hidden">
               <MatrixRain />
@@ -319,8 +320,8 @@ export default function RootLayout({
               <Footer />
             </div>
           </ThemeProvider>
-        </SupabaseProvider>
+        </SupabaseInitializer>
       </body>
     </html>
-  );
+  )
 }

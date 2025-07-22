@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../lib/theme-context';
+import { useTheme } from '@/lib/theme-context';
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, Download } from 'lucide-react';
-import personalInfo from '../../lib/data/personal-info.json';
+import personalInfo from '@/lib/data/personal-info.json';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../lib/theme-context';
+import { useTheme } from '@/lib/theme-context';
 import {
   Plus, Edit, Trash2, Eye, EyeOff, Settings, BarChart, Users, FileText,
   Github, ExternalLink, Calendar, Tag, Star, BookOpen, Award,
   CheckCircle, Search, Filter,
 } from 'lucide-react';
-import { createClient } from '../../lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import StatCard from '../../components/ui/StatCard';
 import Image from 'next/image';
