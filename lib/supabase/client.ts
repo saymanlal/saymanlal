@@ -1,54 +1,39 @@
-// lib/supabase/client.ts
-import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database'
+// lib/supabaseClient.ts
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/database' // Your generated database types
 
-export const createClient = () => {
-  // Always validate in both browser and server contexts
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
+// Validate environment variables
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // Server-side: Return mock client
-  if (typeof window === 'undefined') {
-    return {
-      auth: {
-        getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-        // ... other mock methods
-      }
-    } as unknown as ReturnType<typeof createBrowserClient<Database>>
-  }
-
-  // Client-side validation
-  if (!supabaseUrl || !supabaseKey) {
-    console.error(`
-      Missing Supabase configuration!
-      URL: ${supabaseUrl ? '***' : 'MISSING'}
-      KEY: ${supabaseKey ? '***' : 'MISSING'}
-    `)
-    throw new Error('Supabase credentials not configured')
-  }
-
-  if (!supabaseUrl.startsWith('http')) {
-    throw new Error(`
-      Invalid Supabase URL format!
-      Received: ${supabaseUrl}
-      Required format: https://[project-ref].supabase.co
-    `)
-  }
-
-  try {
-    return createBrowserClient<Database>(supabaseUrl, supabaseKey)
-  } catch (error) {
-    console.error('Supabase client initialization failed:', error)
-    throw new Error('Failed to initialize Supabase client')
-  }
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(`
+    Missing Supabase configuration!
+    NEXT_PUBLIC_SUPABASE_URL: ${supabaseUrl ? '***' : 'MISSING'}
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: ${supabaseAnonKey ? '***' : 'MISSING'}
+    
+    Please add these to your .env.local file and Vercel environment variables.
+  `)
 }
 
-// Singleton access pattern
-let client: ReturnType<typeof createBrowserClient<Database>> | undefined
+if (!supabaseUrl.startsWith('http')) {
+  throw new Error(`
+    Invalid Supabase URL format!
+    Received: ${supabaseUrl}
+    Required format: https://[project-ref].supabase.co
+  `)
+}
 
-export const getClient = () => {
-  if (!client) {
-    client = createClient()
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+
+// Optional: Add test connection method
+export const testSupabaseConnection = async () => {
+  try {
+    const { data, error } = await supabase.from('test').select('*').limit(1)
+    if (error) throw error
+    return { success: true }
+  } catch (error) {
+    console.error('Supabase connection test failed:', error)
+    return { success: false, error }
   }
-  return client
 }
