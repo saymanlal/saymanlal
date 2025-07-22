@@ -5,7 +5,6 @@ import { ThemeProvider } from '../lib/theme-context';
 import Header from '../components/layout/header';
 import Footer from '../components/layout/footer';
 import MatrixRain from '../components/ui/matrix-rain';
-import SupabaseInitializer from '@/components/SupabaseInitializer'
 import personalInfo from '../lib/data/personal-info.json';
 import SupabaseProvider from './providers';
 import './globals.css';
@@ -309,7 +308,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <SupabaseInitializer>
           <ThemeProvider>
             <div className="min-h-screen flex flex-col relative overflow-hidden">
               <MatrixRain />
@@ -320,7 +318,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
           </ThemeProvider>
-        </SupabaseInitializer>
       </body>
     </html>
   )
