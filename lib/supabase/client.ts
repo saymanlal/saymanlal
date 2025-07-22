@@ -2,71 +2,53 @@
 import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@/types/database'
 
-// Singleton client instance
-let client: ReturnType<typeof createBrowserClient<Database>> | null = null
+export const createClient = () => {
+  // Always validate in both browser and server contexts
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
 
-// Mock client methods for SSR/static generation
-const createMockClient = () => ({
-  auth: {
-    getSession: async () => ({ data: { session: null }, error: null }),
-    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-    signOut: async () => ({ error: null }),
-    signInWithOAuth: async () => ({ data: null, error: null }),
-    getUser: async () => ({ data: { user: null }, error: null })
-  },
-  from: (table: string) => ({
-    select: () => Promise.resolve({ data: [], error: null }),
-    insert: (data: any) => Promise.resolve({ data: null, error: null }),
-    update: (data: any) => Promise.resolve({ data: null, error: null }),
-    delete: () => Promise.resolve({ data: null, error: null })
-  }),
-  channel: () => ({
-    subscribe: () => ({ unsubscribe: () => {} })
-  }),
-  removeAllChannels: () => {},
-  getChannels: () => []
-})
-
-export const createClient = (): ReturnType<typeof createBrowserClient<Database>> => {
-  // Return mock client during SSR/static generation
+  // Server-side: Return mock client
   if (typeof window === 'undefined') {
-    return createMockClient() as unknown as ReturnType<typeof createBrowserClient<Database>>
+    return {
+      auth: {
+        getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+        // ... other mock methods
+      }
+    } as unknown as ReturnType<typeof createBrowserClient<Database>>
   }
 
-  // Initialize real client if not exists
-  if (!client) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
-
-    // Validate environment variables
-    if (!supabaseUrl || !supabaseKey) {
-      const errorMessage = [
-        'Missing Supabase credentials!',
-        `NEXT_PUBLIC_SUPABASE_URL: ${supabaseUrl ? '***' : 'MISSING'}`,
-        `NEXT_PUBLIC_SUPABASE_ANON_KEY: ${supabaseKey ? '***' : 'MISSING'}`
-      ].join('\n')
-      
-      console.error(errorMessage)
-      throw new Error('Supabase configuration error')
-    }
-
-    // Validate URL format
-    if (!/^https?:\/\//.test(supabaseUrl)) {
-      throw new Error(`Invalid Supabase URL: Must start with http:// or https://`)
-    }
-
-    try {
-      client = createBrowserClient<Database>(supabaseUrl, supabaseKey)
-    } catch (error) {
-      console.error('Failed to initialize Supabase client:', error)
-      throw new Error('Supabase client initialization failed')
-    }
+  // Client-side validation
+  if (!supabaseUrl || !supabaseKey) {
+    console.error(`
+      Missing Supabase configuration!
+      URL: ${supabaseUrl ? '***' : 'MISSING'}
+      KEY: ${supabaseKey ? '***' : 'MISSING'}
+    `)
+    throw new Error('Supabase credentials not configured')
   }
 
-  return client
+  if (!supabaseUrl.startsWith('http')) {
+    throw new Error(`
+      Invalid Supabase URL format!
+      Received: ${supabaseUrl}
+      Required format: https://[project-ref].supabase.co
+    `)
+  }
+
+  try {
+    return createBrowserClient<Database>(supabaseUrl, supabaseKey)
+  } catch (error) {
+    console.error('Supabase client initialization failed:', error)
+    throw new Error('Failed to initialize Supabase client')
+  }
 }
 
-// Optional: Add a cleanup function for testing
-export const _resetClient = () => {
-  client = null
+// Singleton access pattern
+let client: ReturnType<typeof createBrowserClient<Database>> | undefined
+
+export const getClient = () => {
+  if (!client) {
+    client = createClient()
+  }
+  return client
 }
