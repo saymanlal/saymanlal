@@ -85,7 +85,7 @@ export const metadata: Metadata = {
         alt: `${SITE_DATA.author} Logo`,
       },
       {
-        url: '/images/sayman.png', // Add your image here
+        url: '/sayman.png', // Add your image here
         width: 1200,
         height: 630,
         alt: `${SITE_DATA.author} Profile`,
