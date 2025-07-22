@@ -110,7 +110,7 @@ export default function ContactPage() {
                   }`}
                   style={{
                     display: 'inline-block',
-                    maxWidth: '100%',
+                    maxWidth: '80%',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap'
