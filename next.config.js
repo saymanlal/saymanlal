@@ -3,7 +3,8 @@ const nextConfig = {
   images: {
     domains: [
       'upload.wikimedia.org',
-      'cdn.jsdelivr.net'
+      'cdn.jsdelivr.net',
+      'source.unsplash.com'
     ],
     // Alternatively, you can use remotePatterns for more security (Next.js 13+)
     // remotePatterns: [

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { useTheme } from '../lib/theme-context';
 import { 
   Github, ExternalLink, Code, Brain, Rocket, Terminal, Zap, Globe,
@@ -36,8 +36,7 @@ const Counter = ({ value, duration = 2 }: { value: number; duration?: number }) 
   useEffect(() => {
     let start = 0;
     const end = value;
-    // Calculate increment based on the target value to ensure all finish at same time
-    const increment = end / (duration * 60); // 60 frames per second approximation
+    const increment = end / (duration * 60);
     
     let current = 0;
     const timer = setInterval(() => {
@@ -48,7 +47,7 @@ const Counter = ({ value, duration = 2 }: { value: number; duration?: number }) 
       } else {
         setCount(Math.floor(current));
       }
-    }, 1000/60); // ~60fps
+    }, 1000/60);
 
     return () => clearInterval(timer);
   }, [value, duration]);
@@ -70,28 +69,60 @@ export default function HomePage() {
   const supabase = createClientComponentClient();
   const animatedWords = ['Leadership', 'Innovation', 'AI', 'Web3', 'Vision', 'Future'];
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoadingProjects(true);
-        setProjectsError(null);
+  // Fixed variant types
+  const fadeInUp: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.6, 
+        ease: "easeOut" 
+      } 
+    }
+  };
 
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
+  const staggerContainer: Variants = {
+    visible: { 
+      transition: { 
+        staggerChildren: 0.1 
+      } 
+    }
+  };
 
-        if (error) throw error;
-        setFeaturedProjects(data?.filter(project => project.featured).slice(0, 3) || []);
-      } catch (error) {
-        setProjectsError(error instanceof Error ? error.message : 'Failed to load projects');
-      } finally {
-        setLoadingProjects(false);
+  const progressBarAnimation: Variants = {
+    hidden: { width: 0 },
+    visible: (width: number) => ({
+      width: `${width}%`,
+      transition: { 
+        duration: 1.5, 
+        ease: "easeInOut" 
       }
-    };
+    })
+  };
 
-    fetchProjects();
+  const fetchProjects = useCallback(async () => {
+    try {
+      setLoadingProjects(true);
+      setProjectsError(null);
+
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setFeaturedProjects(data?.filter(project => project.featured).slice(0, 3) || []);
+    } catch (error) {
+      setProjectsError(error instanceof Error ? error.message : 'Failed to load projects');
+    } finally {
+      setLoadingProjects(false);
+    }
   }, [supabase]);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -102,9 +133,7 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!isDeveloper) return;
-
+  const typeWriter = useCallback(() => {
     const commands = [
       `> initializing the terminal...`,
       `> establishing neural interface...`,
@@ -114,7 +143,7 @@ export default function HomePage() {
       `CodeChemist@2007:~$ Sayman Lal`,
       ``,
       `> cat /etc/mission.txt`,
-      `// "Engineering the autonomous web with Artificial Intelligence."`,
+      `// &quot;Engineering the autonomous web with Artificial Intelligence.&quot;`,
       ``,
       `> ls /skills`,
       `AI/ML  |  Web3  |  MERN  |  Python  |  Cloud  |  Systems Design`,
@@ -132,7 +161,7 @@ export default function HomePage() {
     let currentCommand = '';
     let animationFrameId: number;
 
-    const typeWriter = (timestamp: number) => {
+    const animate = () => {
       if (commandIndex < commands.length) {
         if (charIndex < commands[commandIndex].length) {
           currentCommand += commands[commandIndex].charAt(charIndex);
@@ -144,19 +173,24 @@ export default function HomePage() {
           commandIndex++;
           charIndex = 0;
         }
-        animationFrameId = requestAnimationFrame(typeWriter);
+        animationFrameId = requestAnimationFrame(animate);
       }
     };
 
     const startDelay = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(typeWriter);
+      animationFrameId = requestAnimationFrame(animate);
     }, 500);
 
     return () => {
       clearTimeout(startDelay);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isDeveloper]);
+  }, []);
+
+  useEffect(() => {
+    if (!isDeveloper) return;
+    typeWriter();
+  }, [isDeveloper, typeWriter]);
 
   useEffect(() => {
     if (isDeveloper) return;
@@ -164,7 +198,7 @@ export default function HomePage() {
       setCurrentWordIndex((prev) => (prev + 1) % animatedWords.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, [isDeveloper]);
+  }, [isDeveloper, animatedWords.length]);
 
   useEffect(() => {
     const interval = setInterval(() => setShowCursor(prev => !prev), 500);
@@ -172,23 +206,6 @@ export default function HomePage() {
   }, []);
 
   const topSkills = skillsData.categories.slice(0, 3);
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
-
-  const staggerContainer = {
-    visible: { transition: { staggerChildren: 0.1 } }
-  };
-
-  const progressBarAnimation = {
-    hidden: { width: 0 },
-    visible: (width: number) => ({
-      width: `${width}%`,
-      transition: { duration: 1.5, ease: "easeInOut" }
-    })
-  };
 
   const renderFeaturedProjects = () => {
     if (loadingProjects) return (

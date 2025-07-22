@@ -6,13 +6,61 @@ import { useTheme } from '../../lib/theme-context';
 import { 
   Trophy, Star, ExternalLink, Award, TrendingUp, Code, 
   Brain, Globe, Cloud, Wrench, Cpu, Database, 
-  Lock, Server, GitBranch, Layers, CpuIcon 
+  Lock, Server, GitBranch, Layers 
 } from 'lucide-react';
 import skillsData from '../../lib/data/skills.json';
-import LeetCodeLogo from '../../public/logos/leetcode.svg';
-import GitHubLogo from '../../public/logos/github.svg';
-import StackOverflowLogo from '../../public/logos/stackoverflow.svg';
 import Image from 'next/image';
+
+interface Achievement {
+  title: string;
+  organization: string;
+  year: number;
+  description: string;
+}
+
+interface PlatformStats {
+  repositories?: number;
+  followers?: number;
+  contributions?: number;
+  problemsSolved?: number;
+  ranking?: string;
+  contests?: number;
+  badges?: number;
+  domains?: number;
+  rating?: number;
+  stars?: number;
+}
+
+interface Platform {
+  name: string;
+  username?: string;
+  url: string;
+  stats: PlatformStats;
+}
+
+interface Skill {
+  name: string;
+  level: number;
+  icon?: string;
+  description: string;
+  yearsOfExperience: number;
+  projects: number;
+  certifications: string[];
+}
+
+interface Category {
+  id: string;
+  name: string;
+  icon?: string;
+  color?: string;
+  skills: Skill[];
+}
+
+interface SkillsData {
+  categories: Category[];
+  platforms: Platform[];
+  achievements: Achievement[];
+}
 
 export default function SkillsPage() {
   const { settings } = useTheme();
@@ -20,94 +68,85 @@ export default function SkillsPage() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const isDeveloper = settings.theme === 'developer';
 
-  // High-quality transparent logos from CDNs
+  // Platform logos
   const platformLogos: Record<string, string> = {
-    'LeetCode': LeetCodeLogo,
-    'GitHub': GitHubLogo,
-    'Stack Overflow': StackOverflowLogo,
-    'HackerRank': 'https://upload.wikimedia.org/wikipedia/commons/4/40/HackerRank_Icon-1000px.png'
+    'GitHub': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+    'LeetCode': 'https://leetcode.com/static/images/LeetCode_logo_rvs.png',
+    'HackerRank': 'https://upload.wikimedia.org/wikipedia/commons/4/40/HackerRank_Icon-1000px.png',
+    'CodeChef': 'https://cdn.codechef.com/images/cc-logo.svg'
   };
 
-  // Comprehensive technology logos from Devicon CDN
-  const technologyLogos = {
-    // Languages
-    'JavaScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-    'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-    'Java': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
-    'C++': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
-    'Go': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
-    'Rust': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg',
-    'Swift': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg',
-    'Kotlin': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
-    
-    // Frontend
-    'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    'Angular': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
-    'Vue': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
-    'Svelte': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg',
-    'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-    'Nuxt.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg',
-    
-    // Backend
-    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-    'Express': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
-    'Django': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg',
-    'Flask': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg',
-    'Spring': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg',
-    'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg',
-    
-    // AI/ML
+  // Technology logos
+  const technologyLogos: Record<string, string> = {
     'TensorFlow': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg',
     'PyTorch': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg',
-    'Keras': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/keras/keras-original.svg',
-    'Pandas': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg',
-    'NumPy': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg',
-    
-    // Databases
+    'OpenAI GPT': 'https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg',
+    'Computer Vision': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg',
+    'Natural Language Processing': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg',
+    'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+    'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+    'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+    'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
+    'Framer Motion': 'https://motion.dev/images/icons/framer-motion.png',
+    'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+    'Python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+    'FastAPI': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg',
     'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-    'MongoDB': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-    'MySQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
-    'Redis': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg',
-    'Firebase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
-    
-    // DevOps
+    'GraphQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg',
+    'Solidity': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/solidity/solidity-original.svg',
+    'Web3.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/web3js/web3js-original.svg',
+    'Ethereum': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ethereum/ethereum-original.svg',
+    'IPFS': 'https://docs.ipfs.tech/images/ipfs-logo.svg',
+    'DeFi Protocols': 'https://cryptologos.cc/logos/uniswap-uni-logo.png',
+    'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg',
     'Docker': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
     'Kubernetes': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg',
-    'AWS': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg',
-    'Azure': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg',
-    'GCP': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg',
     'Terraform': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg',
-    
-    // Tools
-    'Git': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-    'GitHub Actions': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
-    'Jenkins': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg',
-    'Nginx': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg',
-    
-    // Mobile
-    'React Native': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    'Flutter': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
-    
-    // Web3
-    'Solidity': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/solidity/solidity-original.svg',
-    'Ethereum': 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Ethereum-icon-purple.svg'
+    'CI/CD': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg'
   };
 
-  const categoryIcons = {
+  const categoryIcons: Record<string, React.ComponentType<any>> = {
     'ai-ml': Brain,
     'frontend': Code,
     'backend': Server,
     'web3': Globe,
-    'devops': Cloud,
-    'databases': Database,
-    'security': Lock,
-    'systems': Cpu
+    'devops': Cloud
+  };
+
+  // Type the skills data
+  const typedSkillsData: SkillsData = {
+    categories: skillsData.categories.map(category => ({
+      id: category.id,
+      name: category.name,
+      icon: category.icon,
+      color: category.color,
+      skills: category.skills.map(skill => ({
+        name: skill.name,
+        level: skill.level,
+        icon: skill.icon,
+        description: skill.description,
+        yearsOfExperience: skill.yearsOfExperience,
+        projects: skill.projects,
+        certifications: skill.certifications || []
+      }))
+    })),
+    platforms: skillsData.platforms.map(platform => ({
+      name: platform.name,
+      username: platform.username,
+      url: platform.url,
+      stats: platform.stats
+    })),
+    achievements: skillsData.achievements.map(achievement => ({
+      title: achievement.title,
+      organization: achievement.organization,
+      year: achievement.year,
+      description: achievement.description
+    }))
   };
 
   const filteredSkills = selectedCategory 
-    ? skillsData.categories.filter(cat => cat.id === selectedCategory)
-    : skillsData.categories;
+    ? typedSkillsData.categories.filter(cat => cat.id === selectedCategory)
+    : typedSkillsData.categories;
 
   return (
     <div className="min-h-screen section-padding">
@@ -153,8 +192,8 @@ export default function SkillsPage() {
             >
               All Skills
             </button>
-            {skillsData.categories.map((category) => {
-              const IconComponent = categoryIcons[category.id as keyof typeof categoryIcons];
+            {typedSkillsData.categories.map((category) => {
+              const IconComponent = categoryIcons[category.id];
               return (
                 <button
                   key={category.id}
@@ -179,7 +218,7 @@ export default function SkillsPage() {
           {/* Skills Grid */}
           <div className="space-y-12">
             {filteredSkills.map((category, categoryIndex) => {
-              const IconComponent = categoryIcons[category.id as keyof typeof categoryIcons];
+              const IconComponent = categoryIcons[category.id];
               return (
                 <motion.div
                   key={category.id}
@@ -214,7 +253,7 @@ export default function SkillsPage() {
                   {/* Skills List */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {category.skills.map((skill, skillIndex) => {
-                      const logoUrl = technologyLogos[skill.name as keyof typeof technologyLogos];
+                      const logoUrl = technologyLogos[skill.name];
                       return (
                         <motion.div
                           key={skill.name}
@@ -330,8 +369,8 @@ export default function SkillsPage() {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {skillsData.platforms.map((platform, index) => {
-                const logoUrl = platformLogos[platform.name as keyof typeof platformLogos];
+              {typedSkillsData.platforms.map((platform, index) => {
+                const logoUrl = platformLogos[platform.name];
                 return (
                   <motion.div
                     key={platform.name}
@@ -413,7 +452,7 @@ export default function SkillsPage() {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {skillsData.achievements.map((achievement, index) => (
+              {typedSkillsData.achievements.map((achievement, index) => (
                 <motion.div
                   key={achievement.title}
                   className={`p-6 rounded-xl ${
@@ -428,13 +467,7 @@ export default function SkillsPage() {
                     <div className={`p-3 rounded-lg ${
                       isDeveloper ? 'bg-yellow-400/20 text-yellow-400' : 'bg-yellow-50 text-yellow-600'
                     }`}>
-                      {achievement.type === 'award' ? (
-                        <Trophy className="h-6 w-6" />
-                      ) : achievement.type === 'certification' ? (
-                        <Award className="h-6 w-6" />
-                      ) : (
-                        <TrendingUp className="h-6 w-6" />
-                      )}
+                      <Trophy className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
                       <h3 className={`font-semibold mb-2 ${

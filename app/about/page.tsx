@@ -6,6 +6,7 @@ import { MapPin, Mail, Phone, Download, ExternalLink } from 'lucide-react';
 import personalInfo from '../../lib/data/personal-info.json';
 import Head from 'next/head';
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 export default function AboutPage() {
   const { settings } = useTheme();
@@ -93,9 +94,9 @@ export default function AboutPage() {
     <>
       <Head>
         <title>About Sayman Lal</title>
-        <meta name="description" content="Learn about Sayman's journey in development and business" />
+        <meta name="description" content="Learn about Sayman&apos;s journey in development and business" />
         <meta property="og:title" content="About Sayman Lal" />
-        <meta property="og:description" content="Learn about Sayman's journey in development and business" />
+        <meta property="og:description" content="Learn about Sayman&apos;s journey in development and business" />
         <meta property="og:image" content={`${process.env.NEXT_PUBLIC_SITE_URL}/api/og?title=About`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -154,9 +155,11 @@ export default function AboutPage() {
                   }`}>
                   <div className="relative mb-5 flex justify-center">
                     <div className="relative">
-                      <img
+                      <Image
                         src={personalInfo.imageUrl}
                         alt={personalInfo.name}
+                        width={160}
+                        height={160}
                         className="w-40 h-40 rounded-full object-cover border-4"
                         style={{
                           borderColor: isDeveloper ? '#00ff88' : '#3b82f6'
@@ -243,7 +246,7 @@ export default function AboutPage() {
                     } max-w-none`}>
                     <p className={`leading-relaxed ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
                       }`}>
-                      I'm Sayman Lal, a passionate {personalInfo.bio}
+                      I&apos;m Sayman Lal, a passionate {personalInfo.bio}
                     </p>
                     <p className={`leading-relaxed ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
                       }`}>
@@ -252,7 +255,7 @@ export default function AboutPage() {
                     </p>
                     <p className={`leading-relaxed ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
                       }`}>
-                      As the founder of AIALCHEMIST and TEAM VASILIADES, I'm passionate about democratizing access to AI
+                      As the founder of AIALCHEMIST and TEAM VASILIADES, I&apos;m passionate about democratizing access to AI
                       technology and empowering the next generation of developers.
                     </p>
                   </div>
@@ -270,7 +273,7 @@ export default function AboutPage() {
                 >
                   <h3 className={`text-2xl font-bold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
                     }`}>
-                    {isDeveloper ? 'Connect With Me' : 'Let\'s Connect'}
+                    {isDeveloper ? 'Connect With Me' : 'Let&apos;s Connect'}
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {personalInfo.socials.map((social) => (

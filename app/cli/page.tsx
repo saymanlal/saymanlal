@@ -33,7 +33,7 @@ function CyberTerminal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Visual effects constrained to terminal area only
+  // Visual effects
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
 
@@ -203,6 +203,29 @@ function CyberTerminal() {
     };
   }, [visualMode, powerLevel]);
 
+  // Power level management
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPowerLevel(prev => {
+        const newLevel = Math.min(prev + Math.random() * 5, 100);
+        return newLevel;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // High power level effect
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (powerLevel > 80) {
+      const interval = setInterval(() => {
+        setPowerLevel(prev => Math.max(prev - 1, 80));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [powerLevel]);// Now powerLevel is properly included in dependencies
+
   // Terminal initialization
   useEffect(() => {
     const welcomeMessage = `
@@ -227,13 +250,7 @@ Type 'help' for command list
       output: welcomeMessage,
       timestamp: new Date().toISOString()
     }]);
-
-    const interval = setInterval(() => {
-      setPowerLevel(prev => Math.min(prev + Math.random() * 5, 100));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [visualMode]);
+  }, [visualMode, powerLevel]);
 
   // Cursor and focus management
   useEffect(() => {
@@ -277,14 +294,14 @@ power      - Show power levels
         setHistory([]);
         return;
 
-      case 'visual':
-        const modes = ['matrix', 'binary', 'circuit', 'neon'];
-        const nextIndex = (modes.indexOf(visualMode) + 1) % modes.length;
-        const nextMode = modes[nextIndex];
-        setVisualMode(nextMode);
-        output = `VISUAL MODE SET TO: ${nextMode.toUpperCase()}`;
-        powerBoost = 10;
-        break;
+        case 'visual':
+          const modes: Array<'matrix' | 'binary' | 'circuit' | 'neon'> = ['matrix', 'binary', 'circuit', 'neon'];
+          const nextIndex = (modes.indexOf(visualMode) + 1) % modes.length;
+          const nextMode = modes[nextIndex];
+          setVisualMode(nextMode);
+          output = `VISUAL MODE SET TO: ${nextMode.toUpperCase()}`;
+          powerBoost = 10;
+          break;
 
       case 'scan':
         output = `SYSTEM SCAN INITIATED...
@@ -427,18 +444,15 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
-      {/* Terminal Container with constrained effects */}
       <div
         ref={containerRef}
         className="relative z-20 container mx-auto px-4 py-12"
       >
-        {/* Visual Effect Canvas - Now properly contained */}
         <canvas
           ref={canvasRef}
           className="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-80"
         />
 
-        {/* HUD Overlay - Also contained */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
           <div className="absolute inset-0 border-4 border-green-500 opacity-10"></div>
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-green-500 opacity-30"></div>
@@ -446,7 +460,6 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
           <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-green-500 opacity-10"></div>
           <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-green-500 opacity-10 transform -translate-x-1/2"></div>
 
-          {/* Power level indicator */}
           <div className="absolute bottom-4 left-4 right-4 h-1 bg-black/50 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-green-400 to-cyan-400"
@@ -458,14 +471,12 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
         </div>
 
         <div className="max-w-4xl mx-auto relative z-20">
-          {/* Terminal Window */}
           <motion.div
             className="rounded-lg overflow-hidden border-2 border-green-500 shadow-lg shadow-green-500/20"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Terminal Header */}
             <div className="flex items-center justify-between px-4 py-2 bg-black/80 border-b border-green-500/50">
               <div className="flex items-center space-x-2">
                 <div className="flex space-x-2">
@@ -482,7 +493,6 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
               </div>
             </div>
 
-            {/* Terminal Body */}
             <div
               ref={terminalRef}
               className="p-4 h-[32rem] overflow-y-auto font-mono text-sm bg-black/90 text-green-400"
@@ -512,7 +522,6 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
                 ))}
               </AnimatePresence>
 
-              {/* Input Line with perfect cursor */}
               <div className="flex items-center">
                 <span className="mr-2 text-green-500">root@neural-core:~# </span>
                 <form onSubmit={handleSubmit} className="flex-1 flex items-center relative">
@@ -538,7 +547,6 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
             </div>
           </motion.div>
 
-          {/* Quick Command Reference */}
           <motion.div
             className="mt-8 p-6 rounded-lg bg-black/50 border border-green-500/30 backdrop-blur-sm"
             initial={{ opacity: 0, y: 20 }}
@@ -546,7 +554,7 @@ DOWNLOAD: ${(Math.random() * 200 + 100).toFixed(2)}Mbps`;
             transition={{ delay: 0.3 }}
           >
             <h3 className="text-lg font-mono font-bold text-green-400 mb-4 flex items-center">
-              <span className="mr-2">// QUICK COMMANDS</span>
+              <span className="mr-2">#QUICK COMMANDS</span>
               <span className="text-xs text-green-300">POWER: {powerLevel}%</span>
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -581,7 +589,6 @@ function BookPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        {/* Book Cover Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -593,21 +600,19 @@ function BookPage() {
           <p className="text-xl text-gray-600">by Sayman Lal</p>
         </motion.div>
 
-        {/* Book Content Sections */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
           className="space-y-12"
         >
-          {/* Synopsis */}
           <section className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Synopsis</h2>
-            <p className="text-gray-700 leading-relaxed">"Might Not The First, But Last" is a deeply personal collection of poems and reflections that explore the quiet, unshakable kind of love—the kind that never demands to be noticed, yet never fades.
+            <p className="text-gray-700 leading-relaxed">
+              {`"Might Not The First, But Last" is a deeply personal collection of poems and reflections that explore the quiet, unshakable kind of love—the kind that never demands to be noticed, yet never fades.`}
             </p>
           </section>
 
-          {/* Key Themes */}
           <section className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Key Themes</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -634,7 +639,6 @@ function BookPage() {
             </ul>
           </section>
 
-          {/* Publication Info */}
           <section className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Publication Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

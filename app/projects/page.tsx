@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import { Github, ExternalLink, Calendar, Tag, Star } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
 
 type ProjectCategory = 'all' | 'featured' | 'personal' | 'aialchemist' | 'vasiliades';
 
@@ -51,7 +52,7 @@ export default function ProjectsPage() {
     };
 
     fetchProjects();
-  }, []);
+  }, [supabase]);
 
   const categories = [
     { id: 'all' as ProjectCategory, name: 'All Projects', count: projects.length },
@@ -173,9 +174,11 @@ export default function ProjectsPage() {
               {/* Project Image */}
               {project.image_url && (
                 <div className="mb-4 rounded-lg overflow-hidden">
-                  <img
+                  <Image
                     src={project.image_url}
                     alt={project.title}
+                    width={400}
+                    height={192}
                     className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>

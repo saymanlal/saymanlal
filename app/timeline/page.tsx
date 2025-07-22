@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useTheme } from '../../lib/theme-context';
 import { 
   Calendar, MapPin, ExternalLink, Github, Award, Briefcase, 
@@ -426,11 +427,12 @@ export default function TimelinePage() {
                               >
                                 {/* Image */}
                                 {event.imageUrl && (
-                                  <div className="mb-4">
-                                    <img
+                                  <div className="mb-4 relative w-full h-48">
+                                    <Image
                                       src={event.imageUrl}
                                       alt={event.title}
-                                      className="w-full h-48 object-cover rounded-lg"
+                                      fill
+                                      className="object-cover rounded-lg"
                                       onError={(e) => {
                                         const target = e.target as HTMLImageElement;
                                         target.src = `https://source.unsplash.com/random/800x400/?${event.type}`;

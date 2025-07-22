@@ -3,172 +3,243 @@
     {
       "id": "vasiliades",
       "name": "Team Vasiliades",
-      "description": "Elite hackathon and tech competition team with 5 core members",
-      "mission": "To build innovative solutions for global challenges through competitive programming and hackathons",
+      "description": "Innovative design collective pushing creative boundaries",
+      "logoUrl": "/logos/team-vasiliades.png",
+      "website": "https://vasiliades.com",
       "type": "hackathon",
-      "logoUrl": "/images/vasiliades-logo.png",
-      "website": "https://github.com/team-vasiliades",
-      "founded": "2022-01-15",
-      "location": "Jabalpur, India",
-      "size": "5 members",
-      "wins": "3 major hackathons",
-      "structure": [
-        {
-          "role": "Core Team",
-          "members": [
-            "John Doe (Team Lead)",
-            "Jane Smith (Backend)",
-            "Alex Johnson (Frontend)",
-            "Sarah Williams (AI/ML)",
-            "Mike Brown (DevOps)"
-          ]
-        }
-      ],
       "members": [
         {
-          "id": "john-doe",
-          "name": "John Doe",
-          "role": "Team Lead & Full Stack",
-          "bio": "Leads the team and coordinates all technical efforts",
-          "imageUrl": "/images/team/john.jpg",
-          "email": "john@vasiliades.tech",
+          "id": "sayman",
+          "name": "Sayman Lal",
+          "role": "Team Lead",
+          "imageUrl": "/images/sayman.png",
+          "bio": "Visionary leader with 3+ years in creative direction and brand strategy.",
+          "email": "businesssayman@gmail.com",
           "socials": [
-            {
-              "platform": "GitHub",
-              "url": "https://github.com/johndoe"
-            },
-            {
-              "platform": "LinkedIn",
-              "url": "https://linkedin.com/in/johndoe"
-            }
+            { "platform": "GitHub", "url": "https://github.com/worksofsayman" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/worksofsayman" },
+            { "platform": "Website", "url": "https://worksofsayman.vercel.app" }
           ]
         },
         {
-          "id": "jane-smith",
-          "name": "Jane Smith",
-          "role": "Backend Engineer",
-          "bio": "Specializes in cloud architecture and database design",
-          "imageUrl": "/images/team/jane.jpg",
-          "email": "jane@vasiliades.tech",
+          "id": "utkarsh",
+          "name": "Utkarsh Kushwaha",
+          "role": "Technical Lead",
+          "imageUrl": "/images/utkarsh.png",
+          "bio": "Full-stack developer with expertise in creative coding and interactive installations.",
+          "email": "utkarsh@vasiliades.com",
           "socials": [
-            {
-              "platform": "GitHub",
-              "url": "https://github.com/janesmith"
-            }
+            { "platform": "GitHub", "url": "https://github.com/utkarshkushwaha" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/utkarshkushwaha" },
+            { "platform": "Website", "url": "https://utkarshkushwaha.dev" }
+          ]
+        },
+        {
+          "id": "praveen",
+          "name": "Praveen Rajak",
+          "role": "Design Lead",
+          "imageUrl": "/images/praveen.png",
+          "bio": "Award-winning designer specializing in UX/UI and brand identity systems.",
+          "email": "praveen@vasiliades.com",
+          "socials": [
+            { "platform": "GitHub", "url": "https://github.com/praveenrajak" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/praveenrajak" },
+            { "platform": "Behance", "url": "https://behance.net/praveenrajak" }
+          ]
+        },
+        {
+          "id": "kaustubh",
+          "name": "Kaustubh Sen",
+          "role": "Marketing Lead",
+          "imageUrl": "/images/kaustubh.png",
+          "bio": "Digital marketing strategist with a focus on creative communities and brand growth.",
+          "email": "kaustubh@vasiliades.com",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/kaustubhsen" },
+            { "platform": "X", "url": "https://x.com/kaustubhsen" }
+          ]
+        },
+        {
+          "id": "yash",
+          "name": "Yash Namdeo",
+          "role": "Production Lead",
+          "imageUrl": "/images/yash.png",
+          "bio": "Experienced producer managing complex creative projects and client relationships.",
+          "email": "yash@vasiliades.com",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/yashnamdeo" },
+            { "platform": "X", "url": "https://x.com/yashnamdeo" }
           ]
         }
       ],
-      "achievements": [
+      "timeline": [
         {
-          "title": "National Hackathon Champions",
-          "description": "Won first place in India's largest student hackathon",
-          "date": "2022-08-20",
-          "impact": "National Recognition"
+          "title": "Assembled",
+          "date": "2024-12-11",
+          "description": "Built ALGOVisualizer"
         },
         {
-          "title": "AI Innovation Award",
-          "description": "Received special recognition for innovative use of machine learning",
-          "date": "2023-02-15",
-          "impact": "Industry Recognition"
+          "title": "Built ALGOVisualizer",
+          "date": "2024-12-23",
+          "description": "Won 2nd position in \"Genethon\" Hackathon"
+        },
+        {
+          "title": "CodeNakshatra 2025",
+          "date": "2025-04-04",
+          "description": "Presented ArtMart in Greater Noida"
         }
       ]
     },
     {
       "id": "aialchemist",
       "name": "AIALCHEMIST",
-      "description": "Modern SaaS and EdTech platform transforming education with AI",
-      "mission": "To democratize AI education and provide cutting-edge tools for learners worldwide",
+      "description": "Transforming ideas into AI-powered solutions",
+      "logoUrl": "/logos/aialchemist.png",
+      "website": "https://aialchemist.vercel.app",
       "type": "startup",
-      "logoUrl": "/images/aialchemist-logo.png",
-      "website": "https://aialchemist.io",
-      "founded": "2023-05-10",
-      "location": "Jabalpur, India",
-      "size": "12 members",
-      "valuation": "$2.5M",
-      "structure": [
-        {
-          "role": "Leadership",
-          "members": [
-            "Founder & CEO",
-            "Co-Founder & COO"
-          ]
-        },
-        {
-          "role": "Department Leads",
-          "members": [
-            "CTO",
-            "Head of Product",
-            "Head of Education",
-            "Head of Marketing"
-          ]
-        },
-        {
-          "role": "Core Team",
-          "members": [
-            "6 full-time engineers and specialists"
-          ]
-        }
-      ],
       "members": [
         {
-          "id": "founder-ceo",
+          "id": "sayman",
           "name": "Sayman Lal",
           "role": "Founder & CEO",
-          "bio": "Visionary leader with 3+ years in AI and education technology",
-          "imageUrl": "/images/team/alex.jpg",
-          "email": "buisnesssayman@gmail.com",
+          "imageUrl": "/images/sayman.png",
+          "bio": "Serial entrepreneur with background in AI research and product development.",
+          "email": "businesssayman@gmail.com",
           "socials": [
-            {
-              "platform": "LinkedIn",
-              "url": "https://linkedin.com/in/saymanlal"
-            },
-            {
-              "platform": "Twitter",
-              "url": "https://twitter.com/worksofsayman"
-            }
+            { "platform": "GitHub", "url": "https://github.com/worksofsayman" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/saymanlal" },
+            { "platform": "X", "url": "https://x.com/saymanlal" }
           ]
         },
         {
-          "id": "cofounder-coo",
+          "id": "aadeesh",
           "name": "Aadeesh Jain",
           "role": "Co-Founder & COO",
-          "bio": "Operations expert scaling edtech platforms globally",
-          "imageUrl": "/images/team/priya.jpg",
-          "email": "itsmeaadeesh@gmail.com",
+          "imageUrl": "/images/aadeesh.png",
+          "bio": "Operations expert with experience scaling multiple tech startups.",
+          "email": "aadeesh@aialchemist.io",
           "socials": [
-            {
-              "platform": "LinkedIn",
-              "url": "https://linkedin.com/in/itsmeaadeesh"
-            }
+            { "platform": "GitHub", "url": "https://github.com/itsmeaadeesh" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/itsmeaadeesh" },
+            { "platform": "X", "url": "https://x.com/itsmeaadeesh" }
           ]
-        }
-      ],
-      "achievements": [
-        {
-          "title": "Seed Funding Round",
-          "description": "Raised $1.2M in seed funding from prominent investors",
-          "date": "2023-11-01",
-          "impact": "Financial Milestone"
         },
         {
-          "title": "10,000+ Users",
-          "description": "Onboarded over 10,000 active users in first 6 months",
-          "date": "2024-01-15",
-          "impact": "Growth Milestone"
-        }
-      ],
-      "partnerships": [
-        {
-          "partner": "Tech University",
-          "description": "Official education partner providing curriculum integration",
-          "type": "Academic",
-          "startDate": "2023-08-01"
+          "id": "kaustubh",
+          "name": "Kaustubh Sen",
+          "role": "Technology Lead",
+          "imageUrl": "/images/kaustubh.png",
+          "bio": "Machine learning specialist leading our technical vision and architecture.",
+          "email": "kaustubh@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/kaustubhsen" },
+            { "platform": "X", "url": "https://x.com/kaustubhsen" }
+          ]
         },
         {
-          "partner": "CloudTech Inc.",
-          "description": "Infrastructure partner providing cloud credits",
-          "type": "Technology",
-          "startDate": "2023-09-15"
+          "id": "yash",
+          "name": "Yash Namdeo",
+          "role": "Engineering Lead",
+          "imageUrl": "/images/yash.png",
+          "bio": "Full-stack developer with expertise in AI integration and cloud infrastructure.",
+          "email": "yash@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/yashnamdeo" },
+            { "platform": "X", "url": "https://x.com/yashnamdeo" }
+          ]
+        },
+        {
+          "id": "shalab",
+          "name": "Shalab Shrivastava",
+          "role": "Management Lead",
+          "imageUrl": "/images/shalab.png",
+          "bio": "Operations specialist managing team workflows and client relationships.",
+          "email": "shalab@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/shalab" },
+            { "platform": "X", "url": "https://x.com/shalab" }
+          ]
+        },
+        {
+          "id": "shailendra",
+          "name": "Shailendra Yadav",
+          "role": "Design Lead",
+          "imageUrl": "/images/shailendra.png",
+          "bio": "Creative director focused on human-centered AI interactions and branding.",
+          "email": "shailendra@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/shailendra" },
+            { "platform": "Dribbble", "url": "https://dribbble.com/shailendra" }
+          ]
+        },
+        {
+          "id": "utkarsh",
+          "name": "Utkarsh Kushwaha",
+          "role": "Core Team",
+          "imageUrl": "/images/utkarsh.png",
+          "bio": "Backend engineer building our API infrastructure and services.",
+          "email": "utkarsh@aialchemist.io",
+          "socials": [
+            { "platform": "GitHub", "url": "https://github.com/utkarshkushwaha" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/utkarshkushwaha" }
+          ]
+        },
+        {
+          "id": "shreya",
+          "name": "Shreya Patel",
+          "role": "Core Team",
+          "imageUrl": "/images/shreya.png",
+          "bio": "Frontend developer creating intuitive interfaces for complex AI tools.",
+          "email": "shreya@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/shreyapatel" },
+            { "platform": "GitHub", "url": "https://github.com/shreyapatel" }
+          ]
+        },
+        {
+          "id": "praveen",
+          "name": "Praveen Rajak",
+          "role": "Core Team",
+          "imageUrl": "/images/praveen.png",
+          "bio": "Full-stack developer working on AI integration features.",
+          "email": "praveen@aialchemist.io",
+          "socials": [
+            { "platform": "GitHub", "url": "https://github.com/praveenrajak" },
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/praveenrajak" }
+          ]
+        },
+        {
+          "id": "swastik",
+          "name": "Swastik Dubey",
+          "role": "Core Team",
+          "imageUrl": "/images/swastik.png",
+          "bio": "Mobile developer building our cross-platform applications.",
+          "email": "swastik@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/swastikdubey" }
+          ]
+        },
+        {
+          "id": "divyansh",
+          "name": "Divyansh Gautam",
+          "role": "Core Team",
+          "imageUrl": "/images/divyansh.png",
+          "bio": "DevOps engineer managing our cloud infrastructure and deployments.",
+          "email": "divyansh@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/divyansh" }
+          ]
+        },
+        {
+          "id": "priya",
+          "name": "Priya Chaturvedi",
+          "role": "Core Team",
+          "imageUrl": "/images/priya.png",
+          "bio": "QA engineer ensuring product quality and performance.",
+          "email": "priya@aialchemist.io",
+          "socials": [
+            { "platform": "LinkedIn", "url": "https://linkedin.com/in/priyachaturvedi" }
+          ]
         }
       ]
     }

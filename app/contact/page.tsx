@@ -6,18 +6,24 @@ import { useTheme } from '../../lib/theme-context';
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, Download } from 'lucide-react';
 import personalInfo from '../../lib/data/personal-info.json';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
+
+const MapLoading = () => {
+  const { settings } = useTheme();
+  return (
+    <div className={`h-64 flex items-center justify-center ${
+      settings.theme === 'developer' ? 'bg-gray-900' : 'bg-gray-100'
+    }`}>
+      <MapPin className={`h-12 w-12 mx-auto ${
+        settings.theme === 'developer' ? 'text-green-400' : 'text-gray-400'
+      }`} />
+    </div>
+  );
+};
 
 const Map = dynamic(() => import('../../components/ui/LeafletMap'), {
   ssr: false,
-  loading: () => (
-    <div className={`h-64 flex items-center justify-center ${
-      useTheme().settings.theme === 'developer' ? 'bg-gray-900' : 'bg-gray-100'
-    }`}>
-      <MapPin className={`h-12 w-12 mx-auto ${
-        useTheme().settings.theme === 'developer' ? 'text-green-400' : 'text-gray-400'
-      }`} />
-    </div>
-  )
+  loading: () => <MapLoading />
 });
 
 export default function ContactPage() {
@@ -36,7 +42,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
     
     setTimeout(() => {
-      alert('Thank you for your message! I\'ll get back to you soon.');
+      alert('Thank you for your message! I&apos;ll get back to you soon.');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setIsSubmitting(false);
     }, 1000);
@@ -84,7 +90,7 @@ export default function ContactPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              Ready to bring your ideas to life? Let's discuss your next project!
+              Ready to bring your ideas to life? Let&apos;s discuss your next project!
             </motion.p>
           </div>
 
@@ -330,7 +336,7 @@ export default function ContactPage() {
                           ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
                           : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       }`}
-                      placeholder="What's this about?"
+                      placeholder="What&apos;s this about?"
                     />
                   </div>
 

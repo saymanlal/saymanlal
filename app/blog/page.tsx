@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import { Calendar, Clock, Eye, Heart, Tag, Search, BookOpen } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
 
 interface BlogPost {
   id: string;
@@ -51,7 +52,7 @@ export default function BlogPage() {
     };
 
     fetchBlogPosts();
-  }, []);
+  }, [supabase]);
 
   // Get all unique tags
   const allTags = Array.from(
@@ -187,11 +188,13 @@ export default function BlogPage() {
               >
                 {/* Cover Image */}
                 {post.cover_image && (
-                  <div className="relative overflow-hidden">
-                    <img
+                  <div className="relative overflow-hidden w-full h-48">
+                    <Image
                       src={post.cover_image}
                       alt={post.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                      width={400}
+                      height={200}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>

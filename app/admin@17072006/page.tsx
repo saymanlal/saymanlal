@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import {
@@ -11,7 +11,9 @@ import {
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast } from 'react-hot-toast';
 import StatCard from '../../components/ui/StatCard';
+import Image from 'next/image';
 
+// Interfaces remain the same as your original code
 interface Project {
   id: string;
   title: string;
@@ -25,6 +27,7 @@ interface Project {
   featured: boolean;
   category: 'personal' | 'aialchemist' | 'vasiliades';
   technologies: string[];
+  newTech: string;
   created_at: string;
   updated_at: string;
 }
@@ -39,6 +42,7 @@ interface BlogPost {
   published: boolean;
   status: 'draft' | 'published';
   tags: string[];
+  newTag: string;
   read_time: number;
   views: number;
   likes: number;
@@ -58,6 +62,7 @@ interface Certificate {
   expiry_date?: string;
   verified: boolean;
   skills: string[];
+  newSkill: string;
   created_at: string;
   updated_at: string;
 }
@@ -75,7 +80,8 @@ interface Testimonial {
 
 type AdminTab = 'projects' | 'blog' | 'certificates' | 'testimonials';
 
-interface ProjectFormData {
+// Separate form states
+interface ProjectFormState {
   title: string;
   description: string;
   long_description?: string;
@@ -87,10 +93,10 @@ interface ProjectFormData {
   featured: boolean;
   category: 'personal' | 'aialchemist' | 'vasiliades';
   technologies: string[];
-  newTech?: string[];
+  newTech: string;
 }
 
-interface BlogPostFormData {
+interface BlogPostFormState {
   title: string;
   slug: string;
   content: string;
@@ -99,11 +105,11 @@ interface BlogPostFormData {
   published: boolean;
   status: 'draft' | 'published';
   tags: string[];
+  newTag: string;
   read_time: number;
-  newTag?: string[];
 }
 
-interface CertificateFormData {
+interface CertificateFormState {
   title: string;
   organization: string;
   credential_id?: string;
@@ -113,15 +119,41 @@ interface CertificateFormData {
   expiry_date?: string;
   verified: boolean;
   skills: string[];
-  newSkill?: string[];
+  newSkill: string;
 }
 
-interface TestimonialFormData {
+interface TestimonialFormState {
   author_name: string;
   author_title: string;
   feedback: string;
   rating: number;
   status: 'pending' | 'approved';
+}
+
+function isProject(item: any): item is Project {
+  return 'image_url' in item;
+}
+
+function isBlogPost(item: any): item is BlogPost {
+  return 'content' in item;
+}
+
+function isCertificate(item: any): item is Certificate {
+  return 'organization' in item;
+}
+
+function isTestimonial(item: any): item is Testimonial {
+  return 'author_name' in item;
+}
+
+function getDisplayName(
+  item: Project | BlogPost | Certificate | Testimonial
+): string {
+  if (isProject(item)) return item.title;
+  if (isBlogPost(item)) return item.title;
+  if (isCertificate(item)) return item.title;
+  if (isTestimonial(item)) return item.author_name;
+  return 'Untitled';
 }
 
 export default function AdminPage() {
@@ -130,14 +162,62 @@ export default function AdminPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<Project | BlogPost | Certificate | Testimonial | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState<
-    ProjectFormData | BlogPostFormData | CertificateFormData | TestimonialFormData | null
-  >(null);
+
+  // Separate form states for each table
+  const [projectForm, setProjectForm] = useState<ProjectFormState>({
+    title: '',
+    description: '',
+    long_description: '',
+    image_url: '',
+    project_url: '',
+    github_url: '',
+    demo_url: '',
+    status: 'planned',
+    featured: false,
+    category: 'personal',
+    technologies: [],
+    newTech: ''
+  });
+
+  const [blogPostForm, setBlogPostForm] = useState<BlogPostFormState>({
+    title: '',
+    slug: '',
+    content: '',
+    excerpt: '',
+    cover_image: '',
+    published: false,
+    status: 'draft',
+    tags: [],
+    newTag: '',
+    read_time: 5
+  });
+
+  const [certificateForm, setCertificateForm] = useState<CertificateFormState>({
+    title: '',
+    organization: '',
+    credential_id: '',
+    credential_url: '',
+    image_url: '',
+    issue_date: new Date().toISOString(),
+    expiry_date: undefined,
+    verified: false,
+    skills: [],
+    newSkill: ''
+  });
+
+  const [testimonialForm, setTestimonialForm] = useState<TestimonialFormState>({
+    author_name: '',
+    author_title: '',
+    feedback: '',
+    rating: 5,
+    status: 'pending'
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   const supabase = createClientComponentClient();
   const isDeveloper = settings.theme === 'developer';
@@ -149,56 +229,56 @@ export default function AdminPage() {
     { id: 'testimonials', name: 'Testimonials', icon: Star },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        if (activeTab === 'projects') {
-          const { data, error } = await supabase
-            .from('projects')
-            .select('*')
-            .order('created_at', { ascending: false });
-          if (error) throw error;
-          setProjects(data || []);
-        } else if (activeTab === 'blog') {
-          const { data, error } = await supabase
-            .from('blog_posts')
-            .select('*')
-            .order('created_at', { ascending: false });
-          if (error) throw error;
-          setBlogPosts(data || []);
-        } else if (activeTab === 'certificates') {
-          const { data, error } = await supabase
-            .from('certificates')
-            .select('*')
-            .order('created_at', { ascending: false });
-          if (error) throw error;
-          setCertificates(data || []);
-        } else if (activeTab === 'testimonials') {
-          const { data, error } = await supabase
-            .from('testimonials')
-            .select('*')
-            .order('created_at', { ascending: false });
-          if (error) throw error;
-          setTestimonials(data || []);
-        }
-      } catch (error: any) {
-        console.error(`Error fetching ${activeTab}:`, error.message);
-        toast.error(`Failed to load ${activeTab}`);
-      } finally {
-        setIsLoading(false);
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      if (activeTab === 'projects') {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        setProjects(data || []);
+      } else if (activeTab === 'blog') {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        setBlogPosts(data || []);
+      } else if (activeTab === 'certificates') {
+        const { data, error } = await supabase
+          .from('certificates')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        setCertificates(data || []);
+      } else if (activeTab === 'testimonials') {
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        setTestimonials(data || []);
       }
-    };
-
-    fetchData();
+    } catch (error: any) {
+      console.error(`Error fetching ${activeTab}:`, error.message);
+      toast.error(`Failed to load ${activeTab}`);
+    } finally {
+      setIsLoading(false);
+    }
   }, [activeTab, supabase]);
 
-  const handleAddNew = () => {
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleAddNew = useCallback(() => {
     setEditingItem(null);
 
     switch (activeTab) {
       case 'projects':
-        setFormData({
+        setProjectForm({
           title: '',
           description: '',
           long_description: '',
@@ -210,11 +290,12 @@ export default function AdminPage() {
           featured: false,
           category: 'personal',
           technologies: [],
+          newTech: ''
         });
         break;
 
       case 'blog':
-        setFormData({
+        setBlogPostForm({
           title: '',
           slug: '',
           content: '',
@@ -223,12 +304,13 @@ export default function AdminPage() {
           published: false,
           status: 'draft',
           tags: [],
+          newTag: '',
           read_time: 5,
         });
         break;
 
       case 'certificates':
-        setFormData({
+        setCertificateForm({
           title: '',
           organization: '',
           credential_id: '',
@@ -238,11 +320,12 @@ export default function AdminPage() {
           expiry_date: undefined,
           verified: false,
           skills: [],
+          newSkill: ''
         });
         break;
 
       case 'testimonials':
-        setFormData({
+        setTestimonialForm({
           author_name: '',
           author_title: '',
           feedback: '',
@@ -253,9 +336,9 @@ export default function AdminPage() {
     }
 
     setIsFormOpen(true);
-  };
+  }, [activeTab]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
 
     try {
@@ -272,7 +355,6 @@ export default function AdminPage() {
 
       if (error) throw error;
 
-      // Update state immutably
       if (activeTab === 'projects') {
         setProjects(prev => prev.filter(item => item.id !== id));
       } else if (activeTab === 'blog') {
@@ -288,65 +370,9 @@ export default function AdminPage() {
       console.error('Error deleting item:', error.message);
       toast.error('Failed to delete item');
     }
-  };
+  }, [activeTab, supabase]);
 
-  const handleEdit = (item: Project | BlogPost | Certificate | Testimonial) => {
-    if (activeTab === 'testimonials') {
-      const testimonial = item as Testimonial;
-      const newStatus = testimonial.status === 'approved' ? 'pending' : 'approved';
-      handleUpdateTestimonial(item.id, newStatus);
-      return;
-    }
-
-    setEditingItem(item);
-
-    if (activeTab === 'projects') {
-      const project = item as Project;
-      setFormData({
-        title: project.title || '',
-        description: project.description || '',
-        long_description: project.long_description || '',
-        image_url: project.image_url || '',
-        project_url: project.project_url || '',
-        github_url: project.github_url || '',
-        demo_url: project.demo_url || '',
-        status: project.status || 'planned',
-        featured: project.featured || false,
-        category: project.category || 'personal',
-        technologies: project.technologies || [],
-      });
-    } else if (activeTab === 'blog') {
-      const blogPost = item as BlogPost;
-      setFormData({
-        title: blogPost.title || '',
-        slug: blogPost.slug || '',
-        content: blogPost.content || '',
-        excerpt: blogPost.excerpt || '',
-        cover_image: blogPost.cover_image || '',
-        published: blogPost.published || false,
-        status: blogPost.status || 'draft',
-        tags: blogPost.tags || [],
-        read_time: blogPost.read_time || 5,
-      });
-    } else if (activeTab === 'certificates') {
-      const certificate = item as Certificate;
-      setFormData({
-        title: certificate.title || '',
-        organization: certificate.organization || '',
-        credential_id: certificate.credential_id || '',
-        credential_url: certificate.credential_url || '',
-        image_url: certificate.image_url || '',
-        issue_date: certificate.issue_date || new Date().toISOString(),
-        expiry_date: certificate.expiry_date || undefined,
-        verified: certificate.verified || false,
-        skills: certificate.skills || [],
-      });
-    }
-
-    setIsFormOpen(true);
-  };
-
-  const handleUpdateTestimonial = async (id: string, status: 'pending' | 'approved') => {
+  const handleUpdateTestimonial = useCallback(async (id: string, status: 'pending' | 'approved') => {
     try {
       const { error } = await supabase
         .from('testimonials')
@@ -365,74 +391,83 @@ export default function AdminPage() {
       console.error('Error updating testimonial:', error.message);
       toast.error('Failed to update testimonial');
     }
-  };
+  }, [supabase]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleEdit = useCallback((item: Project | BlogPost | Certificate | Testimonial) => {
+    if (activeTab === 'testimonials') {
+      const testimonial = item as Testimonial;
+      const newStatus = testimonial.status === 'approved' ? 'pending' : 'approved';
+      handleUpdateTestimonial(item.id, newStatus);
+      return;
+    }
+
+    setEditingItem(item);
+
+    if (activeTab === 'projects') {
+      const project = item as Project;
+      setProjectForm({
+        title: project.title || '',
+        description: project.description || '',
+        long_description: project.long_description || '',
+        image_url: project.image_url || '',
+        project_url: project.project_url || '',
+        github_url: project.github_url || '',
+        demo_url: project.demo_url || '',
+        status: project.status || 'planned',
+        featured: project.featured || false,
+        category: project.category || 'personal',
+        technologies: project.technologies || [],
+        newTech: '', // Always reset to empty string for new input
+      });
+    } else if (activeTab === 'blog') {
+      const blogPost = item as BlogPost;
+      setBlogPostForm({
+        title: blogPost.title || '',
+        slug: blogPost.slug || '',
+        content: blogPost.content || '',
+        excerpt: blogPost.excerpt || '',
+        cover_image: blogPost.cover_image || '',
+        published: blogPost.published || false,
+        status: blogPost.status || 'draft',
+        tags: blogPost.tags || [],
+        newTag: '', // Always reset to empty string for new input
+        read_time: blogPost.read_time || 5,
+      });
+    } else if (activeTab === 'certificates') {
+      const certificate = item as Certificate;
+      setCertificateForm({
+        title: certificate.title || '',
+        organization: certificate.organization || '',
+        credential_id: certificate.credential_id || '',
+        credential_url: certificate.credential_url || '',
+        image_url: certificate.image_url || '',
+        issue_date: certificate.issue_date || new Date().toISOString(),
+        expiry_date: certificate.expiry_date || undefined,
+        verified: certificate.verified || false,
+        skills: certificate.skills || [],
+        newSkill: '', // Always reset to empty string for new input
+      });
+    }
+
+    setIsFormOpen(true);
+  }, [activeTab, handleUpdateTestimonial]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData) return;
+    const now = new Date().toISOString();
 
     try {
-      // Get current timestamp for created_at/updated_at
-      const now = new Date().toISOString();
-
-      // Prepare submission data with proper type-specific fields
-      let submissionData;
-      if (activeTab === 'projects') {
-        submissionData = {
-          title: formData.title || '',
-          description: formData.description || '',
-          long_description: (formData as ProjectFormData).long_description || '',
-          image_url: formData.image_url || '',
-          project_url: (formData as ProjectFormData).project_url || '',
-          github_url: (formData as ProjectFormData).github_url || '',
-          demo_url: (formData as ProjectFormData).demo_url || '',
-          status: (formData as ProjectFormData).status || 'planned',
-          featured: (formData as ProjectFormData).featured || false,
-          category: (formData as ProjectFormData).category || 'personal',
-          technologies: (formData as ProjectFormData).technologies || [],
-          created_at: editingItem ? formData.created_at : now, // Use existing or new timestamp
-          updated_at: now
-        };
-      } else if (activeTab === 'blog') {
-        submissionData = {
-          title: formData.title || '',
-          slug: (formData as BlogPostFormData).slug || '',
-          content: (formData as BlogPostFormData).content || '',
-          excerpt: (formData as BlogPostFormData).excerpt || '',
-          cover_image: (formData as BlogPostFormData).cover_image || '',
-          published: (formData as BlogPostFormData).published || false,
-          status: (formData as BlogPostFormData).status || 'draft',
-          tags: (formData as BlogPostFormData).tags || [],
-          read_time: (formData as BlogPostFormData).read_time || 5,
-          views: (formData as BlogPostFormData).views || 0,
-          likes: (formData as BlogPostFormData).likes || 0,
-          published_at: (formData as BlogPostFormData).published_at,
-          created_at: editingItem ? formData.created_at : now,
-          updated_at: now
-        };
-      } else if (activeTab === 'certificates') {
-        submissionData = {
-          title: formData.title || '',
-          organization: (formData as CertificateFormData).organization || '',
-          credential_id: (formData as CertificateFormData).credential_id || '',
-          credential_url: (formData as CertificateFormData).credential_url || '',
-          image_url: formData.image_url || '',
-          issue_date: (formData as CertificateFormData).issue_date,
-          expiry_date: (formData as CertificateFormData).expiry_date || null,
-          verified: (formData as CertificateFormData).verified || false,
-          skills: (formData as CertificateFormData).skills || [],
-          created_at: editingItem ? formData.created_at : now,
-          updated_at: now
-        };
-
-        // Ensure issue_date is present for certificates
-        if (!submissionData.issue_date) {
-          throw new Error('Issue date is required for certificates');
-        }
-      }
-
       let data, error;
+
       if (activeTab === 'projects') {
+        // Only remove newTech for projects form
+        const { newTech, ...cleanData } = projectForm;
+        const submissionData = {
+          ...cleanData,
+          created_at: editingItem ? (editingItem as Project).created_at : now,
+          updated_at: now
+        };
+
         if (editingItem) {
           ({ data, error } = await supabase
             .from('projects')
@@ -445,77 +480,93 @@ export default function AdminPage() {
             .insert([submissionData])
             .select());
         }
-      } else if (activeTab === 'blog') {
-        if (editingItem) {
-          ({ data, error } = await supabase
-            .from('blog_posts')
-            .update(submissionData)
-            .eq('id', editingItem.id)
-            .select());
-        } else {
-          ({ data, error } = await supabase
-            .from('blog_posts')
-            .insert([submissionData])
-            .select());
-        }
-      } else if (activeTab === 'certificates') {
-        if (editingItem) {
-          ({ data, error } = await supabase
-            .from('certificates')
-            .update(submissionData)
-            .eq('id', editingItem.id)
-            .select());
-        } else {
-          ({ data, error } = await supabase
-            .from('certificates')
-            .insert([submissionData])
-            .select());
-        }
-      }
 
-      if (error) throw error;
-
-      // Rest of your state update logic remains the same...
-      if (data && data[0]) {
-        if (activeTab === 'projects') {
-          const updatedProject: Project = {
-            id: data[0].id,
-            title: data[0].title || '',
-            description: data[0].description || '',
-            long_description: data[0].long_description || '',
-            image_url: data[0].image_url || '',
-            project_url: data[0].project_url || '',
-            github_url: data[0].github_url || '',
-            demo_url: data[0].demo_url || '',
-            status: data[0].status || 'planned',
-            featured: data[0].featured || false,
-            category: data[0].category || 'personal',
-            technologies: data[0].technologies || [],
-            created_at: data[0].created_at,
-            updated_at: data[0].updated_at
-          };
-
+        if (data && data[0]) {
+          const updatedProject: Project = data[0];
           setProjects(prev =>
             editingItem
               ? prev.map(item => item.id === editingItem.id ? updatedProject : item)
               : [updatedProject, ...prev]
           );
-        } else if (activeTab === 'blog') {
-          // ... (blog post update logic)
-        } else if (activeTab === 'certificates') {
-          // ... (certificate update logic)
+        }
+      } else if (activeTab === 'blog') {
+        // Only remove newTag for blog form
+        const { newTag, ...cleanData } = blogPostForm;
+        const submissionData = {
+          ...cleanData,
+          created_at: editingItem ? (editingItem as BlogPost).created_at : now,
+          updated_at: now
+        };
+
+        if (editingItem) {
+          ({ data, error } = await supabase
+            .from('blog_posts')
+            .update(submissionData)
+            .eq('id', editingItem.id)
+            .select());
+        } else {
+          ({ data, error } = await supabase
+            .from('blog_posts')
+            .insert([submissionData])
+            .select());
+        }
+
+        if (data && data[0]) {
+          const updatedPost: BlogPost = data[0];
+          setBlogPosts(prev =>
+            editingItem
+              ? prev.map(item => item.id === editingItem.id ? updatedPost : item)
+              : [updatedPost, ...prev]
+          );
+        }
+      } else if (activeTab === 'certificates') {
+        // Only remove newSkill for certificates form
+        const { newSkill, ...cleanData } = certificateForm;
+        const submissionData = {
+          ...cleanData,
+          created_at: editingItem ? (editingItem as Certificate).created_at : now,
+          updated_at: now
+        };
+
+        if (!submissionData.issue_date) {
+          throw new Error('Issue date is required for certificates');
+        }
+
+        if (editingItem) {
+          ({ data, error } = await supabase
+            .from('certificates')
+            .update(submissionData)
+            .eq('id', editingItem.id)
+            .select());
+        } else {
+          ({ data, error } = await supabase
+            .from('certificates')
+            .insert([submissionData])
+            .select());
+        }
+
+        if (data && data[0]) {
+          const updatedCert: Certificate = data[0];
+          setCertificates(prev =>
+            editingItem
+              ? prev.map(item => item.id === editingItem.id ? updatedCert : item)
+              : [updatedCert, ...prev]
+          );
         }
       }
 
+      if (error) throw error;
+
       toast.success(`Item ${editingItem ? 'updated' : 'created'} successfully`);
       setIsFormOpen(false);
+      setEditingItem(null);
     } catch (error: any) {
       console.error('Error saving item:', error.message);
       toast.error(`Failed to ${editingItem ? 'update' : 'create'} item: ${error.message}`);
     }
-  };
+  }, [activeTab, projectForm, blogPostForm, certificateForm, editingItem, supabase]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     switch (status) {
       case 'completed':
       case 'published':
@@ -530,9 +581,9 @@ export default function AdminPage() {
       default:
         return isDeveloper ? 'text-gray-400 bg-gray-400/20' : 'text-gray-600 bg-gray-50';
     }
-  };
+  }, [isDeveloper]);
 
-  const filteredItems = () => {
+  const filteredItems = useCallback(() => {
     const items = activeTab === 'projects' ? projects :
       activeTab === 'blog' ? blogPosts :
         activeTab === 'certificates' ? certificates :
@@ -545,12 +596,12 @@ export default function AdminPage() {
         return (
           testimonial.feedback?.toLowerCase().includes(searchLower) ||
           testimonial.author_name?.toLowerCase().includes(searchLower) ||
-          testimonial.author_title?.toLowerCase().includes(searchLower)
-        );
+          testimonial.author_title?.toLowerCase().includes(searchLower));
       }
       return (item as Project | BlogPost | Certificate).title?.toLowerCase().includes(searchLower);
     });
-  };
+  }, [activeTab, projects, blogPosts, certificates, testimonials, searchTerm]);
+
   return (
     <div className="min-h-screen section-padding">
       <div className="container-custom">
@@ -604,7 +655,8 @@ export default function AdminPage() {
               <nav className={`p-6 rounded-xl ${isDeveloper
                 ? 'glass-dark border-green-500/30'
                 : 'bg-white border border-gray-200 shadow-lg'
-                }`}>
+                }`}
+              >
                 <h2 className={`text-lg font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                   Navigation
                 </h2>
@@ -644,7 +696,8 @@ export default function AdminPage() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={`w-full pl-10 pr-4 py-2 rounded-lg border ${isDeveloper
                       ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                      : 'bg-white border-gray-300 focus:border-blue-500'}`}
+                      : 'bg-white border-gray-300 focus:border-blue-500'
+                      }`}
                   />
                 </div>
                 {activeTab !== 'testimonials' && (
@@ -652,7 +705,8 @@ export default function AdminPage() {
                     onClick={handleAddNew}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${isDeveloper
                       ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
                   >
                     <Plus className="h-4 w-4" />
                     <span>Add New</span>
@@ -671,7 +725,8 @@ export default function AdminPage() {
                 <div className={`p-6 rounded-xl ${isDeveloper
                   ? 'glass-dark border-green-500/30'
                   : 'bg-white border border-gray-200 shadow-lg'
-                  }`}>
+                  }`}
+                >
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
@@ -712,12 +767,76 @@ export default function AdminPage() {
                             key={item.id}
                             className={`border-b last:border-b-0 ${isDeveloper ? 'border-gray-700' : 'border-gray-200'}`}
                           >
-                            {/* Testimonials Tab */}
-                            {activeTab === 'testimonials' ? (
+                            {/* Common Title Column */}
+                            <td className="py-4 px-4">
+                              <div className="flex items-center space-x-3">
+                                {activeTab === 'projects' && 'image_url' in item && item.image_url && (
+                                  <Image
+                                    src={item.image_url}
+                                    alt={getDisplayName(item)}
+                                    width={40}
+                                    height={40}
+                                    className="w-10 h-10 rounded-md object-cover"
+                                  />
+                                )}
+                                <p className={`font-medium ${isDeveloper ? 'text-gray-300' : 'text-gray-900'}`}>
+                                  {getDisplayName(item)}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Projects Tab Specific Columns */}
+                            {activeTab === 'projects' && 'status' in item && 'category' in item && (
+                              <>
+                                <td className="py-4 px-4">
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                                    {item.status.replace('-', ' ')}
+                                  </span>
+                                </td>
+                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
+                                  {item.category === 'aialchemist' ? 'AIALCHEMIST' :
+                                    item.category === 'vasiliades' ? 'VASILIADES' :
+                                      item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                                </td>
+                              </>
+                            )}
+
+                            {/* Blog Tab Specific Columns */}
+                            {activeTab === 'blog' && 'status' in item && 'views' in item && (
+                              <>
+                                <td className="py-4 px-4">
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                                    {item.status}
+                                  </span>
+                                </td>
+                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
+                                  {item.views}
+                                </td>
+                              </>
+                            )}
+
+                            {/* Certificates Tab Specific Columns */}
+                            {activeTab === 'certificates' && 'organization' in item && 'verified' in item && (
+                              <>
+                                <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
+                                  {item.organization}
+                                </td>
+                                <td className="py-4 px-4">
+                                  {item.verified ? (
+                                    <CheckCircle className={`h-5 w-5 ${isDeveloper ? 'text-green-400' : 'text-green-600'}`} />
+                                  ) : (
+                                    <span className={`text-xs ${isDeveloper ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
+                                  )}
+                                </td>
+                              </>
+                            )}
+
+                            {/* Testimonials Tab Specific Columns */}
+                            {activeTab === 'testimonials' && (
                               <>
                                 <td className="py-4 px-4">
                                   <div className="flex items-center">
-                                    {[...Array(5)].map((_, i) => (
+                                    {'rating' in item && [...Array(5)].map((_, i) => (
                                       <Star
                                         key={i}
                                         className={`h-4 w-4 ${i < item.rating
@@ -731,91 +850,29 @@ export default function AdminPage() {
                                   </div>
                                 </td>
                                 <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                                  {item.feedback || '-'}
+                                  {'feedback' in item ? item.feedback : '-'}
                                 </td>
                                 <td className="py-4 px-4">
-                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.status === 'approved'
-                                    ? isDeveloper
-                                      ? 'text-green-400 bg-green-400/20'
-                                      : 'text-green-600 bg-green-50'
-                                    : isDeveloper
-                                      ? 'text-yellow-400 bg-yellow-400/20'
-                                      : 'text-yellow-600 bg-yellow-50'
-                                    }`}>
-                                    {item.status}
-                                  </span>
+                                  {'status' in item && (
+                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.status === 'approved'
+                                      ? isDeveloper
+                                        ? 'text-green-400 bg-green-400/20'
+                                        : 'text-green-600 bg-green-50'
+                                      : isDeveloper
+                                        ? 'text-yellow-400 bg-yellow-400/20'
+                                        : 'text-yellow-600 bg-yellow-50'
+                                      }`}>
+                                      {item.status}
+                                    </span>
+                                  )}
                                 </td>
                                 <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                                  {new Date(item.created_at).toLocaleDateString()}
+                                  {'created_at' in item && new Date(item.created_at).toLocaleDateString()}
                                 </td>
-                              </>
-                            ) : (
-                              <>
-                                {/* Common Title Column for other tabs */}
-                                <td className="py-4 px-4">
-                                  <div className="flex items-center space-x-3">
-                                    {(activeTab === 'projects' && (item as Project).image_url) && (
-                                      <img
-                                        src={(item as Project).image_url}
-                                        alt={item.title}
-                                        className="w-10 h-10 rounded-md object-cover"
-                                      />
-                                    )}
-                                    <p className={`font-medium ${isDeveloper ? 'text-gray-300' : 'text-gray-900'}`}>
-                                      {item.title}
-                                    </p>
-                                  </div>
-                                </td>
-
-                                {/* Projects Tab Specific Columns */}
-                                {activeTab === 'projects' && (
-                                  <>
-                                    <td className="py-4 px-4">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as Project).status)}`}>
-                                        {(item as Project).status.replace('-', ' ')}
-                                      </span>
-                                    </td>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                                      {(item as Project).category === 'aialchemist' ? 'AIALCHEMIST' :
-                                        (item as Project).category === 'vasiliades' ? 'VASILIADES' :
-                                          (item as Project).category.charAt(0).toUpperCase() + (item as Project).category.slice(1)}
-                                    </td>
-                                  </>
-                                )}
-
-                                {/* Blog Tab Specific Columns */}
-                                {activeTab === 'blog' && (
-                                  <>
-                                    <td className="py-4 px-4">
-                                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor((item as BlogPost).status)}`}>
-                                        {(item as BlogPost).status}
-                                      </span>
-                                    </td>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                                      {(item as BlogPost).views}
-                                    </td>
-                                  </>
-                                )}
-
-                                {/* Certificates Tab Specific Columns */}
-                                {activeTab === 'certificates' && (
-                                  <>
-                                    <td className={`py-4 px-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                                      {(item as Certificate).organization}
-                                    </td>
-                                    <td className="py-4 px-4">
-                                      {(item as Certificate).verified ? (
-                                        <CheckCircle className={`h-5 w-5 ${isDeveloper ? 'text-green-400' : 'text-green-600'}`} />
-                                      ) : (
-                                        <span className={`text-xs ${isDeveloper ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
-                                      )}
-                                    </td>
-                                  </>
-                                )}
                               </>
                             )}
 
-                            {/* Actions Column (common for all tabs) */}
+                            {/* Common Actions Column */}
                             <td className="py-4 px-4 text-right">
                               <div className="flex items-center justify-end space-x-2">
                                 <button
@@ -825,7 +882,7 @@ export default function AdminPage() {
                                     : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                                     }`}
                                 >
-                                  {activeTab === 'testimonials' ? (
+                                  {activeTab === 'testimonials' && 'status' in item ? (
                                     item.status === 'approved' ? (
                                       <EyeOff className="h-4 w-4" />
                                     ) : (
@@ -869,20 +926,37 @@ export default function AdminPage() {
               >
                 <h3 className={`text-xl font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                   {editingItem ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' :
-                    activeTab === 'blog' ? 'Blog Post' : 'Certificate'}
+                    activeTab === 'blog' ? 'Blog Post' :
+                      activeTab === 'certificates' ? 'Certificate' :
+                        'Testimonial'}
                 </h3>
 
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    {/* Common Fields */}
+                    {/* Common Fields for all types */}
                     <div className="md:col-span-2">
                       <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                         Title*
                       </label>
                       <input
                         type="text"
-                        value={(formData as ProjectFormData).title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        value={
+                          activeTab === 'projects' ? projectForm.title :
+                            activeTab === 'blog' ? blogPostForm.title :
+                              activeTab === 'certificates' ? certificateForm.title :
+                                testimonialForm.author_name
+                        }
+                        onChange={(e) => {
+                          if (activeTab === 'projects') {
+                            setProjectForm({ ...projectForm, title: e.target.value });
+                          } else if (activeTab === 'blog') {
+                            setBlogPostForm({ ...blogPostForm, title: e.target.value });
+                          } else if (activeTab === 'certificates') {
+                            setCertificateForm({ ...certificateForm, title: e.target.value });
+                          } else {
+                            setTestimonialForm({ ...testimonialForm, author_name: e.target.value });
+                          }
+                        }}
                         className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                           ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                           : 'bg-white border-gray-300 focus:border-blue-500'
@@ -899,12 +973,16 @@ export default function AdminPage() {
                             Status*
                           </label>
                           <select
-                            value={(formData as ProjectFormData).status || 'planned'}
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value as 'planned' | 'in-progress' | 'completed' })}
+                            value={projectForm.status}
+                            onChange={(e) => setProjectForm({
+                              ...projectForm,
+                              status: e.target.value as 'planned' | 'in-progress' | 'completed'
+                            })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
                               }`}
+                            required
                           >
                             <option value="planned">Planned</option>
                             <option value="in-progress">In Progress</option>
@@ -917,12 +995,16 @@ export default function AdminPage() {
                             Category*
                           </label>
                           <select
-                            value={(formData as ProjectFormData).category || 'personal'}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades' })}
+                            value={projectForm.category}
+                            onChange={(e) => setProjectForm({
+                              ...projectForm,
+                              category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades'
+                            })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
                               }`}
+                            required
                           >
                             <option value="personal">Personal</option>
                             <option value="aialchemist">AIALCHEMIST</option>
@@ -936,8 +1018,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="checkbox"
-                            checked={(formData as ProjectFormData).featured || false}
-                            onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                            checked={projectForm.featured}
+                            onChange={(e) => setProjectForm({ ...projectForm, featured: e.target.checked })}
                             className={`h-5 w-5 rounded ${isDeveloper
                               ? 'bg-gray-700 border-gray-600 text-green-400'
                               : 'bg-white border-gray-300 text-blue-600'
@@ -951,8 +1033,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as ProjectFormData).image_url || ''}
-                            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                            value={projectForm.image_url || ''}
+                            onChange={(e) => setProjectForm({ ...projectForm, image_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -966,8 +1048,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as ProjectFormData).github_url || ''}
-                            onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
+                            value={projectForm.github_url || ''}
+                            onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -981,8 +1063,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as ProjectFormData).demo_url || ''}
-                            onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
+                            value={projectForm.demo_url || ''}
+                            onChange={(e) => setProjectForm({ ...projectForm, demo_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -995,8 +1077,8 @@ export default function AdminPage() {
                             Description*
                           </label>
                           <textarea
-                            value={(formData as ProjectFormData).description || ''}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            value={projectForm.description}
+                            onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1011,8 +1093,8 @@ export default function AdminPage() {
                             Long Description
                           </label>
                           <textarea
-                            value={(formData as ProjectFormData).long_description || ''}
-                            onChange={(e) => setFormData({ ...formData, long_description: e.target.value })}
+                            value={projectForm.long_description || ''}
+                            onChange={(e) => setProjectForm({ ...projectForm, long_description: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1026,7 +1108,7 @@ export default function AdminPage() {
                             Technologies*
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {(formData as ProjectFormData).technologies?.map((tech: string) => (
+                            {projectForm.technologies.map((tech) => (
                               <span
                                 key={tech}
                                 className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
@@ -1037,10 +1119,12 @@ export default function AdminPage() {
                                 {tech}
                                 <button
                                   type="button"
-                                  onClick={() => setFormData({
-                                    ...formData,
-                                    technologies: (formData as ProjectFormData).technologies.filter((t: string) => t !== tech)
-                                  })}
+                                  onClick={() => {
+                                    setProjectForm(prev => ({
+                                      ...prev,
+                                      technologies: prev.technologies.filter(t => t !== tech)
+                                    }));
+                                  }}
                                   className="ml-1 text-gray-400 hover:text-red-400"
                                 >
                                   ×
@@ -1051,24 +1135,34 @@ export default function AdminPage() {
                           <div className="flex">
                             <input
                               type="text"
-                              value={(formData as ProjectFormData).newTech || ''}
-                              onChange={(e) => setFormData({ ...formData, newTech: e.target.value })}
+                              value={projectForm.newTech}
+                              onChange={(e) => {
+                                setProjectForm(prev => ({
+                                  ...prev,
+                                  newTech: e.target.value
+                                }));
+                              }}
                               className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
                                 ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                                 : 'bg-white border-gray-300 focus:border-blue-500'
                                 }`}
                               placeholder="Add technology"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddNew();
+                                }
+                              }}
                             />
                             <button
                               type="button"
                               onClick={() => {
-                                const projectFormData = formData as ProjectFormData;
-                                if (projectFormData.newTech && !projectFormData.technologies.includes(projectFormData.newTech)) {
-                                  setFormData({
-                                    ...formData,
-                                    technologies: [...projectFormData.technologies, projectFormData.newTech],
-                                    newTech: ''
-                                  });
+                                if (projectForm.newTech.trim() && !projectForm.technologies.includes(projectForm.newTech.trim())) {
+                                  setProjectForm(prev => ({
+                                    ...prev,
+                                    technologies: [...prev.technologies, prev.newTech.trim()],
+                                    newTech: ""
+                                  }));
                                 }
                               }}
                               className={`px-4 py-2 rounded-r-lg ${isDeveloper
@@ -1092,8 +1186,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as CertificateFormData).organization || ''}
-                            onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                            value={certificateForm.organization}
+                            onChange={(e) => setCertificateForm({ ...certificateForm, organization: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1104,16 +1198,15 @@ export default function AdminPage() {
 
                         <div>
                           <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Issue Date* (MM/YYYY)
+                            Issue Date*
                           </label>
                           <input
-                            type="month"
-                            value={(formData as CertificateFormData).issue_date ? new Date((formData as CertificateFormData).issue_date).toISOString().slice(0, 7) : ''}
+                            type="date"
+                            value={certificateForm.issue_date ? new Date(certificateForm.issue_date).toISOString().split('T')[0] : ''}
                             onChange={(e) => {
                               if (e.target.value) {
                                 const date = new Date(e.target.value);
-                                date.setDate(1);
-                                setFormData({ ...formData, issue_date: date.toISOString() });
+                                setCertificateForm({ ...certificateForm, issue_date: date.toISOString() });
                               }
                             }}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
@@ -1126,18 +1219,17 @@ export default function AdminPage() {
 
                         <div>
                           <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Expiry Date (MM/YYYY)
+                            Expiry Date
                           </label>
                           <input
-                            type="month"
-                            value={(formData as CertificateFormData).expiry_date ? new Date((formData as CertificateFormData).expiry_date).toISOString().slice(0, 7) : ''}
+                            type="date"
+                            value={certificateForm.expiry_date ? new Date(certificateForm.expiry_date).toISOString().split('T')[0] : ''}
                             onChange={(e) => {
                               if (e.target.value) {
                                 const date = new Date(e.target.value);
-                                date.setDate(1);
-                                setFormData({ ...formData, expiry_date: date.toISOString() });
+                                setCertificateForm({ ...certificateForm, expiry_date: date.toISOString() });
                               } else {
-                                setFormData({ ...formData, expiry_date: undefined });
+                                setCertificateForm({ ...certificateForm, expiry_date: undefined });
                               }
                             }}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
@@ -1153,8 +1245,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="checkbox"
-                            checked={(formData as CertificateFormData).verified || false}
-                            onChange={(e) => setFormData({ ...formData, verified: e.target.checked })}
+                            checked={certificateForm.verified}
+                            onChange={(e) => setCertificateForm({ ...certificateForm, verified: e.target.checked })}
                             className={`h-5 w-5 rounded ${isDeveloper
                               ? 'bg-gray-700 border-gray-600 text-green-400'
                               : 'bg-white border-gray-300 text-blue-600'
@@ -1168,8 +1260,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as CertificateFormData).image_url || ''}
-                            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                            value={certificateForm.image_url || ''}
+                            onChange={(e) => setCertificateForm({ ...certificateForm, image_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1184,8 +1276,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as CertificateFormData).credential_id || ''}
-                            onChange={(e) => setFormData({ ...formData, credential_id: e.target.value })}
+                            value={certificateForm.credential_id || ''}
+                            onChange={(e) => setCertificateForm({ ...certificateForm, credential_id: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1199,8 +1291,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={(formData as CertificateFormData).credential_url || ''}
-                            onChange={(e) => setFormData({ ...formData, credential_url: e.target.value })}
+                            value={certificateForm.credential_url || ''}
+                            onChange={(e) => setCertificateForm({ ...certificateForm, credential_url: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1213,7 +1305,7 @@ export default function AdminPage() {
                             Skills*
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {(formData as CertificateFormData).skills?.map((skill: string) => (
+                            {certificateForm.skills.map((skill) => (
                               <span
                                 key={skill}
                                 className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
@@ -1224,10 +1316,12 @@ export default function AdminPage() {
                                 {skill}
                                 <button
                                   type="button"
-                                  onClick={() => setFormData({
-                                    ...formData,
-                                    skills: (formData as CertificateFormData).skills.filter((s: string) => s !== skill)
-                                  })}
+                                  onClick={() => {
+                                    setCertificateForm(prev => ({
+                                      ...prev,
+                                      skills: prev.skills.filter(s => s !== skill)
+                                    }));
+                                  }}
                                   className="ml-1 text-gray-400 hover:text-red-400"
                                 >
                                   ×
@@ -1238,24 +1332,34 @@ export default function AdminPage() {
                           <div className="flex">
                             <input
                               type="text"
-                              value={(formData as CertificateFormData).newSkill || ''}
-                              onChange={(e) => setFormData({ ...formData, newSkill: e.target.value })}
+                              value={certificateForm.newSkill}
+                              onChange={(e) => {
+                                setCertificateForm(prev => ({
+                                  ...prev,
+                                  newSkill: e.target.value
+                                }));
+                              }}
                               className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
                                 ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                                 : 'bg-white border-gray-300 focus:border-blue-500'
                                 }`}
                               placeholder="Add skill"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddNew();
+                                }
+                              }}
                             />
                             <button
                               type="button"
                               onClick={() => {
-                                const certFormData = formData as CertificateFormData;
-                                if (certFormData.newSkill && !certFormData.skills.includes(certFormData.newSkill)) {
-                                  setFormData({
-                                    ...formData,
-                                    skills: [...certFormData.skills, certFormData.newSkill],
-                                    newSkill: ''
-                                  });
+                                if (certificateForm.newSkill.trim() && !certificateForm.skills.includes(certificateForm.newSkill.trim())) {
+                                  setCertificateForm(prev => ({
+                                    ...prev,
+                                    skills: [...prev.skills, prev.newSkill.trim()],
+                                    newSkill: ""
+                                  }));
                                 }
                               }}
                               className={`px-4 py-2 rounded-r-lg ${isDeveloper
@@ -1279,8 +1383,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={formData.slug || ''}
-                            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                            value={blogPostForm.slug}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, slug: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1294,12 +1398,16 @@ export default function AdminPage() {
                             Status*
                           </label>
                           <select
-                            value={formData.status || 'draft'}
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                            value={blogPostForm.status}
+                            onChange={(e) => setBlogPostForm({
+                              ...blogPostForm,
+                              status: e.target.value as 'draft' | 'published'
+                            })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
                               }`}
+                            required
                           >
                             <option value="draft">Draft</option>
                             <option value="published">Published</option>
@@ -1312,8 +1420,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="checkbox"
-                            checked={formData.published || false}
-                            onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                            checked={blogPostForm.published}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, published: e.target.checked })}
                             className={`h-5 w-5 rounded ${isDeveloper
                               ? 'bg-gray-700 border-gray-600 text-green-400'
                               : 'bg-white border-gray-300 text-blue-600'
@@ -1327,8 +1435,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="number"
-                            value={formData.read_time || 5}
-                            onChange={(e) => setFormData({ ...formData, read_time: parseInt(e.target.value) || 5 })}
+                            value={blogPostForm.read_time}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, read_time: parseInt(e.target.value) || 5 })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1343,8 +1451,8 @@ export default function AdminPage() {
                           </label>
                           <input
                             type="text"
-                            value={formData.cover_image || ''}
-                            onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+                            value={blogPostForm.cover_image || ''}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, cover_image: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1357,8 +1465,8 @@ export default function AdminPage() {
                             Excerpt
                           </label>
                           <textarea
-                            value={formData.excerpt || ''}
-                            onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                            value={blogPostForm.excerpt || ''}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, excerpt: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1372,7 +1480,7 @@ export default function AdminPage() {
                             Tags
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {formData.tags?.map((tag: string) => (
+                            {blogPostForm.tags.map((tag) => (
                               <span
                                 key={tag}
                                 className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
@@ -1383,10 +1491,12 @@ export default function AdminPage() {
                                 {tag}
                                 <button
                                   type="button"
-                                  onClick={() => setFormData({
-                                    ...formData,
-                                    tags: formData.tags.filter((t: string) => t !== tag)
-                                  })}
+                                  onClick={() => {
+                                    setBlogPostForm(prev => ({
+                                      ...prev,
+                                      tags: prev.tags.filter(t => t !== tag)
+                                    }));
+                                  }}
                                   className="ml-1 text-gray-400 hover:text-red-400"
                                 >
                                   ×
@@ -1397,23 +1507,34 @@ export default function AdminPage() {
                           <div className="flex">
                             <input
                               type="text"
-                              value={formData.newTag || ''}
-                              onChange={(e) => setFormData({ ...formData, newTag: e.target.value })}
+                              value={blogPostForm.newTag}
+                              onChange={(e) => {
+                                setBlogPostForm(prev => ({
+                                  ...prev,
+                                  newTag: e.target.value
+                                }));
+                              }}
                               className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
                                 ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                                 : 'bg-white border-gray-300 focus:border-blue-500'
                                 }`}
                               placeholder="Add tag"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleAddNew();
+                                }
+                              }}
                             />
                             <button
                               type="button"
                               onClick={() => {
-                                if (formData.newTag) {
-                                  setFormData({
-                                    ...formData,
-                                    tags: [...(formData.tags || []), formData.newTag],
-                                    newTag: ''
-                                  });
+                                if (blogPostForm.newTag.trim() && !blogPostForm.tags.includes(blogPostForm.newTag.trim())) {
+                                  setBlogPostForm(prev => ({
+                                    ...prev,
+                                    tags: [...prev.tags, prev.newTag.trim()],
+                                    newTag: ""
+                                  }));
                                 }
                               }}
                               className={`px-4 py-2 rounded-r-lg ${isDeveloper
@@ -1427,13 +1548,12 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Content*
                           </label>
                           <textarea
-                            value={formData.content || ''}
-                            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                            value={blogPostForm.content || ''}
+                            onChange={(e) => setBlogPostForm({ ...blogPostForm, content: e.target.value })}
                             className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
                               ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
                               : 'bg-white border-gray-300 focus:border-blue-500'
@@ -1445,7 +1565,105 @@ export default function AdminPage() {
                       </>
                     )}
 
+                    {/* Testimonial Specific Fields */}
+                    {activeTab === 'testimonials' && (
+                      <>
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Client Name*
+                          </label>
+                          <input
+                            type="text"
+                            value={testimonialForm.author_name || ''}
+                            onChange={(e) => setTestimonialForm({ ...testimonialForm, author_name: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            required
+                          />
+                        </div>
 
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Client Position
+                          </label>
+                          <input
+                            type="text"
+                            value={testimonialForm.author_title || ''}
+                            onChange={(e) => setTestimonialForm({ ...testimonialForm, author_title: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Rating*
+                          </label>
+                          <div className="flex items-center">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                type="button"
+                                onClick={() => setTestimonialForm({
+                                  ...testimonialForm,
+                                  rating: star
+                                })}
+                              >
+                                <Star
+                                  className={`h-5 w-5 ${star <= (testimonialForm.rating || 0)
+                                    ? isDeveloper
+                                      ? 'text-yellow-400 fill-yellow-400'
+                                      : 'text-yellow-500 fill-yellow-500'
+                                    : 'text-gray-300 dark:text-gray-600'
+                                    }`}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Status*
+                          </label>
+                          <select
+                            value={testimonialForm.status || 'pending'}
+                            onChange={(e) => setTestimonialForm({
+                              ...testimonialForm,
+                              status: e.target.value as 'pending' | 'approved'
+                            })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            required
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                          </select>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Feedback*
+                          </label>
+                          <textarea
+                            value={testimonialForm.feedback || ''}
+                            onChange={(e) => setTestimonialForm({ ...testimonialForm, feedback: e.target.value })}
+                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
+                              : 'bg-white border-gray-300 focus:border-blue-500'
+                              }`}
+                            rows={3}
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="flex justify-end space-x-3 mt-6">

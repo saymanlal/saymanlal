@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import { Calendar, ExternalLink, Award, Filter, Search, CheckCircle } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
 
 interface Certificate {
   id: string;
@@ -49,7 +50,7 @@ export default function CertificatesPage() {
     };
 
     fetchCertificates();
-  }, []);
+  }, [supabase]);
 
   // Get unique organizations and years for filtering
   const organizations = Array.from(
@@ -110,7 +111,7 @@ export default function CertificatesPage() {
             <h1 className={`mb-4 ${
               isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
             }`}>
-              Certificates & Credentials
+              Certificates &amp; Credentials
             </h1>
             <p className={`text-xl max-w-2xl mx-auto ${
               isDeveloper ? 'text-gray-300' : 'text-gray-600'
@@ -235,11 +236,13 @@ export default function CertificatesPage() {
               >
                 {/* Certificate Image */}
                 {certificate.image_url && (
-                  <div className="relative overflow-hidden">
-                    <img
+                  <div className="relative overflow-hidden w-full h-48">
+                    <Image
                       src={certificate.image_url}
                       alt={certificate.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                      width={400}
+                      height={200}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                     <div className="absolute top-4 right-4">
                       {certificate.verified && (
@@ -253,6 +256,7 @@ export default function CertificatesPage() {
                         </div>
                       )}
                     </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>
                 )}
 
