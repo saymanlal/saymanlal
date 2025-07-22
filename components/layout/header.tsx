@@ -1,3 +1,4 @@
+// components/layout/header.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -19,6 +20,10 @@ import {
 import { useTheme } from '../../lib/theme-context';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface HeaderProps {
+  logoUrl?: string;
+}
+
 const getNavigation = (isDeveloper: boolean) => [
   { name: 'Home', href: '/', icon: <Home className="h-4 w-4" /> },
   { name: 'About', href: '/about', icon: <User className="h-4 w-4" /> },
@@ -32,7 +37,7 @@ const getNavigation = (isDeveloper: boolean) => [
   },
 ];
 
-export default function Header() {
+export default function Header({ logoUrl }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -72,7 +77,13 @@ export default function Header() {
                 } transition-colors duration-200`}
               >
                 <span className="font-mono flex items-center gap-2">
-                  {isDeveloper ? (
+                  {logoUrl ? (
+                    <img 
+                      src={logoUrl} 
+                      alt="Logo" 
+                      className="h-8 w-auto" 
+                    />
+                  ) : isDeveloper ? (
                     <>
                       <Terminal className="h-5 w-5" />
                       <span>CodeChemist</span>

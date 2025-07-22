@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

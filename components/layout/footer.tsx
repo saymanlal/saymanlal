@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 import { Github, Twitter, Linkedin, Mail, ExternalLink, Star } from 'lucide-react';
-import personalInfo from '@/lib/data/personal-info.json';
+import personalInfo from '../../lib/data/personal-info.json';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast } from 'react-hot-toast';
 

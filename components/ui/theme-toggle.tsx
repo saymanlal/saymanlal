@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Briefcase } from 'lucide-react';
-import { useTheme } from '@/lib/theme-context';
+import { useTheme } from '../../lib/theme-context';
 
 export default function ThemeToggle() {
   const { settings, toggleTheme } = useTheme();
