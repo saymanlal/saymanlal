@@ -1,16 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
-const assertEnv = (name: string) => {
-  const value = process.env[name]
-  if (!value) throw new Error(`Missing ${name} environment variable`)
-  return value
-}
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '')
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-const supabaseUrl = assertEnv('NEXT_PUBLIC_SUPABASE_URL').replace(/\/$/, '')
-const supabaseKey = assertEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+if (!supabaseUrl) throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL')
+if (!supabaseKey) throw new Error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY')
 
 try {
-  new URL(supabaseUrl) // Validate URL format
+  new URL(supabaseUrl)
 } catch {
   throw new Error(`Invalid Supabase URL: ${supabaseUrl}`)
 }
