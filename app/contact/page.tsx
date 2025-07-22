@@ -92,6 +92,34 @@ export default function ContactPage() {
             >
               Ready to bring your ideas to life? Let&apos;s discuss your next project!
             </motion.p>
+            
+            {/* Responsive Email Display */}
+            <motion.div
+              className="mt-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className={`inline-block max-w-full rounded-lg px-4 py-2 ${
+                isDeveloper ? 'bg-gray-800' : 'bg-gray-100'
+              }`}>
+                <a
+                  href="mailto:businesssayman@gmail.com"
+                  className={`block truncate text-center text-lg font-medium ${
+                    isDeveloper ? 'text-green-400 hover:text-green-300' : 'text-blue-600 hover:text-blue-500'
+                  }`}
+                  style={{
+                    display: 'inline-block',
+                    maxWidth: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  businesssayman@gmail.com
+                </a>
+              </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
