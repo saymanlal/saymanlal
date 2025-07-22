@@ -12,7 +12,7 @@ import {
 import ThemeToggle from '../components/ui/theme-toggle';
 import personalInfo from '../lib/data/personal-info.json';
 import skillsData from '../lib/data/skills.json';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '../lib/supabase/client';
 
 interface Project {
   id: string;
@@ -66,7 +66,7 @@ export default function HomePage() {
   const [projectsError, setProjectsError] = useState<string | null>(null);
   const isDeveloper = settings.theme === 'developer';
   const skillsSectionRef = useRef<HTMLDivElement>(null);
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const animatedWords = ['Leadership', 'Innovation', 'AI', 'Web3', 'Vision', 'Future'];
 
   // Fixed variant types

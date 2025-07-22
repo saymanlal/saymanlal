@@ -8,7 +8,7 @@ import {
   Github, ExternalLink, Calendar, Tag, Star, BookOpen, Award,
   CheckCircle, Search, Filter,
 } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '../../lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import StatCard from '../../components/ui/StatCard';
 import Image from 'next/image';
@@ -219,7 +219,7 @@ export default function AdminPage() {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const isDeveloper = settings.theme === 'developer';
 
   const tabs = [

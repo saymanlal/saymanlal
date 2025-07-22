@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import { Calendar, ExternalLink, Award, Filter, Search, CheckCircle } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '../../lib/supabase/client';
 import Image from 'next/image';
 
 interface Certificate {
@@ -28,7 +28,7 @@ export default function CertificatesPage() {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const isDeveloper = settings.theme === 'developer';
 
   useEffect(() => {

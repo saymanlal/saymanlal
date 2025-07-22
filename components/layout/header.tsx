@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { 
   Menu, 
@@ -78,7 +79,7 @@ export default function Header({ logoUrl }: HeaderProps) {
               >
                 <span className="font-mono flex items-center gap-2">
                   {logoUrl ? (
-                    <img 
+                    <Image 
                       src={logoUrl} 
                       alt="Logo" 
                       className="h-8 w-auto" 

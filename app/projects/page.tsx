@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../lib/theme-context';
 import { Github, ExternalLink, Calendar, Tag, Star } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '../../lib/supabase/client';
 import Image from 'next/image';
 
 type ProjectCategory = 'all' | 'featured' | 'personal' | 'aialchemist' | 'vasiliades';
@@ -30,7 +30,7 @@ export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const isDeveloper = settings.theme === 'developer';
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTheme } from '../../lib/theme-context';
 import { Github, Twitter, Linkedin, Mail, ExternalLink, Star } from 'lucide-react';
 import personalInfo from '../../lib/data/personal-info.json';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '../../lib/supabase/client';
 import { toast } from 'react-hot-toast';
 
 const socialIcons = {
@@ -22,7 +22,7 @@ export default function Footer() {
   const [hover, setHover] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const supabase = createClientComponentClient();
+  const supabase = createClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
