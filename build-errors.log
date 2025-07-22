@@ -1,0 +1,12 @@
+ [33m[1m⚠[22m[39m Warning: Found multiple lockfiles. Selecting /home/krushn/package-lock.json.
+   Consider removing the lockfiles at:
+   * /home/krushn/Downloads/sayman-portfolio-2025/project/package-lock.json
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (108kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings in 1000ms
+
+./middleware.ts
+A Node.js API is used (process.exit at line: 68) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+[?25h
