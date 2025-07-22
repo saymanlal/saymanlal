@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "ts-node scripts/validate-env.ts"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
