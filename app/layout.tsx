@@ -308,6 +308,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased bg-background text-foreground">
+        <SupabaseProvider>
           <ThemeProvider>
             <div className="min-h-screen flex flex-col relative overflow-hidden">
               <MatrixRain />
@@ -318,6 +319,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
           </ThemeProvider>
+        </SupabaseProvider>
       </body>
     </html>
   )
