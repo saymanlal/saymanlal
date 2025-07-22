@@ -18,7 +18,8 @@
     "types": ["@supabase/supabase-js"],
     "paths": {
       "@/*": ["./*"],
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["lib/*"],
+      "@/types/*": ["./types/*"]
     },
     "plugins": [
       {
