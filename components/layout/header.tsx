@@ -79,11 +79,14 @@ export default function Header({ logoUrl }: HeaderProps) {
               >
                 <span className="font-mono flex items-center gap-2">
                   {logoUrl ? (
-                    <Image 
-                      src={logoUrl} 
-                      alt="Logo" 
-                      className="h-8 w-auto" 
+                    <div className="relative h-8 w-24"> {/* Parent sets dimensions */}
+                    <Image
+                      src={logoUrl}
+                      alt="Logo"
+                      fill
+                      className="object-contain" // Ensures logo fits container
                     />
+                  </div>
                   ) : isDeveloper ? (
                     <>
                       <Terminal className="h-5 w-5" />
