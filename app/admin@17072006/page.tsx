@@ -11,6 +11,7 @@ import {
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import StatCard from '../../components/ui/StatCard';
+import { X } from 'lucide-react';
 import Image from 'next/image';
 
 // Interfaces remain the same as your original code
@@ -915,27 +916,38 @@ export default function AdminPage() {
 
           {/* Form Modal */}
           {isFormOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`w-full max-w-2xl rounded-xl p-6 ${isDeveloper
+                className={`w-full max-w-md md:max-w-2xl rounded-xl p-6 ${isDeveloper
                   ? 'glass-dark border-green-500/30'
                   : 'bg-white border border-gray-200 shadow-xl'
                   }`}
               >
-                <h3 className={`text-xl font-semibold mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
-                  {editingItem ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' :
-                    activeTab === 'blog' ? 'Blog Post' :
-                      activeTab === 'certificates' ? 'Certificate' :
-                        'Testimonial'}
-                </h3>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className={`text-xl font-semibold ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
+                    {editingItem ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' :
+                      activeTab === 'blog' ? 'Blog Post' :
+                        activeTab === 'certificates' ? 'Certificate' :
+                          'Testimonial'}
+                  </h3>
+                  <button
+                    onClick={() => setIsFormOpen(false)}
+                    className={`p-1 rounded-full ${isDeveloper
+                      ? 'hover:bg-gray-700 text-gray-300'
+                      : 'hover:bg-gray-100 text-gray-500'
+                      }`}
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
 
                 <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div className="space-y-4">
                     {/* Common Fields for all types */}
-                    <div className="md:col-span-2">
-                      <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <div>
+                      <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                         Title*
                       </label>
                       <input
@@ -957,19 +969,19 @@ export default function AdminPage() {
                             setTestimonialForm({ ...testimonialForm, author_name: e.target.value });
                           }
                         }}
-                        className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                          ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                          : 'bg-white border-gray-300 focus:border-blue-500'
-                          }`}
+                        className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                          ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                          : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                          } focus:ring-1 focus:outline-none`}
                         required
                       />
                     </div>
 
                     {/* Projects Specific Fields */}
                     {activeTab === 'projects' && (
-                      <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Status*
                           </label>
                           <select
@@ -978,10 +990,10 @@ export default function AdminPage() {
                               ...projectForm,
                               status: e.target.value as 'planned' | 'in-progress' | 'completed'
                             })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           >
                             <option value="planned">Planned</option>
@@ -991,7 +1003,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Category*
                           </label>
                           <select
@@ -1000,10 +1012,10 @@ export default function AdminPage() {
                               ...projectForm,
                               category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades'
                             })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           >
                             <option value="personal">Personal</option>
@@ -1012,106 +1024,106 @@ export default function AdminPage() {
                           </select>
                         </div>
 
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Featured
-                          </label>
+                        <div className="flex items-center space-x-2">
                           <input
                             type="checkbox"
                             checked={projectForm.featured}
                             onChange={(e) => setProjectForm({ ...projectForm, featured: e.target.checked })}
-                            className={`h-5 w-5 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400'
-                              : 'bg-white border-gray-300 text-blue-600'
-                              }`}
+                            className={`h-4 w-4 rounded ${isDeveloper
+                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                              } focus:ring-2`}
                           />
+                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Featured
+                          </label>
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Image URL
                           </label>
                           <input
                             type="text"
                             value={projectForm.image_url || ''}
                             onChange={(e) => setProjectForm({ ...projectForm, image_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             GitHub URL
                           </label>
                           <input
                             type="text"
                             value={projectForm.github_url || ''}
                             onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Demo URL
                           </label>
                           <input
                             type="text"
                             value={projectForm.demo_url || ''}
                             onChange={(e) => setProjectForm({ ...projectForm, demo_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Description*
                           </label>
                           <textarea
                             value={projectForm.description}
                             onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             rows={3}
                             required
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Long Description
                           </label>
                           <textarea
                             value={projectForm.long_description || ''}
                             onChange={(e) => setProjectForm({ ...projectForm, long_description: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             rows={3}
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Technologies*
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
                             {projectForm.technologies.map((tech) => (
                               <span
                                 key={tech}
-                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
                                   ? 'bg-gray-700 text-gray-300'
                                   : 'bg-gray-100 text-gray-700'
                                   }`}
@@ -1125,14 +1137,15 @@ export default function AdminPage() {
                                       technologies: prev.technologies.filter(t => t !== tech)
                                     }));
                                   }}
-                                  className="ml-1 text-gray-400 hover:text-red-400"
+                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
                                 >
-                                  ×
+                                  <span className="sr-only">Remove</span>
+                                  <X className="w-3 h-3" />
                                 </button>
                               </span>
                             ))}
                           </div>
-                          <div className="flex">
+                          <div className="flex rounded-md shadow-sm">
                             <input
                               type="text"
                               value={projectForm.newTech}
@@ -1142,10 +1155,10 @@ export default function AdminPage() {
                                   newTech: e.target.value
                                 }));
                               }}
-                              className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                                : 'bg-white border-gray-300 focus:border-blue-500'
-                                }`}
+                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                                } focus:ring-1 focus:outline-none text-sm`}
                               placeholder="Add technology"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
@@ -1165,39 +1178,39 @@ export default function AdminPage() {
                                   }));
                                 }
                               }}
-                              className={`px-4 py-2 rounded-r-lg ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border border-green-400/30'
-                                : 'bg-blue-600 text-white'
-                                }`}
+                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                                } text-sm font-medium`}
                             >
                               Add
                             </button>
                           </div>
                         </div>
-                      </>
+                      </div>
                     )}
 
                     {/* Certificate Specific Fields */}
                     {activeTab === 'certificates' && (
-                      <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Organization*
                           </label>
                           <input
                             type="text"
                             value={certificateForm.organization}
                             onChange={(e) => setCertificateForm({ ...certificateForm, organization: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Issue Date*
                           </label>
                           <input
@@ -1209,16 +1222,16 @@ export default function AdminPage() {
                                 setCertificateForm({ ...certificateForm, issue_date: date.toISOString() });
                               }
                             }}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Expiry Date
                           </label>
                           <input
@@ -1232,83 +1245,83 @@ export default function AdminPage() {
                                 setCertificateForm({ ...certificateForm, expiry_date: undefined });
                               }
                             }}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Verified
-                          </label>
+                        <div className="flex items-center space-x-2">
                           <input
                             type="checkbox"
                             checked={certificateForm.verified}
                             onChange={(e) => setCertificateForm({ ...certificateForm, verified: e.target.checked })}
-                            className={`h-5 w-5 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400'
-                              : 'bg-white border-gray-300 text-blue-600'
-                              }`}
+                            className={`h-4 w-4 rounded ${isDeveloper
+                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                              } focus:ring-2`}
                           />
+                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Verified
+                          </label>
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Image URL*
                           </label>
                           <input
                             type="text"
                             value={certificateForm.image_url || ''}
                             onChange={(e) => setCertificateForm({ ...certificateForm, image_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isdeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Credential ID
                           </label>
                           <input
                             type="text"
                             value={certificateForm.credential_id || ''}
                             onChange={(e) => setCertificateForm({ ...certificateForm, credential_id: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Credential URL
                           </label>
                           <input
                             type="text"
                             value={certificateForm.credential_url || ''}
                             onChange={(e) => setCertificateForm({ ...certificateForm, credential_url: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Skills*
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
                             {certificateForm.skills.map((skill) => (
                               <span
                                 key={skill}
-                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
                                   ? 'bg-gray-700 text-gray-300'
                                   : 'bg-gray-100 text-gray-700'
                                   }`}
@@ -1322,14 +1335,15 @@ export default function AdminPage() {
                                       skills: prev.skills.filter(s => s !== skill)
                                     }));
                                   }}
-                                  className="ml-1 text-gray-400 hover:text-red-400"
+                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
                                 >
-                                  ×
+                                  <span className="sr-only">Remove</span>
+                                  <X className="w-3 h-3" />
                                 </button>
                               </span>
                             ))}
                           </div>
-                          <div className="flex">
+                          <div className="flex rounded-md shadow-sm">
                             <input
                               type="text"
                               value={certificateForm.newSkill}
@@ -1339,10 +1353,10 @@ export default function AdminPage() {
                                   newSkill: e.target.value
                                 }));
                               }}
-                              className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                                : 'bg-white border-gray-300 focus:border-blue-500'
-                                }`}
+                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                                } focus:ring-1 focus:outline-none text-sm`}
                               placeholder="Add skill"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
@@ -1362,39 +1376,39 @@ export default function AdminPage() {
                                   }));
                                 }
                               }}
-                              className={`px-4 py-2 rounded-r-lg ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border border-green-400/30'
-                                : 'bg-blue-600 text-white'
-                                }`}
+                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                                } text-sm font-medium`}
                             >
                               Add
                             </button>
                           </div>
                         </div>
-                      </>
+                      </div>
                     )}
 
                     {/* Blog Post Specific Fields */}
                     {activeTab === 'blog' && (
-                      <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Slug*
                           </label>
                           <input
                             type="text"
                             value={blogPostForm.slug}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, slug: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Status*
                           </label>
                           <select
@@ -1403,10 +1417,10 @@ export default function AdminPage() {
                               ...blogPostForm,
                               status: e.target.value as 'draft' | 'published'
                             })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           >
                             <option value="draft">Draft</option>
@@ -1414,76 +1428,76 @@ export default function AdminPage() {
                           </select>
                         </div>
 
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Published
-                          </label>
+                        <div className="flex items-center space-x-2">
                           <input
                             type="checkbox"
                             checked={blogPostForm.published}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, published: e.target.checked })}
-                            className={`h-5 w-5 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400'
-                              : 'bg-white border-gray-300 text-blue-600'
-                              }`}
+                            className={`h-4 w-4 rounded ${isDeveloper
+                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                              } focus:ring-2`}
                           />
+                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Published
+                          </label>
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Read Time (min)
                           </label>
                           <input
                             type="number"
                             value={blogPostForm.read_time}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, read_time: parseInt(e.target.value) || 5 })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             min="1"
                           />
                         </div>
 
-                        <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                        <div className="md:col-span-2">
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Cover Image URL
                           </label>
                           <input
                             type="text"
                             value={blogPostForm.cover_image || ''}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, cover_image: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Excerpt
                           </label>
                           <textarea
                             value={blogPostForm.excerpt || ''}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, excerpt: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             rows={2}
                           />
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Tags
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
                             {blogPostForm.tags.map((tag) => (
                               <span
                                 key={tag}
-                                className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isDeveloper
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
                                   ? 'bg-gray-700 text-gray-300'
                                   : 'bg-gray-100 text-gray-700'
                                   }`}
@@ -1497,14 +1511,15 @@ export default function AdminPage() {
                                       tags: prev.tags.filter(t => t !== tag)
                                     }));
                                   }}
-                                  className="ml-1 text-gray-400 hover:text-red-400"
+                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
                                 >
-                                  ×
+                                  <span className="sr-only">Remove</span>
+                                  <X className="w-3 h-3" />
                                 </button>
                               </span>
                             ))}
                           </div>
-                          <div className="flex">
+                          <div className="flex rounded-md shadow-sm">
                             <input
                               type="text"
                               value={blogPostForm.newTag}
@@ -1514,10 +1529,10 @@ export default function AdminPage() {
                                   newTag: e.target.value
                                 }));
                               }}
-                              className={`flex-1 px-4 py-2 rounded-l-lg border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                                : 'bg-white border-gray-300 focus:border-blue-500'
-                                }`}
+                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                                } focus:ring-1 focus:outline-none text-sm`}
                               placeholder="Add tag"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
@@ -1537,10 +1552,10 @@ export default function AdminPage() {
                                   }));
                                 }
                               }}
-                              className={`px-4 py-2 rounded-r-lg ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border border-green-400/30'
-                                : 'bg-blue-600 text-white'
-                                }`}
+                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                                } text-sm font-medium`}
                             >
                               Add
                             </button>
@@ -1548,62 +1563,62 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Content*
                           </label>
                           <textarea
                             value={blogPostForm.content || ''}
                             onChange={(e) => setBlogPostForm({ ...blogPostForm, content: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             rows={6}
                             required
                           />
                         </div>
-                      </>
+                      </div>
                     )}
 
                     {/* Testimonial Specific Fields */}
                     {activeTab === 'testimonials' && (
-                      <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Client Name*
                           </label>
                           <input
                             type="text"
                             value={testimonialForm.author_name || ''}
                             onChange={(e) => setTestimonialForm({ ...testimonialForm, author_name: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Client Position
                           </label>
                           <input
                             type="text"
                             value={testimonialForm.author_title || ''}
                             onChange={(e) => setTestimonialForm({ ...testimonialForm, author_title: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Rating*
                           </label>
-                          <div className="flex items-center">
+                          <div className="flex items-center space-x-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                               <button
                                 key={star}
@@ -1612,6 +1627,7 @@ export default function AdminPage() {
                                   ...testimonialForm,
                                   rating: star
                                 })}
+                                className="focus:outline-none"
                               >
                                 <Star
                                   className={`h-5 w-5 ${star <= (testimonialForm.rating || 0)
@@ -1627,7 +1643,7 @@ export default function AdminPage() {
                         </div>
 
                         <div>
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Status*
                           </label>
                           <select
@@ -1636,10 +1652,10 @@ export default function AdminPage() {
                               ...testimonialForm,
                               status: e.target.value as 'pending' | 'approved'
                             })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             required
                           >
                             <option value="pending">Pending</option>
@@ -1648,21 +1664,21 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className={`block mb-2 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
                             Feedback*
                           </label>
                           <textarea
                             value={testimonialForm.feedback || ''}
                             onChange={(e) => setTestimonialForm({ ...testimonialForm, feedback: e.target.value })}
-                            className={`w-full px-4 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400'
-                              : 'bg-white border-gray-300 focus:border-blue-500'
-                              }`}
+                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none`}
                             rows={3}
                             required
                           />
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
 
@@ -1670,19 +1686,19 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={() => setIsFormOpen(false)}
-                      className={`px-4 py-2 rounded-lg ${isDeveloper
-                        ? 'text-gray-300 hover:bg-gray-700'
-                        : 'text-gray-600 hover:bg-gray-100'
-                        }`}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${isDeveloper
+                        ? 'text-gray-300 hover:bg-gray-700/50'
+                        : 'text-gray-700 hover:bg-gray-100'
+                        } transition-colors`}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className={`px-4 py-2 rounded-lg font-medium ${isDeveloper
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${isDeveloper
                         ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
                         : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
+                        } transition-colors`}
                     >
                       {editingItem ? 'Update' : 'Create'}
                     </button>

@@ -237,7 +237,16 @@
     @apply bg-gray-800 px-4 py-3 flex items-center space-x-2 border-b border-gray-700;
     background: linear-gradient(90deg, #2d3748, #1a202c);
   }
+/* styles/leaflet-overrides.css */
+.leaflet-container {
+  position: relative;
+  z-index: 10 !important;
+}
 
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 20 !important;
+}
   /* Matrix Rain */
   .matrix-rain {
     position: fixed;

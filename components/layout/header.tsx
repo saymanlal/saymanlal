@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { 
   Menu, 
@@ -21,10 +20,6 @@ import {
 import { useTheme } from '../../lib/theme-context';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface HeaderProps {
-  logoUrl?: string;
-}
-
 const getNavigation = (isDeveloper: boolean) => [
   { name: 'Home', href: '/', icon: <Home className="h-4 w-4" /> },
   { name: 'About', href: '/about', icon: <User className="h-4 w-4" /> },
@@ -38,7 +33,7 @@ const getNavigation = (isDeveloper: boolean) => [
   },
 ];
 
-export default function Header({ logoUrl }: HeaderProps) {
+export default function Header() {  // Removed the logoUrl prop since we're not using it
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -59,12 +54,16 @@ export default function Header({ logoUrl }: HeaderProps) {
     <>
       <header className={`fixed w-full top-0 z-50 transition-all duration-500 ${
         isDeveloper 
-          ? 'md:bg-black/80 bg-black/95 backdrop-blur-md border-b border-green-500/20'
-          : 'md:bg-white/95 bg-white border-b border-gray-200 backdrop-blur-md'
-      } ${scrolled ? 'shadow-lg' : ''}`}>
+          ? scrolled 
+            ? 'bg-black/80 backdrop-blur-md border-b border-green-500/20'
+            : 'bg-transparent'
+          : scrolled
+            ? 'bg-white/95 backdrop-blur-md border-b border-gray-200'
+            : 'bg-transparent'
+      }`}>
         <nav className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+            {/* Logo - Now just text */}
             <motion.div 
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -77,32 +76,17 @@ export default function Header({ logoUrl }: HeaderProps) {
                     : 'text-blue-600 hover:text-blue-700'
                 } transition-colors duration-200`}
               >
-                <span className="font-mono flex items-center gap-2">
-                  {logoUrl ? (
-                    <div className="relative h-8 w-24"> {/* Parent sets dimensions */}
-                    <Image
-                      src={logoUrl}
-                      alt="Logo"
-                      fill
-                      className="object-contain" // Ensures logo fits container
-                    />
-                  </div>
-                  ) : isDeveloper ? (
-                    <>
-                      <Terminal className="h-5 w-5" />
-                      <span>CodeChemist</span>
-                    </>
+                <span className="font-mono">
+                  {isDeveloper ? (
+                    <span className="text-2xl">&lt;CodeChemist/&gt;</span>
                   ) : (
-                    <>
-                      <Briefcase className="h-5 w-5" />
-                      <span>Sayman Lal</span>
-                    </>
+                    <span className="text-2xl">Sayman Lal</span>
                   )}
                 </span>
               </Link>
             </motion.div>
 
-            {/* Desktop Navigation */}
+            {/* Rest of your existing code remains the same... */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-1">
                 {navigation.map((item) => {
@@ -136,7 +120,6 @@ export default function Header({ logoUrl }: HeaderProps) {
 
             {/* Right side controls */}
             <div className="flex items-center space-x-4">
-              {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-all duration-300 ${
@@ -155,7 +138,6 @@ export default function Header({ logoUrl }: HeaderProps) {
                 )}
               </motion.button>
 
-              {/* Mobile menu button */}
               <div className="md:hidden">
                 <motion.button
                   type="button"
@@ -179,7 +161,6 @@ export default function Header({ logoUrl }: HeaderProps) {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
@@ -229,7 +210,6 @@ export default function Header({ logoUrl }: HeaderProps) {
         </nav>
       </header>
       
-      {/* Spacer to prevent content from being hidden behind fixed header */}
       <div className="h-20"></div>
     </>
   );

@@ -6,22 +6,19 @@ import { useTheme } from '@/lib/theme-context';
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, Download } from 'lucide-react';
 import personalInfo from '@/lib/data/personal-info.json';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 
 const MapLoading = () => {
   const { settings } = useTheme();
   return (
-    <div className={`h-64 flex items-center justify-center ${settings.theme === 'developer' ? 'bg-gray-900' : 'bg-gray-100'
-      }`}>
-      <MapPin className={`h-12 w-12 mx-auto ${settings.theme === 'developer' ? 'text-green-400' : 'text-gray-400'
-        }`} />
+    <div className={`h-64 flex items-center justify-center ${settings.theme === 'developer' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      <MapPin className={`h-12 w-12 mx-auto ${settings.theme === 'developer' ? 'text-green-400' : 'text-gray-400'}`} />
     </div>
   );
 };
 
 const Map = dynamic(() => import('../../components/ui/LeafletMap'), {
   ssr: false,
-  loading: () => <MapLoading />
+  loading: () => <MapLoading />  // Fixed: Added closing />
 });
 
 export default function ContactPage() {
@@ -29,6 +26,7 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '', // Added phone field
     subject: '',
     message: ''
   });
@@ -39,11 +37,20 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      alert('Thank you for your message! I&apos;ll get back to you soon.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setIsSubmitting(false);
-    }, 1000);
+    // Format the message for WhatsApp
+    const whatsappMessage = `New Contact Form Submission:%0A%0A
+Name: ${formData.name}%0A
+Email: ${formData.email}%0A
+Phone: ${formData.phone}%0A
+Subject: ${formData.subject}%0A%0A
+Message:%0A${formData.message}`;
+
+    // Open WhatsApp with the pre-filled message
+    window.open(`https://wa.me/9179387285?text=${whatsappMessage}`, '_blank');
+
+    // Reset form
+    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -68,11 +75,10 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Header - Positioned higher */}
+          {/* Header */}
           <div className="text-center mb-10">
             <motion.h1
-              className={`text-4xl font-bold mb-3 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
-                }`}
+              className={`text-4xl font-bold mb-3 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -80,8 +86,7 @@ export default function ContactPage() {
               Get In Touch
             </motion.h1>
             <motion.p
-              className={`text-xl max-w-2xl mx-auto ${isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                }`}
+              className={`text-xl max-w-2xl mx-auto ${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -89,6 +94,7 @@ export default function ContactPage() {
               Ready to bring your ideas to life? Let&apos;s discuss your next project!
             </motion.p>
           </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Column */}
             <motion.div
@@ -99,8 +105,8 @@ export default function ContactPage() {
             >
               {/* Contact Info Card */}
               <div className={`p-6 rounded-xl ${isDeveloper
-                  ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
-                  : 'bg-white border-2 border-gray-200 shadow-xl'
+                ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
+                : 'bg-white border-2 border-gray-200 shadow-xl'
                 }`}>
                 <h2 className={`text-2xl font-bold mb-5 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
                   }`}>
@@ -174,8 +180,8 @@ export default function ContactPage() {
 
               {/* Social Links Card */}
               <div className={`p-6 rounded-xl ${isDeveloper
-                  ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
-                  : 'bg-white border-2 border-gray-200 shadow-xl'
+                ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
+                : 'bg-white border-2 border-gray-200 shadow-xl'
                 }`}>
                 <h3 className={`text-xl font-bold mb-5 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
                   }`}>
@@ -192,8 +198,8 @@ export default function ContactPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${isDeveloper
-                            ? 'bg-gray-800/50 hover:bg-green-400/10 text-gray-300 hover:text-green-400 border border-gray-700 hover:border-green-400/30'
-                            : 'bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 border border-gray-200 hover:border-blue-200'
+                          ? 'bg-gray-800/50 hover:bg-green-400/10 text-gray-300 hover:text-green-400 border border-gray-700 hover:border-green-400/30'
+                          : 'bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 border border-gray-200 hover:border-blue-200'
                           }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -211,24 +217,6 @@ export default function ContactPage() {
                   })}
                 </div>
               </div>
-
-              {/* Resume Download */}
-              <div className="text-center">
-                <motion.a
-                  href={personalInfo.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center space-x-2 px-5 py-2.5 rounded-lg font-medium ${isDeveloper
-                      ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Download className="h-5 w-5" />
-                  <span>Download Resume</span>
-                </motion.a>
-              </div>
             </motion.div>
 
             {/* Right Column - Contact Form */}
@@ -240,9 +228,9 @@ export default function ContactPage() {
               <div className={`p-6 rounded-xl ${isDeveloper
                   ? 'bg-gray-900/80 border-2 border-green-500/40 shadow-xl shadow-green-500/10'
                   : 'bg-white border-2 border-gray-200 shadow-xl'
-                }`}>
-                <h2 className={`text-2xl font-bold mb-5 ${isDeveloper ? 'text-green-400' : 'text-gray-900'
-                  }`}>
+                }`}
+              >
+                <h2 className={`text-2xl font-bold mb-5 ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                   {isDeveloper ? 'Send Message' : 'Send a Message'}
                 </h2>
 
@@ -251,8 +239,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="name"
-                        className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'
-                          }`}
+                        className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'}`}
                       >
                         Name
                       </label>
@@ -273,8 +260,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'
-                          }`}
+                        className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'}`}
                       >
                         Email
                       </label>
@@ -294,11 +280,33 @@ export default function ContactPage() {
                     </div>
                   </div>
 
+                  {/* Added Phone Field */}
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'}`}
+                    >
+                      Phone Number (WhatsApp)
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className={`w-full px-4 py-2.5 rounded-lg border transition-all duration-200 ${isDeveloper
+                          ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400'
+                          : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                        }`}
+                      placeholder="Your WhatsApp number"
+                    />
+                  </div>
+
                   <div>
                     <label
                       htmlFor="subject"
-                      className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'
-                        }`}
+                      className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'}`}
                     >
                       Subject
                     </label>
@@ -320,8 +328,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="message"
-                      className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'
-                        }`}
+                      className={`block text-sm font-medium mb-2 ${isDeveloper ? 'text-green-400' : 'text-gray-700'}`}
                     >
                       Message
                     </label>
@@ -358,7 +365,7 @@ export default function ContactPage() {
                     ) : (
                       <>
                         <Send className="h-4 w-4" />
-                        <span>Send Message</span>
+                        <span>Send via WhatsApp</span>
                       </>
                     )}
                   </motion.button>
@@ -369,13 +376,14 @@ export default function ContactPage() {
 
           {/* Map Section */}
           <motion.div
-            className={`mt-10 rounded-xl overflow-hidden ${isDeveloper
+            className={`mt-10 rounded-xl overflow-hidden relative z-10 ${isDeveloper
                 ? 'border-2 border-green-500/40 shadow-xl shadow-green-500/10'
                 : 'border-2 border-gray-200 shadow-xl'
               }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
+            style={{ zIndex: 10 }} // Explicit z-index
           >
             <Map
               isDeveloper={isDeveloper}
