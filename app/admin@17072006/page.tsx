@@ -920,12 +920,12 @@ export default function AdminPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`w-full max-w-md md:max-w-2xl rounded-xl p-6 ${isDeveloper
+                className={`w-full max-w-md md:max-w-2xl max-h-[90vh] rounded-xl p-6 ${isDeveloper
                   ? 'glass-dark border-green-500/30'
                   : 'bg-white border border-gray-200 shadow-xl'
-                  }`}
+                  } overflow-y-auto`}
               >
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-6 sticky top-0 bg-inherit py-2">
                   <h3 className={`text-xl font-semibold ${isDeveloper ? 'text-green-400' : 'text-gray-900'}`}>
                     {editingItem ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' :
                       activeTab === 'blog' ? 'Blog Post' :
@@ -943,746 +943,744 @@ export default function AdminPage() {
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmit}>
-                  <div className="space-y-4">
-                    {/* Common Fields for all types */}
-                    <div>
-                      <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                        Title*
-                      </label>
-                      <input
-                        type="text"
-                        value={
-                          activeTab === 'projects' ? projectForm.title :
-                            activeTab === 'blog' ? blogPostForm.title :
-                              activeTab === 'certificates' ? certificateForm.title :
-                                testimonialForm.author_name
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Common Fields for all types */}
+                  <div>
+                    <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Title*
+                    </label>
+                    <input
+                      type="text"
+                      value={
+                        activeTab === 'projects' ? projectForm.title :
+                          activeTab === 'blog' ? blogPostForm.title :
+                            activeTab === 'certificates' ? certificateForm.title :
+                              testimonialForm.author_name
+                      }
+                      onChange={(e) => {
+                        if (activeTab === 'projects') {
+                          setProjectForm({ ...projectForm, title: e.target.value });
+                        } else if (activeTab === 'blog') {
+                          setBlogPostForm({ ...blogPostForm, title: e.target.value });
+                        } else if (activeTab === 'certificates') {
+                          setCertificateForm({ ...certificateForm, title: e.target.value });
+                        } else {
+                          setTestimonialForm({ ...testimonialForm, author_name: e.target.value });
                         }
-                        onChange={(e) => {
-                          if (activeTab === 'projects') {
-                            setProjectForm({ ...projectForm, title: e.target.value });
-                          } else if (activeTab === 'blog') {
-                            setBlogPostForm({ ...blogPostForm, title: e.target.value });
-                          } else if (activeTab === 'certificates') {
-                            setCertificateForm({ ...certificateForm, title: e.target.value });
-                          } else {
-                            setTestimonialForm({ ...testimonialForm, author_name: e.target.value });
-                          }
-                        }}
-                        className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                          ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                          : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                          } focus:ring-1 focus:outline-none`}
-                        required
-                      />
-                    </div>
-
-                    {/* Projects Specific Fields */}
-                    {activeTab === 'projects' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Status*
-                          </label>
-                          <select
-                            value={projectForm.status}
-                            onChange={(e) => setProjectForm({
-                              ...projectForm,
-                              status: e.target.value as 'planned' | 'in-progress' | 'completed'
-                            })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          >
-                            <option value="planned">Planned</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Category*
-                          </label>
-                          <select
-                            value={projectForm.category}
-                            onChange={(e) => setProjectForm({
-                              ...projectForm,
-                              category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades'
-                            })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          >
-                            <option value="personal">Personal</option>
-                            <option value="aialchemist">AIALCHEMIST</option>
-                            <option value="vasiliades">VASILIADES</option>
-                          </select>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            checked={projectForm.featured}
-                            onChange={(e) => setProjectForm({ ...projectForm, featured: e.target.checked })}
-                            className={`h-4 w-4 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
-                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
-                              } focus:ring-2`}
-                          />
-                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Featured
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Image URL
-                          </label>
-                          <input
-                            type="text"
-                            value={projectForm.image_url || ''}
-                            onChange={(e) => setProjectForm({ ...projectForm, image_url: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            GitHub URL
-                          </label>
-                          <input
-                            type="text"
-                            value={projectForm.github_url || ''}
-                            onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Demo URL
-                          </label>
-                          <input
-                            type="text"
-                            value={projectForm.demo_url || ''}
-                            onChange={(e) => setProjectForm({ ...projectForm, demo_url: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Description*
-                          </label>
-                          <textarea
-                            value={projectForm.description}
-                            onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            rows={3}
-                            required
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Long Description
-                          </label>
-                          <textarea
-                            value={projectForm.long_description || ''}
-                            onChange={(e) => setProjectForm({ ...projectForm, long_description: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            rows={3}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Technologies*
-                          </label>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {projectForm.technologies.map((tech) => (
-                              <span
-                                key={tech}
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
-                                  ? 'bg-gray-700 text-gray-300'
-                                  : 'bg-gray-100 text-gray-700'
-                                  }`}
-                              >
-                                {tech}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setProjectForm(prev => ({
-                                      ...prev,
-                                      technologies: prev.technologies.filter(t => t !== tech)
-                                    }));
-                                  }}
-                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
-                                >
-                                  <span className="sr-only">Remove</span>
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex rounded-md shadow-sm">
-                            <input
-                              type="text"
-                              value={projectForm.newTech}
-                              onChange={(e) => {
-                                setProjectForm(prev => ({
-                                  ...prev,
-                                  newTech: e.target.value
-                                }));
-                              }}
-                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                                } focus:ring-1 focus:outline-none text-sm`}
-                              placeholder="Add technology"
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleAddNew();
-                                }
-                              }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (projectForm.newTech.trim() && !projectForm.technologies.includes(projectForm.newTech.trim())) {
-                                  setProjectForm(prev => ({
-                                    ...prev,
-                                    technologies: [...prev.technologies, prev.newTech.trim()],
-                                    newTech: ""
-                                  }));
-                                }
-                              }}
-                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
-                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                                } text-sm font-medium`}
-                            >
-                              Add
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Certificate Specific Fields */}
-                    {activeTab === 'certificates' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Organization*
-                          </label>
-                          <input
-                            type="text"
-                            value={certificateForm.organization}
-                            onChange={(e) => setCertificateForm({ ...certificateForm, organization: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Issue Date*
-                          </label>
-                          <input
-                            type="date"
-                            value={certificateForm.issue_date ? new Date(certificateForm.issue_date).toISOString().split('T')[0] : ''}
-                            onChange={(e) => {
-                              if (e.target.value) {
-                                const date = new Date(e.target.value);
-                                setCertificateForm({ ...certificateForm, issue_date: date.toISOString() });
-                              }
-                            }}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Expiry Date
-                          </label>
-                          <input
-                            type="date"
-                            value={certificateForm.expiry_date ? new Date(certificateForm.expiry_date).toISOString().split('T')[0] : ''}
-                            onChange={(e) => {
-                              if (e.target.value) {
-                                const date = new Date(e.target.value);
-                                setCertificateForm({ ...certificateForm, expiry_date: date.toISOString() });
-                              } else {
-                                setCertificateForm({ ...certificateForm, expiry_date: undefined });
-                              }
-                            }}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            checked={certificateForm.verified}
-                            onChange={(e) => setCertificateForm({ ...certificateForm, verified: e.target.checked })}
-                            className={`h-4 w-4 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
-                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
-                              } focus:ring-2`}
-                          />
-                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Verified
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Image URL*
-                          </label>
-                          <input
-                            type="text"
-                            value={certificateForm.image_url || ''}
-                            onChange={(e) => setCertificateForm({ ...certificateForm, image_url: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isdeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Credential ID
-                          </label>
-                          <input
-                            type="text"
-                            value={certificateForm.credential_id || ''}
-                            onChange={(e) => setCertificateForm({ ...certificateForm, credential_id: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Credential URL
-                          </label>
-                          <input
-                            type="text"
-                            value={certificateForm.credential_url || ''}
-                            onChange={(e) => setCertificateForm({ ...certificateForm, credential_url: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Skills*
-                          </label>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {certificateForm.skills.map((skill) => (
-                              <span
-                                key={skill}
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
-                                  ? 'bg-gray-700 text-gray-300'
-                                  : 'bg-gray-100 text-gray-700'
-                                  }`}
-                              >
-                                {skill}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setCertificateForm(prev => ({
-                                      ...prev,
-                                      skills: prev.skills.filter(s => s !== skill)
-                                    }));
-                                  }}
-                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
-                                >
-                                  <span className="sr-only">Remove</span>
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex rounded-md shadow-sm">
-                            <input
-                              type="text"
-                              value={certificateForm.newSkill}
-                              onChange={(e) => {
-                                setCertificateForm(prev => ({
-                                  ...prev,
-                                  newSkill: e.target.value
-                                }));
-                              }}
-                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                                } focus:ring-1 focus:outline-none text-sm`}
-                              placeholder="Add skill"
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleAddNew();
-                                }
-                              }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (certificateForm.newSkill.trim() && !certificateForm.skills.includes(certificateForm.newSkill.trim())) {
-                                  setCertificateForm(prev => ({
-                                    ...prev,
-                                    skills: [...prev.skills, prev.newSkill.trim()],
-                                    newSkill: ""
-                                  }));
-                                }
-                              }}
-                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
-                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                                } text-sm font-medium`}
-                            >
-                              Add
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Blog Post Specific Fields */}
-                    {activeTab === 'blog' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Slug*
-                          </label>
-                          <input
-                            type="text"
-                            value={blogPostForm.slug}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, slug: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Status*
-                          </label>
-                          <select
-                            value={blogPostForm.status}
-                            onChange={(e) => setBlogPostForm({
-                              ...blogPostForm,
-                              status: e.target.value as 'draft' | 'published'
-                            })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          >
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                          </select>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            checked={blogPostForm.published}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, published: e.target.checked })}
-                            className={`h-4 w-4 rounded ${isDeveloper
-                              ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
-                              : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
-                              } focus:ring-2`}
-                          />
-                          <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Published
-                          </label>
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Read Time (min)
-                          </label>
-                          <input
-                            type="number"
-                            value={blogPostForm.read_time}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, read_time: parseInt(e.target.value) || 5 })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            min="1"
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Cover Image URL
-                          </label>
-                          <input
-                            type="text"
-                            value={blogPostForm.cover_image || ''}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, cover_image: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Excerpt
-                          </label>
-                          <textarea
-                            value={blogPostForm.excerpt || ''}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, excerpt: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            rows={2}
-                          />
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Tags
-                          </label>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {blogPostForm.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
-                                  ? 'bg-gray-700 text-gray-300'
-                                  : 'bg-gray-100 text-gray-700'
-                                  }`}
-                              >
-                                {tag}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setBlogPostForm(prev => ({
-                                      ...prev,
-                                      tags: prev.tags.filter(t => t !== tag)
-                                    }));
-                                  }}
-                                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
-                                >
-                                  <span className="sr-only">Remove</span>
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                          <div className="flex rounded-md shadow-sm">
-                            <input
-                              type="text"
-                              value={blogPostForm.newTag}
-                              onChange={(e) => {
-                                setBlogPostForm(prev => ({
-                                  ...prev,
-                                  newTag: e.target.value
-                                }));
-                              }}
-                              className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
-                                ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                                : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                                } focus:ring-1 focus:outline-none text-sm`}
-                              placeholder="Add tag"
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleAddNew();
-                                }
-                              }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (blogPostForm.newTag.trim() && !blogPostForm.tags.includes(blogPostForm.newTag.trim())) {
-                                  setBlogPostForm(prev => ({
-                                    ...prev,
-                                    tags: [...prev.tags, prev.newTag.trim()],
-                                    newTag: ""
-                                  }));
-                                }
-                              }}
-                              className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
-                                ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
-                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                                } text-sm font-medium`}
-                            >
-                              Add
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Content*
-                          </label>
-                          <textarea
-                            value={blogPostForm.content || ''}
-                            onChange={(e) => setBlogPostForm({ ...blogPostForm, content: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            rows={6}
-                            required
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Testimonial Specific Fields */}
-                    {activeTab === 'testimonials' && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Client Name*
-                          </label>
-                          <input
-                            type="text"
-                            value={testimonialForm.author_name || ''}
-                            onChange={(e) => setTestimonialForm({ ...testimonialForm, author_name: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Client Position
-                          </label>
-                          <input
-                            type="text"
-                            value={testimonialForm.author_title || ''}
-                            onChange={(e) => setTestimonialForm({ ...testimonialForm, author_title: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Rating*
-                          </label>
-                          <div className="flex items-center space-x-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <button
-                                key={star}
-                                type="button"
-                                onClick={() => setTestimonialForm({
-                                  ...testimonialForm,
-                                  rating: star
-                                })}
-                                className="focus:outline-none"
-                              >
-                                <Star
-                                  className={`h-5 w-5 ${star <= (testimonialForm.rating || 0)
-                                    ? isDeveloper
-                                      ? 'text-yellow-400 fill-yellow-400'
-                                      : 'text-yellow-500 fill-yellow-500'
-                                    : 'text-gray-300 dark:text-gray-600'
-                                    }`}
-                                />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Status*
-                          </label>
-                          <select
-                            value={testimonialForm.status || 'pending'}
-                            onChange={(e) => setTestimonialForm({
-                              ...testimonialForm,
-                              status: e.target.value as 'pending' | 'approved'
-                            })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            required
-                          >
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                          </select>
-                        </div>
-
-                        <div className="md:col-span-2">
-                          <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Feedback*
-                          </label>
-                          <textarea
-                            value={testimonialForm.feedback || ''}
-                            onChange={(e) => setTestimonialForm({ ...testimonialForm, feedback: e.target.value })}
-                            className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
-                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
-                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
-                              } focus:ring-1 focus:outline-none`}
-                            rows={3}
-                            required
-                          />
-                        </div>
-                      </div>
-                    )}
+                      }}
+                      className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                        ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                        : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                        } focus:ring-1 focus:outline-none`}
+                      required
+                    />
                   </div>
 
-                  <div className="flex justify-end space-x-3 mt-6">
+                  {/* Projects Specific Fields */}
+                  {activeTab === 'projects' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Status*
+                        </label>
+                        <select
+                          value={projectForm.status}
+                          onChange={(e) => setProjectForm({
+                            ...projectForm,
+                            status: e.target.value as 'planned' | 'in-progress' | 'completed'
+                          })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        >
+                          <option value="planned">Planned</option>
+                          <option value="in-progress">In Progress</option>
+                          <option value="completed">Completed</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Category*
+                        </label>
+                        <select
+                          value={projectForm.category}
+                          onChange={(e) => setProjectForm({
+                            ...projectForm,
+                            category: e.target.value as 'personal' | 'aialchemist' | 'vasiliades'
+                          })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        >
+                          <option value="personal">Personal</option>
+                          <option value="aialchemist">AIALCHEMIST</option>
+                          <option value="vasiliades">VASILIADES</option>
+                        </select>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={projectForm.featured}
+                          onChange={(e) => setProjectForm({ ...projectForm, featured: e.target.checked })}
+                          className={`h-4 w-4 rounded ${isDeveloper
+                            ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                            : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                            } focus:ring-2`}
+                        />
+                        <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Featured
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Image URL
+                        </label>
+                        <input
+                          type="text"
+                          value={projectForm.image_url || ''}
+                          onChange={(e) => setProjectForm({ ...projectForm, image_url: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          GitHub URL
+                        </label>
+                        <input
+                          type="text"
+                          value={projectForm.github_url || ''}
+                          onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Demo URL
+                        </label>
+                        <input
+                          type="text"
+                          value={projectForm.demo_url || ''}
+                          onChange={(e) => setProjectForm({ ...projectForm, demo_url: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Description*
+                        </label>
+                        <textarea
+                          value={projectForm.description}
+                          onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          rows={3}
+                          required
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Long Description
+                        </label>
+                        <textarea
+                          value={projectForm.long_description || ''}
+                          onChange={(e) => setProjectForm({ ...projectForm, long_description: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          rows={3}
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Technologies*
+                        </label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {projectForm.technologies.map((tech) => (
+                            <span
+                              key={tech}
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
+                                ? 'bg-gray-700 text-gray-300'
+                                : 'bg-gray-100 text-gray-700'
+                                }`}
+                            >
+                              {tech}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setProjectForm(prev => ({
+                                    ...prev,
+                                    technologies: prev.technologies.filter(t => t !== tech)
+                                  }));
+                                }}
+                                className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
+                              >
+                                <span className="sr-only">Remove</span>
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex rounded-md shadow-sm">
+                          <input
+                            type="text"
+                            value={projectForm.newTech}
+                            onChange={(e) => {
+                              setProjectForm(prev => ({
+                                ...prev,
+                                newTech: e.target.value
+                              }));
+                            }}
+                            className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none text-sm`}
+                            placeholder="Add technology"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddNew();
+                              }
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (projectForm.newTech.trim() && !projectForm.technologies.includes(projectForm.newTech.trim())) {
+                                setProjectForm(prev => ({
+                                  ...prev,
+                                  technologies: [...prev.technologies, prev.newTech.trim()],
+                                  newTech: ""
+                                }));
+                              }
+                            }}
+                            className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                              ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                              : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                              } text-sm font-medium`}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Certificate Specific Fields */}
+                  {activeTab === 'certificates' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Organization*
+                        </label>
+                        <input
+                          type="text"
+                          value={certificateForm.organization}
+                          onChange={(e) => setCertificateForm({ ...certificateForm, organization: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Issue Date*
+                        </label>
+                        <input
+                          type="date"
+                          value={certificateForm.issue_date ? new Date(certificateForm.issue_date).toISOString().split('T')[0] : ''}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const date = new Date(e.target.value);
+                              setCertificateForm({ ...certificateForm, issue_date: date.toISOString() });
+                            }
+                          }}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Expiry Date
+                        </label>
+                        <input
+                          type="date"
+                          value={certificateForm.expiry_date ? new Date(certificateForm.expiry_date).toISOString().split('T')[0] : ''}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const date = new Date(e.target.value);
+                              setCertificateForm({ ...certificateForm, expiry_date: date.toISOString() });
+                            } else {
+                              setCertificateForm({ ...certificateForm, expiry_date: undefined });
+                            }
+                          }}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={certificateForm.verified}
+                          onChange={(e) => setCertificateForm({ ...certificateForm, verified: e.target.checked })}
+                          className={`h-4 w-4 rounded ${isDeveloper
+                            ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                            : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                            } focus:ring-2`}
+                        />
+                        <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Verified
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Image URL*
+                        </label>
+                        <input
+                          type="text"
+                          value={certificateForm.image_url || ''}
+                          onChange={(e) => setCertificateForm({ ...certificateForm, image_url: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Credential ID
+                        </label>
+                        <input
+                          type="text"
+                          value={certificateForm.credential_id || ''}
+                          onChange={(e) => setCertificateForm({ ...certificateForm, credential_id: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Credential URL
+                        </label>
+                        <input
+                          type="text"
+                          value={certificateForm.credential_url || ''}
+                          onChange={(e) => setCertificateForm({ ...certificateForm, credential_url: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Skills*
+                        </label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {certificateForm.skills.map((skill) => (
+                            <span
+                              key={skill}
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
+                                ? 'bg-gray-700 text-gray-300'
+                                : 'bg-gray-100 text-gray-700'
+                                }`}
+                            >
+                              {skill}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setCertificateForm(prev => ({
+                                    ...prev,
+                                    skills: prev.skills.filter(s => s !== skill)
+                                  }));
+                                }}
+                                className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
+                              >
+                                <span className="sr-only">Remove</span>
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex rounded-md shadow-sm">
+                          <input
+                            type="text"
+                            value={certificateForm.newSkill}
+                            onChange={(e) => {
+                              setCertificateForm(prev => ({
+                                ...prev,
+                                newSkill: e.target.value
+                              }));
+                            }}
+                            className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none text-sm`}
+                            placeholder="Add skill"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddNew();
+                              }
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (certificateForm.newSkill.trim() && !certificateForm.skills.includes(certificateForm.newSkill.trim())) {
+                                setCertificateForm(prev => ({
+                                  ...prev,
+                                  skills: [...prev.skills, prev.newSkill.trim()],
+                                  newSkill: ""
+                                }));
+                              }
+                            }}
+                            className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                              ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                              : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                              } text-sm font-medium`}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Blog Post Specific Fields */}
+                  {activeTab === 'blog' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Slug*
+                        </label>
+                        <input
+                          type="text"
+                          value={blogPostForm.slug}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, slug: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Status*
+                        </label>
+                        <select
+                          value={blogPostForm.status}
+                          onChange={(e) => setBlogPostForm({
+                            ...blogPostForm,
+                            status: e.target.value as 'draft' | 'published'
+                          })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        >
+                          <option value="draft">Draft</option>
+                          <option value="published">Published</option>
+                        </select>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={blogPostForm.published}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, published: e.target.checked })}
+                          className={`h-4 w-4 rounded ${isDeveloper
+                            ? 'bg-gray-700 border-gray-600 text-green-400 focus:ring-green-400'
+                            : 'bg-white border-gray-300 text-blue-600 focus:ring-blue-500'
+                            } focus:ring-2`}
+                        />
+                        <label className={`text-sm ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Published
+                        </label>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Read Time (min)
+                        </label>
+                        <input
+                          type="number"
+                          value={blogPostForm.read_time}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, read_time: parseInt(e.target.value) || 5 })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          min="1"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Cover Image URL
+                        </label>
+                        <input
+                          type="text"
+                          value={blogPostForm.cover_image || ''}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, cover_image: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Excerpt
+                        </label>
+                        <textarea
+                          value={blogPostForm.excerpt || ''}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, excerpt: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Tags
+                        </label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {blogPostForm.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isDeveloper
+                                ? 'bg-gray-700 text-gray-300'
+                                : 'bg-gray-100 text-gray-700'
+                                }`}
+                            >
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setBlogPostForm(prev => ({
+                                    ...prev,
+                                    tags: prev.tags.filter(t => t !== tag)
+                                  }));
+                                }}
+                                className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-500"
+                              >
+                                <span className="sr-only">Remove</span>
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex rounded-md shadow-sm">
+                          <input
+                            type="text"
+                            value={blogPostForm.newTag}
+                            onChange={(e) => {
+                              setBlogPostForm(prev => ({
+                                ...prev,
+                                newTag: e.target.value
+                              }));
+                            }}
+                            className={`flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md border ${isDeveloper
+                              ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                              : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                              } focus:ring-1 focus:outline-none text-sm`}
+                            placeholder="Add tag"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddNew();
+                              }
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (blogPostForm.newTag.trim() && !blogPostForm.tags.includes(blogPostForm.newTag.trim())) {
+                                setBlogPostForm(prev => ({
+                                  ...prev,
+                                  tags: [...prev.tags, prev.newTag.trim()],
+                                  newTag: ""
+                                }));
+                              }
+                            }}
+                            className={`inline-flex items-center px-3 py-2 rounded-r-md border-l-0 border ${isDeveloper
+                              ? 'bg-green-400/20 text-green-400 border-green-400/30 hover:bg-green-400/30'
+                              : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
+                              } text-sm font-medium`}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Content*
+                        </label>
+                        <textarea
+                          value={blogPostForm.content || ''}
+                          onChange={(e) => setBlogPostForm({ ...blogPostForm, content: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          rows={6}
+                          required
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Testimonial Specific Fields */}
+                  {activeTab === 'testimonials' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Client Name*
+                        </label>
+                        <input
+                          type="text"
+                          value={testimonialForm.author_name || ''}
+                          onChange={(e) => setTestimonialForm({ ...testimonialForm, author_name: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Client Position
+                        </label>
+                        <input
+                          type="text"
+                          value={testimonialForm.author_title || ''}
+                          onChange={(e) => setTestimonialForm({ ...testimonialForm, author_title: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Rating*
+                        </label>
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setTestimonialForm({
+                                ...testimonialForm,
+                                rating: star
+                              })}
+                              className="focus:outline-none"
+                            >
+                              <Star
+                                className={`h-5 w-5 ${star <= (testimonialForm.rating || 0)
+                                  ? isDeveloper
+                                    ? 'text-yellow-400 fill-yellow-400'
+                                    : 'text-yellow-500 fill-yellow-500'
+                                  : 'text-gray-300 dark:text-gray-600'
+                                  }`}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Status*
+                        </label>
+                        <select
+                          value={testimonialForm.status || 'pending'}
+                          onChange={(e) => setTestimonialForm({
+                            ...testimonialForm,
+                            status: e.target.value as 'pending' | 'approved'
+                          })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          required
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="approved">Approved</option>
+                        </select>
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className={`block text-sm font-medium mb-1 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'}`}>
+                          Feedback*
+                        </label>
+                        <textarea
+                          value={testimonialForm.feedback || ''}
+                          onChange={(e) => setTestimonialForm({ ...testimonialForm, feedback: e.target.value })}
+                          className={`w-full px-3 py-2 rounded-lg border ${isDeveloper
+                            ? 'bg-gray-800/50 border-gray-700 text-gray-300 focus:border-green-400 focus:ring-green-400/50'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500/50'
+                            } focus:ring-1 focus:outline-none`}
+                          rows={3}
+                          required
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end space-x-3 mt-6 sticky bottom-0 bg-inherit py-3">
                     <button
                       type="button"
                       onClick={() => setIsFormOpen(false)}

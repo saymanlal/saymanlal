@@ -1,4 +1,3 @@
-// components/layout/header.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -33,7 +32,7 @@ const getNavigation = (isDeveloper: boolean) => [
   },
 ];
 
-export default function Header() {  // Removed the logoUrl prop since we're not using it
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -54,16 +53,15 @@ export default function Header() {  // Removed the logoUrl prop since we're not 
     <>
       <header className={`fixed w-full top-0 z-50 transition-all duration-500 ${
         isDeveloper 
-          ? scrolled 
-            ? 'bg-black/80 backdrop-blur-md border-b border-green-500/20'
-            : 'bg-transparent'
-          : scrolled
-            ? 'bg-white/95 backdrop-blur-md border-b border-gray-200'
-            : 'bg-transparent'
+          ? 'bg-black/95 md:bg-transparent border-b border-green-500/20' // Solid on mobile, transparent on desktop
+          : 'bg-white md:bg-transparent border-b border-gray-200' // Solid on mobile, transparent on desktop
+      } ${
+        // Add scrolled effects only for desktop
+        scrolled ? 'md:backdrop-blur-md ' + (isDeveloper ? 'md:bg-black/80' : 'md:bg-white/95') : ''
       }`}>
         <nav className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - Now just text */}
+            {/* Logo - Shows "Portfolio" on mobile, full name on desktop */}
             <motion.div 
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -77,16 +75,18 @@ export default function Header() {  // Removed the logoUrl prop since we're not 
                 } transition-colors duration-200`}
               >
                 <span className="font-mono">
-                  {isDeveloper ? (
-                    <span className="text-2xl">&lt;CodeChemist/&gt;</span>
-                  ) : (
-                    <span className="text-2xl">Sayman Lal</span>
-                  )}
+                  {/* Mobile - shows "Portfolio" */}
+                  <span className="md:hidden text-2xl">
+                  {isDeveloper ? '<Portfolio/>' : 'Portfolio'}</span>
+                  {/* Desktop - shows full name */}
+                  <span className="hidden md:inline text-2xl">
+                    {isDeveloper ? '<CodeChemist/>' : 'Sayman Lal'}
+                  </span>
                 </span>
               </Link>
             </motion.div>
 
-            {/* Rest of your existing code remains the same... */}
+            {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center space-x-1">
                 {navigation.map((item) => {
@@ -161,6 +161,7 @@ export default function Header() {  // Removed the logoUrl prop since we're not 
             </div>
           </div>
 
+          {/* Mobile Navigation */}
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
@@ -210,6 +211,7 @@ export default function Header() {  // Removed the logoUrl prop since we're not 
         </nav>
       </header>
       
+      {/* Spacer to prevent content from being hidden behind fixed header */}
       <div className="h-20"></div>
     </>
   );
