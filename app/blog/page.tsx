@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/lib/theme-context';
-import { Calendar, Clock, Eye, Heart, Tag, Search, BookOpen } from 'lucide-react';
+import { Calendar, Clock, Search, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 
@@ -18,8 +18,6 @@ interface BlogPost {
   status: 'draft' | 'published';
   tags: string[];
   read_time: number;
-  views: number;
-  likes: number;
   published_at?: string;
   created_at: string;
 }
@@ -30,6 +28,8 @@ export default function BlogPage() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activePost, setActivePost] = useState<BlogPost | null>(null);
+
   const supabase = createClient();
   const isDeveloper = settings.theme === 'developer';
 
@@ -54,25 +54,43 @@ export default function BlogPage() {
     fetchBlogPosts();
   }, [supabase]);
 
-  // Get all unique tags
-  const allTags = Array.from(
-    new Set(blogPosts.flatMap(post => post.tags))
-  );
+  // Close modal on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActivePost(null);
+    };
+    if (activePost) document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [activePost]);
 
-  // Filter posts based on search and tag
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
+  const allTags = Array.from(new Set(blogPosts.flatMap((post) => post.tags)));
+
+  const filteredPosts = blogPosts.filter((post) => {
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesTag = !selectedTag || post.tags.includes(selectedTag);
     return matchesSearch && matchesTag && post.published;
   });
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
+
+  // helper to build quoted preview ending with ellipsis
+  const buildQuotedPreview = (post: BlogPost) => {
+    const raw =
+      (post.excerpt && post.excerpt.trim()) ||
+      (post.content
+        ? post.content.trim().split('\n')[0].split('.').filter(Boolean)[0]
+        : '');
+    const cleaned = raw.replace(/(^["“”']|["“”']$)/g, '').trim();
+    if (!cleaned) return '';
+    const ending = cleaned.endsWith('...') ? '' : '...';
+    return `"${cleaned}${ending}"`;
   };
 
   if (isLoading) {
@@ -98,30 +116,35 @@ export default function BlogPage() {
         >
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className={`mb-4 ${
-              isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
-            }`}>
+            <h1
+              className={`mb-4 ${
+                isDeveloper ? 'text-green-400 neon-text' : 'text-gray-900'
+              }`}
+            >
               Blog
             </h1>
-            <p className={`text-xl max-w-2xl mx-auto ${
-              isDeveloper ? 'text-gray-300' : 'text-gray-600'
-            }`}>
+            <p
+              className={`text-xl max-w-2xl mx-auto ${
+                isDeveloper ? 'text-gray-300' : 'text-gray-600'
+              }`}
+            >
               Thoughts on AI, Web3, and the future of technology
             </p>
           </div>
 
-          {/* Search and Filter */}
+          {/* Search + Tags */}
           <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* Search Bar */}
             <div className="relative mb-6">
-              <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                isDeveloper ? 'text-gray-400' : 'text-gray-500'
-              }`} />
+              <Search
+                className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
+                  isDeveloper ? 'text-gray-400' : 'text-gray-500'
+                }`}
+              />
               <input
                 type="text"
                 placeholder="Search articles..."
@@ -135,7 +158,6 @@ export default function BlogPage() {
               />
             </div>
 
-            {/* Tags Filter */}
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setSelectedTag(null)}
@@ -145,8 +167,8 @@ export default function BlogPage() {
                       ? 'bg-green-400/20 text-green-400 border border-green-400/30'
                       : 'bg-blue-600 text-white'
                     : isDeveloper
-                      ? 'bg-gray-800/50 text-gray-300 border border-gray-700 hover:bg-green-400/10'
-                      : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-blue-50'
+                    ? 'bg-gray-800/50 text-gray-300 border border-gray-700 hover:bg-green-400/10'
+                    : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-blue-50'
                 }`}
               >
                 All Posts
@@ -161,8 +183,8 @@ export default function BlogPage() {
                         ? 'bg-green-400/20 text-green-400 border border-green-400/30'
                         : 'bg-blue-600 text-white'
                       : isDeveloper
-                        ? 'bg-gray-800/50 text-gray-300 border border-gray-700 hover:bg-green-400/10'
-                        : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-blue-50'
+                      ? 'bg-gray-800/50 text-gray-300 border border-gray-700 hover:bg-green-400/10'
+                      : 'bg-gray-100 text-gray-600 border border-gray-200 hover:bg-blue-50'
                   }`}
                 >
                   {tag}
@@ -171,99 +193,96 @@ export default function BlogPage() {
             </div>
           </motion.div>
 
-          {/* Blog Posts Grid */}
+          {/* Blog Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post, index) => (
-              <motion.article
-                key={post.id}
-                className={`rounded-xl overflow-hidden transition-all duration-300 card-hover ${
-                  isDeveloper 
-                    ? 'glass-dark border-green-500/30' 
-                    : 'bg-white border border-gray-200 shadow-lg'
-                }`}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-              >
-                {/* Cover Image */}
-                {post.cover_image && (
-                  <div className="relative overflow-hidden w-full h-48">
-                    <Image
-                      src={post.cover_image}
-                      alt={post.title}
-                      width={400}
-                      height={200}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  </div>
-                )}
+            {filteredPosts.map((post, index) => {
+              const previewQuoted = buildQuotedPreview(post);
 
-                {/* Content */}
-                <div className="p-6">
-                  {/* Meta Info */}
-                  <div className={`flex items-center space-x-4 text-sm mb-3 ${
-                    isDeveloper ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>
-                        {formatDate(post.published_at || post.created_at)}
-                      </span>
+              return (
+                <motion.article
+                  key={post.id}
+                  className={`rounded-xl overflow-hidden transition-all duration-300 card-hover ${
+                    isDeveloper
+                      ? 'glass-dark border-green-500/30'
+                      : 'bg-white border border-gray-200 shadow-lg'
+                  }`}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.06 }}
+                  whileHover={{ y: -5 }}
+                >
+                  {/* Image */}
+                  {post.cover_image && (
+                    <div className="relative overflow-hidden w-full h-48">
+                      <Image
+                        src={post.cover_image}
+                        alt={post.title}
+                        width={400}
+                        height={200}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{post.read_time} min read</span>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <div
+                      className={`flex items-center space-x-4 text-sm mb-3 ${
+                        isDeveloper ? 'text-gray-400' : 'text-gray-600'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>
+                          {formatDate(post.published_at || post.created_at)}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{post.read_time} min read</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Title */}
-                  <h2 className={`text-xl font-bold mb-3 line-clamp-2 ${
-                    isDeveloper ? 'text-green-400' : 'text-gray-900'
-                  }`}>
-                    {post.title}
-                  </h2>
+                    <h2
+                      className={`text-xl font-bold mb-2 ${
+                        isDeveloper ? 'text-green-400' : 'text-gray-900'
+                      }`}
+                    >
+                      {post.title}
+                    </h2>
 
-                  {/* Excerpt */}
-                  <p className={`mb-4 line-clamp-3 ${
-                    isDeveloper ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                    {post.excerpt}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${
-                          isDeveloper
-                            ? 'bg-gray-800/50 text-gray-300 border border-gray-700'
-                            : 'bg-gray-100 text-gray-700 border border-gray-200'
+                    {/* Italic quoted preview (first line) */}
+                    {previewQuoted && (
+                      <p
+                        className={`italic text-sm mb-3 ${
+                          isDeveloper ? 'text-gray-400' : 'text-gray-600'
                         }`}
                       >
-                        <Tag className="h-3 w-3 mr-1" />
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                        {previewQuoted}
+                      </p>
+                    )}
 
-                  {/* Stats */}
-                  <div className={`flex items-center justify-between text-sm ${
-                    isDeveloper ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-1">
-                        <Eye className="h-4 w-4" />
-                        <span>{post.views.toLocaleString()}</span>
+                    {/* Tags shown inside the card */}
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        {post.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`px-3 py-1 rounded-md text-xs font-medium ${
+                              isDeveloper
+                                ? 'bg-gray-800 text-gray-300'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Heart className="h-4 w-4" />
-                        <span>{post.likes}</span>
-                      </div>
-                    </div>
+                    )}
+
                     <button
+                      onClick={() => setActivePost(post)}
                       className={`font-medium transition-colors duration-200 ${
                         isDeveloper
                           ? 'text-green-400 hover:text-green-300'
@@ -273,75 +292,81 @@ export default function BlogPage() {
                       Read More →
                     </button>
                   </div>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              );
+            })}
           </div>
-
-          {/* Empty State */}
-          {filteredPosts.length === 0 && (
-            <motion.div
-              className="text-center py-16"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className={`text-6xl mb-4 ${isDeveloper ? 'text-green-400' : 'text-gray-400'}`}>
-                📝
-              </div>
-              <h3 className={`text-xl font-semibold mb-2 ${
-                isDeveloper ? 'text-green-400' : 'text-gray-900'
-              }`}>
-                No articles found
-              </h3>
-              <p className={`${isDeveloper ? 'text-gray-300' : 'text-gray-600'}`}>
-                Try adjusting your search or filter criteria.
-              </p>
-            </motion.div>
-          )}
-
-          {/* Newsletter Signup */}
-          <motion.div
-            className={`mt-16 p-8 rounded-xl text-center ${
-              isDeveloper 
-                ? 'glass-dark border-green-500/30' 
-                : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200'
-            }`}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <h3 className={`text-2xl font-bold mb-4 ${
-              isDeveloper ? 'text-green-400' : 'text-gray-900'
-            }`}>
-              Stay Updated
-            </h3>
-            <p className={`mb-6 max-w-2xl mx-auto ${
-              isDeveloper ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              Get notified when I publish new articles about AI, Web3, and cutting-edge technology.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className={`flex-1 px-4 py-3 rounded-lg border transition-all duration-200 ${
-                  isDeveloper
-                    ? 'bg-gray-800/50 border-gray-600 text-green-400 placeholder-gray-400 focus:border-green-400'
-                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                }`}
-              />
-              <button className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                isDeveloper
-                  ? 'bg-green-400/20 text-green-400 border border-green-400/30 hover:bg-green-400/30'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}>
-                Subscribe
-              </button>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
+
+      {/* Overlay Modal */}
+      <AnimatePresence>
+        {activePost && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md px-4 py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActivePost(null)} // close when clicking backdrop
+          >
+            <motion.div
+              className={`relative w-full max-w-5xl max-h-[90vh] rounded-xl overflow-hidden shadow-xl ${
+                isDeveloper ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'
+              }`}
+              initial={{ y: 30, scale: 0.98, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 30, scale: 0.98, opacity: 0 }}
+              transition={{ duration: 0.28 }}
+              onClick={(e) => e.stopPropagation()} // prevent backdrop close
+              role="dialog"
+              aria-modal="true"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setActivePost(null)}
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/30 text-white hover:bg-black/50 transition"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Modal content */}
+              <div className="h-full overflow-y-auto">
+                <div className="mx-auto max-w-3xl p-8">
+                  <h1
+                    className={`text-2xl font-bold mb-6 ${
+                      isDeveloper ? 'text-green-400' : 'text-gray-900'
+                    }`}
+                  >
+                    {activePost.title}
+                  </h1>
+
+                  {activePost.cover_image && (
+                    <div className="w-full mb-6 rounded overflow-hidden">
+                      <Image
+                        src={activePost.cover_image}
+                        alt={activePost.title}
+                        width={1200}
+                        height={600}
+                        className="w-full h-auto object-cover rounded"
+                      />
+                    </div>
+                  )}
+
+                  <div
+                    className={`prose prose-lg max-w-none ${
+                      isDeveloper ? 'prose-invert prose-green' : 'prose-blue'
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: activePost.content }}
+                  />
+
+                  <div className="h-8" />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
