@@ -1,50 +1,28 @@
 {
   "name": "Sayman Lal",
-  "alias": "CodeChemist",
-  "title": "AI Developer & Explorer",
+  "alias": "Student",
+  "title": "Full Stack Developer & AI Explorer",
   "bio": "AI & Web3 Developer, Author, and emerging Entrepreneur. I create intelligent solutions that bridge the gap between cutting-edge technology and real-world applications.",
   "email": "buisnesssayman@gmail.com",
   "phone": "+91 91793 87285",
   "location": "Jabalpur(M.P.), India",
   "website": "https://worksofsayman.vercel.app",
   "imageUrl": "/sayman.png",
-  "resumeUrl": "https://drive.google.com/file/d/152hoVgvoqcAuEvq2JpKMdXzmWS7v8AjB/view?usp=sharing",
+  "resumeUrl": "https://drive.google.com/file/d/1OOznUxyRQzp8D3WzGhQxWMDtVBm9xies/view?usp=drive_link",
   "socials": [
-    {
-      "platform": "GitHub",
-      "url": "https://github.com/worksofsayman",
-      "icon": "github",
-      "color": "#333"
-    },
-    {
-      "platform": "Twitter",
-      "url": "https://x.com/worksofsayman",
-      "icon": "twitter",
-      "color": "#1DA1F2"
-    },
-    {
-      "platform": "LinkedIn",
-      "url": "https://linkedin.com/in/saymanlal",
-      "icon": "linkedin",
-      "color": "#0077B5"
-    },
-    {
-      "platform": "Dev.to",
-      "url": "https://dev.to/worksofsayman",
-      "icon": "dev",
-      "color": "#0A0A23"
-    },
-    {
-      "platform": "Medium",
-      "url": "https://medium.com/@worksofsayman",
-      "icon": "medium",
-      "color": "#00AB6C"
-    },
-    {
-      "platform": "CodeChef",
-      "url": "https://codechef.com/users/worksofsayman",
-      "icon": "code",
-      "color": "#5B4638"
-    }
+    { "platform": "GitHub", "url": "https://github.com/worksofsayman", "icon": "github", "color": "#333" },
+    { "platform": "Twitter", "url": "https://x.com/worksofsayman", "icon": "twitter", "color": "#1DA1F2" },
+    { "platform": "LinkedIn", "url": "https://linkedin.com/in/saymanlal", "icon": "linkedin", "color": "#0077B5" },
+    { "platform": "Dev.to", "url": "https://dev.to/worksofsayman", "icon": "dev", "color": "#0A0A23" },
+    { "platform": "Medium", "url": "https://medium.com/@worksofsayman", "icon": "medium", "color": "#00AB6C" },
+    { "platform": "CodeChef", "url": "https://codechef.com/users/worksofsayman", "icon": "codechef", "color": "#5B4638" },
+    { "platform": "Codeforces", "url": "https://codeforces.com/profile/worksofsayman", "icon": "codeforces", "color": "#1F8ACB" },
+    { "platform": "HackerRank", "url": "https://www.hackerrank.com/worksofsayman", "icon": "hackerrank", "color": "#2EC866" },
+    { "platform": "Salesforce", "url": "https://trailblazer.me/id/worksofsayman", "icon": "salesforce", "color": "#1798C1" },
+    { "platform": "HackTheBox", "url": "https://www.hackthebox.eu/home/users/profile/123456", "icon": "hackthebox", "color": "#FF6C37" },
+    { "platform": "Devfolio", "url": "https://devfolio.co/users/worksofsayman", "icon": "devfolio", "color": "#02A9F4" },
+    { "platform": "Devpost", "url": "https://devpost.com/worksofsayman", "icon": "devpost", "color": "#333" },
+    { "platform": "Unstop", "url": "https://unstop.com/profile/worksofsayman", "icon": "unstop", "color": "#FF0000" },
+    { "platform": "GFG", "url": "https://auth.geeksforgeeks.org/user/worksofsayman", "icon": "gfg", "color": "#2F9C0A" }
   ]
 }

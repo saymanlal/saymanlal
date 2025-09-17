@@ -65,11 +65,24 @@ export default function BlogPage() {
 
   const allTags = Array.from(new Set(blogPosts.flatMap((post) => post.tags)));
 
+  // Utility to strip HTML tags for search
+  const stripHTML = (html: string) => html.replace(/<[^>]*>?/gm, '');
+
   const filteredPosts = blogPosts.filter((post) => {
+    const lowerSearch = searchTerm.toLowerCase().trim();
+
+    const titleText = stripHTML(post.title).toLowerCase();
+    const excerptText = post.excerpt ? stripHTML(post.excerpt).toLowerCase() : '';
+    const contentText = post.content ? stripHTML(post.content).toLowerCase() : '';
+
     const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
+      lowerSearch === '' ||
+      titleText.includes(lowerSearch) ||
+      excerptText.includes(lowerSearch) ||
+      contentText.includes(lowerSearch);
+
     const matchesTag = !selectedTag || post.tags.includes(selectedTag);
+
     return matchesSearch && matchesTag && post.published;
   });
 
@@ -80,12 +93,11 @@ export default function BlogPage() {
       day: 'numeric',
     });
 
-  // helper to build quoted preview ending with ellipsis
   const buildQuotedPreview = (post: BlogPost) => {
     const raw =
       (post.excerpt && post.excerpt.trim()) ||
       (post.content
-        ? post.content.trim().split('\n')[0].split('.').filter(Boolean)[0]
+        ? stripHTML(post.content.trim().split('\n')[0].split('.').filter(Boolean)[0])
         : '');
     const cleaned = raw.replace(/(^["“”']|["“”']$)/g, '').trim();
     if (!cleaned) return '';
@@ -249,7 +261,7 @@ export default function BlogPage() {
                         isDeveloper ? 'text-green-400' : 'text-gray-900'
                       }`}
                     >
-                      {post.title}
+                      {stripHTML(post.title)}
                     </h2>
 
                     {/* Italic quoted preview (first line) */}
@@ -307,7 +319,7 @@ export default function BlogPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setActivePost(null)} // close when clicking backdrop
+            onClick={() => setActivePost(null)}
           >
             <motion.div
               className={`relative w-full max-w-5xl max-h-[90vh] rounded-xl overflow-hidden shadow-xl ${
@@ -317,11 +329,10 @@ export default function BlogPage() {
               animate={{ y: 0, scale: 1, opacity: 1 }}
               exit={{ y: 30, scale: 0.98, opacity: 0 }}
               transition={{ duration: 0.28 }}
-              onClick={(e) => e.stopPropagation()} // prevent backdrop close
+              onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
             >
-              {/* Close Button */}
               <button
                 onClick={() => setActivePost(null)}
                 className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/30 text-white hover:bg-black/50 transition"
@@ -330,7 +341,6 @@ export default function BlogPage() {
                 <X className="h-5 w-5" />
               </button>
 
-              {/* Modal content */}
               <div className="h-full overflow-y-auto">
                 <div className="mx-auto max-w-3xl p-8">
                   <h1
@@ -338,7 +348,7 @@ export default function BlogPage() {
                       isDeveloper ? 'text-green-400' : 'text-gray-900'
                     }`}
                   >
-                    {activePost.title}
+                    {stripHTML(activePost.title)}
                   </h1>
 
                   {activePost.cover_image && (
