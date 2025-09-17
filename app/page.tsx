@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useTheme } from '../lib/theme-context';
-import { 
+import {
   Github, ExternalLink, Code, Brain, Rocket, Terminal, Zap, Globe,
   Mail, BookOpen, Cpu, Shield, Lock, Database, Network, ChartLine,
   Users, Briefcase, Lightbulb, Award, Clock, Star, Layers, Settings,
@@ -32,12 +32,12 @@ interface Project {
 
 const Counter = ({ value, duration = 2 }: { value: number; duration?: number }) => {
   const [count, setCount] = useState(0);
-  
+
   useEffect(() => {
     let start = 0;
     const end = value;
     const increment = end / (duration * 60);
-    
+
     let current = 0;
     const timer = setInterval(() => {
       current += increment;
@@ -47,7 +47,7 @@ const Counter = ({ value, duration = 2 }: { value: number; duration?: number }) 
       } else {
         setCount(Math.floor(current));
       }
-    }, 1000/60);
+    }, 1000 / 60);
 
     return () => clearInterval(timer);
   }, [value, duration]);
@@ -72,21 +72,21 @@ export default function HomePage() {
   // Fixed variant types
   const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.6, 
-        ease: "easeOut" 
-      } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
     }
   };
 
   const staggerContainer: Variants = {
-    visible: { 
-      transition: { 
-        staggerChildren: 0.1 
-      } 
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
     }
   };
 
@@ -94,9 +94,9 @@ export default function HomePage() {
     hidden: { width: 0 },
     visible: (width: number) => ({
       width: `${width}%`,
-      transition: { 
-        duration: 1.5, 
-        ease: "easeInOut" 
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut"
       }
     })
   };
@@ -579,6 +579,7 @@ export default function HomePage() {
       {/* Featured Projects */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
+          {/* Heading */}
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
@@ -595,8 +596,84 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          {renderFeaturedProjects()}
+          {/* Project Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredProjects.map((project) => (
+              <motion.div
+                key={project.id}
+                className={`relative rounded-xl overflow-hidden shadow-lg flex flex-col justify-between ${isDeveloper ? 'bg-gray-900 border-2 border-green-500/40' : 'bg-white border border-gray-200'}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Featured Badge */}
+                {project.featured && (
+                  <span className="absolute top-3 left-3 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-md z-10">
+                    ★ Featured
+                  </span>
+                )}
 
+                {/* Project Image */}
+                {project.image_url && (
+                  <div className="w-full p-4 flex justify-center items-center bg-gray-50 dark:bg-gray-800">
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="max-w-full h-auto object-contain rounded-md"
+                    />
+                  </div>
+                )}
+
+                {/* Card Content */}
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className={`text-lg font-semibold mb-2 ${isDeveloper ? 'text-green-400 font-mono' : 'text-gray-900'}`}>
+                    {project.title}
+                  </h3>
+
+                  <p className={`text-sm mb-4 ${isDeveloper ? 'text-gray-300' : 'text-gray-700'} break-words`}>
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${isDeveloper ? 'bg-green-400/20 text-green-400 border border-green-400/30' : 'bg-blue-50 text-blue-600 border border-blue-200'}`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* GitHub / Demo Icons */}
+                  <div className="mt-auto flex justify-start space-x-4 pt-2 border-t border-gray-200 dark:border-gray-700">
+                    {project.github_url && (
+                      <a
+                        href={project.github_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:scale-110 transition-transform"
+                      >
+                        <Github className={`h-6 w-6 ${isDeveloper ? 'text-green-400' : 'text-gray-700'} hover:text-blue-500`} />
+                      </a>
+                    )}
+                    {project.demo_url && (
+                      <a
+                        href={project.demo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:scale-110 transition-transform"
+                      >
+                        <ExternalLink className={`h-6 w-6 ${isDeveloper ? 'text-green-400' : 'text-gray-700'} hover:text-blue-500`} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* View All Button */}
           <div className="text-center mt-12">
             <motion.a
               href="/projects"
@@ -610,6 +687,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
 
       {/* Companies Section */}
       <section className={`py-16 px-4 sm:px-6 lg:px-8 ${isDeveloper ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
