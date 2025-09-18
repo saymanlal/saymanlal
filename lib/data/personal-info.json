@@ -10,7 +10,7 @@
   "imageUrl": "/sayman.png",
   "resumeUrl": "https://drive.google.com/file/d/1OOznUxyRQzp8D3WzGhQxWMDtVBm9xies/view?usp=drive_link",
   "socials": [
-    { "platform": "GitHub", "url": "https://github.com/worksofsayman", "icon": "github", "color": "#333" },
+    { "platform": "GitHub", "url": "https://github.com/saymanlal", "icon": "github", "color": "#333" },
     { "platform": "Twitter", "url": "https://x.com/worksofsayman", "icon": "twitter", "color": "#1DA1F2" },
     { "platform": "LinkedIn", "url": "https://linkedin.com/in/saymanlal", "icon": "linkedin", "color": "#0077B5" },
     { "platform": "Dev.to", "url": "https://dev.to/worksofsayman", "icon": "dev", "color": "#0A0A23" },
