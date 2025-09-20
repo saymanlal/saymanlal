@@ -10,7 +10,7 @@ interface ThemeContextType {
 }
 
 const defaultSettings: Settings = {
-  theme: 'developer',
+  theme: 'entrepreneur',
   matrixRain: true,
   animations: true,
   soundEffects: false,
@@ -44,7 +44,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = () => {
     updateSettings({
-      theme: settings.theme === 'developer' ? 'entrepreneur' : 'developer'
+      theme: settings.theme === 'entrepreneur' ? 'developer' : 'entrepreneur'
     });
   };
 
