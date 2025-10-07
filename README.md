@@ -148,9 +148,9 @@ graph LR
 
 ## **📊 GitHub Analytics**
 <div align="center">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=worksofsayman&show_icons=true&theme=radical&include_all_commits=true&count_private=true"/>
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=worksofsayman&layout=compact&langs_count=8&theme=nightowl"/>
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=worksofsayman&theme=radical" alt="worksofsayman" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=saymanlal&show_icons=true&theme=radical&include_all_commits=true&count_private=true"/>
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=nightowl"/>
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=saymanlal&theme=radical" alt="saymanlal" />
 </div>
 
 ---
