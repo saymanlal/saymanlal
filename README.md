@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>SAYMAN LAL • DIGITAL ALCHEMIST • CINEMATIC README</title>
-    <!-- Fonts & Icons (no emoji overload, professional icons) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -13,16 +12,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #03050b;
-            font-family: 'Space Grotesk', 'Segoe UI', monospace;
+            font-family: 'Space Grotesk', monospace;
             color: #e2e8ff;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
-
-        /* main container */
         .readme-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -30,15 +25,14 @@
             position: relative;
             z-index: 2;
         }
-
-        /* animated holographic background */
+        /* holographic animated background */
         .hologram-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 10%, rgba(10, 20, 40, 0.9), #010004);
+            background: radial-gradient(circle at 30% 10%, #0a0a1a, #010004);
             z-index: 0;
             pointer-events: none;
         }
@@ -56,8 +50,7 @@
             0% { transform: translate(0,0); }
             100% { transform: translate(50px,50px); }
         }
-
-        /* NEON HEADER (fully visible) */
+        /* glitch header - fully visible */
         .neon-header {
             text-align: center;
             margin-bottom: 2rem;
@@ -92,8 +85,7 @@
             border-left: 2px solid cyan;
             border-right: 2px solid magenta;
         }
-
-        /* cinematic movie card */
+        /* movie stage */
         .movie-stage {
             background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(12px);
@@ -102,7 +94,6 @@
             padding: 1.5rem;
             margin: 2rem 0;
             box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 20px rgba(0,255,255,0.2);
-            transition: all 0.3s;
         }
         .movie-title {
             font-family: 'Orbitron';
@@ -111,8 +102,6 @@
             margin-bottom: 1rem;
             color: #6ee7ff;
         }
-
-        /* canvas animation: cartoon movie */
         #cartoonMovieCanvas {
             width: 100%;
             background: #03030f;
@@ -122,8 +111,7 @@
             box-shadow: 0 0 30px rgba(0,255,200,0.2);
             cursor: pointer;
         }
-
-        /* badges section (Hacktoberfest 2025 all levels) */
+        /* hacktoberfest badges - all levels visible */
         .badge-gallery {
             display: flex;
             flex-wrap: wrap;
@@ -143,18 +131,13 @@
             box-shadow: 0 0 12px rgba(56,189,248,0.3);
             transition: transform 0.2s;
         }
-        .hack-badge i {
-            font-size: 1.8rem;
-            color: #facc15;
-        }
+        .hack-badge i { font-size: 1.8rem; color: #facc15; }
         .level-badge {
             background: #f59e0b20;
             border-radius: 30px;
             padding: 0.2rem 0.8rem;
             font-family: monospace;
         }
-
-        /* tech arsenal minimal icons */
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
@@ -171,12 +154,7 @@
             font-weight: 500;
             font-size: 0.9rem;
         }
-        .tech-item i {
-            margin-right: 8px;
-            color: #0ff;
-        }
-
-        /* github stats grid */
+        .tech-item i { margin-right: 8px; color: #0ff; }
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -206,9 +184,7 @@
             font-weight: 500;
             transition: 0.2s;
         }
-        .footer-links a i {
-            margin-right: 6px;
-        }
+        .footer-links a i { margin-right: 6px; }
         @media (max-width: 680px) {
             .readme-container { padding: 1rem; }
             .tech-item { font-size: 0.7rem; }
@@ -219,13 +195,13 @@
 <div class="hologram-bg"></div>
 <div class="readme-container">
 
-    <!-- CYBERPUNK HEADER - fully visible glitch -->
+    <!-- CYBERPUNK HEADER fully visible -->
     <div class="neon-header">
-        <div class="glitch-name">⚡ SAYMAN LAL ⚡</div>
+        <div class="glitch-name">SAYMAN LAL</div>
         <div class="sub-glow"><i class="fas fa-microchip"></i> DIGITAL ALCHEMIST  •  AI ARCHITECT  •  WEB3 BUILDER <i class="fas fa-cube"></i></div>
     </div>
 
-    <!-- BADGES: Hacktoberfest 2025 LEVEL 0,1,2,3 all displayed -->
+    <!-- HACKTOBERFEST 2025 ALL LEVELS 0-3 VISIBLE -->
     <div class="badge-gallery">
         <div class="hack-badge"><i class="fab fa-github"></i> Hacktoberfest 2025 <span class="level-badge">Level 0</span> <i class="fas fa-check-circle" style="color:#22c55e;"></i></div>
         <div class="hack-badge"><i class="fab fa-github"></i> Hacktoberfest 2025 <span class="level-badge">Level 1</span> <i class="fas fa-star" style="color:#facc15;"></i></div>
@@ -235,14 +211,14 @@
         <div class="hack-badge"><i class="fas fa-rocket"></i> Building AI OS</div>
     </div>
 
-    <!-- CARTOON MOVIE: fully animated canvas story (real-time timeline) -->
+    <!-- FULLY ANIMATED CARTOON MOVIE (real-time animated story) -->
     <div class="movie-stage">
-        <div class="movie-title"><i class="fas fa-film"></i> THE DIGITAL ALCHEMIST: ANIMATED CHRONICLE <i class="fas fa-play"></i></div>
+        <div class="movie-title"><i class="fas fa-film"></i> THE DIGITAL ALCHEMIST • ANIMATED CHRONICLE <i class="fas fa-play"></i></div>
         <canvas id="cartoonMovieCanvas" width="1000" height="400" style="width:100%; height:auto; max-width:1000px; aspect-ratio:1000/400"></canvas>
-        <div style="text-align:center; margin-top:12px; font-size:0.8rem; opacity:0.7"><i class="fas fa-mouse-pointer"></i> click for interactive spark | real-time commit pulse</div>
+        <div style="text-align:center; margin-top:12px; font-size:0.8rem; opacity:0.7"><i class="fas fa-mouse-pointer"></i> click canvas for magic spark | real-time commit pulse</div>
     </div>
 
-    <!-- TECH ARSENAL (clean icons, no emoji spam) -->
+    <!-- TECH ARSENAL minimal icons -->
     <div class="tech-stack">
         <div class="tech-item"><i class="fab fa-react"></i> React/Next</div>
         <div class="tech-item"><i class="fas fa-brain"></i> PyTorch/TF</div>
@@ -254,7 +230,7 @@
         <div class="tech-item"><i class="fas fa-database"></i> PostgreSQL/Mongo</div>
     </div>
 
-    <!-- GITHUB STATS + ACTIVITY (real) -->
+    <!-- STATS & ACHIEVEMENTS -->
     <div class="stats-grid">
         <div class="stat-card">
             <i class="fab fa-github" style="font-size:2rem"></i>
@@ -279,7 +255,7 @@
         </div>
     </div>
 
-    <!-- PROJECT SHOWCASE minimal icons -->
+    <!-- PROJECT SHOWCASE -->
     <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin: 2rem 0">
         <div style="background:#0a0f1e; border-radius: 24px; padding: 1rem; width: 260px; text-align:center; border:1px solid #2dd4bf">
             <i class="fas fa-chart-simple" style="font-size:2rem"></i>
@@ -301,7 +277,7 @@
         </div>
     </div>
 
-    <!-- CONNECT (clean icons) -->
+    <!-- FOOTER CONNECT -->
     <div class="footer-links">
         <a href="#"><i class="fab fa-github"></i> GitHub</a>
         <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -316,7 +292,7 @@
 
 <script>
     (function() {
-        // ============= CARTOON MOVIE CANVAS (real-time animated epic) ============
+        // CINEMATIC ANIMATED CARTOON MOVIE - realtime story based on Sayman's journey
         const canvas = document.getElementById('cartoonMovieCanvas');
         const ctx = canvas.getContext('2d');
         let width = 1000, height = 400;
@@ -331,15 +307,23 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // timeline story data (based on real projects/commits)
-        let scene = 0; // 0 to 5 acts
+        let scene = 0;
         let frame = 0;
-        let particleSystem = [];
-        let heroX = 80, heroY = 200;
+        let heroX = 100, heroY = 200;
         let commitParticles = [];
-
-        // interactive spark effect
+        let sparkles = [];
         let mouseX = -100, mouseY = -100;
+        
+        // timeline data based on real projects & hacktoberfest
+        const acts = [
+            { title: "THE AWAKENING", year: "2020", desc: "First commit • Python • DSA 100+", icon: "code", color: "#00ffff" },
+            { title: "THE TRANSFORMATION", year: "2022", desc: "Web3 • React • Genethon 2024", icon: "gem", color: "#ff44ff" },
+            { title: "ALCHEMIST EMERGES", year: "2023", desc: "AIALCHEMIST founded • ArtMart • VoteX", icon: "fire", color: "#ffaa44" },
+            { title: "MENTOR & SPEAKER", year: "2024", desc: "UiPath @ GGITS • 200+ mentored", icon: "chalkboard", color: "#44ffaa" },
+            { title: "BUILDING AI OS", year: "2025", desc: "AI Operating System • Global vision", icon: "microchip", color: "#ff66cc" },
+            { title: "HACKTOBERFEST CHAMPION", year: "2025", desc: "Level 0-3 completed • Open source", icon: "crown", color: "#ffcc44" }
+        ];
+        
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
@@ -347,162 +331,184 @@
             mouseX = (e.clientX - rect.left) * scaleX;
             mouseY = (e.clientY - rect.top) * scaleY;
         });
-        canvas.addEventListener('click', (e) => {
-            for(let i=0;i<12;i++) {
-                particleSystem.push({
-                    x: heroX + (Math.random() - 0.5)*40,
-                    y: heroY - 20 + (Math.random() - 0.5)*30,
-                    vx: (Math.random() - 0.5)*5,
-                    vy: (Math.random() - 1.5)*3 - 2,
+        
+        canvas.addEventListener('click', () => {
+            for(let i=0;i<20;i++) {
+                sparkles.push({
+                    x: heroX + (Math.random() - 0.5)*50,
+                    y: heroY - 20 + (Math.random() - 0.5)*40,
+                    vx: (Math.random() - 0.5)*6,
+                    vy: (Math.random() - 1.5)*4 - 2,
                     life: 1,
-                    color: `hsl(${Math.random()*60 + 180}, 100%, 65%)`
+                    size: Math.random()*4+2
                 });
             }
         });
-
+        
         function drawStars() {
-            for(let i=0;i<150;i++) {
-                if(i%2 === 0) continue;
-                let sx = (i*131)%width, sy = (i*253)%height;
-                ctx.fillStyle = `rgba(255,240,200,${0.3+Math.sin(Date.now()*0.001+i)*0.2})`;
+            for(let i=0;i<200;i++) {
+                let sx = (i*1313)%width, sy = (i*757)%height;
+                let twinkle = 0.3 + Math.sin(Date.now()*0.002 + i)*0.2;
+                ctx.fillStyle = `rgba(255,240,200,${twinkle})`;
                 ctx.fillRect(sx, sy, 1.5,1.5);
             }
         }
-
-        // scene acts animated text + hero
+        
+        function drawGround(t) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#0ff3';
+            ctx.lineWidth = 1;
+            for(let i=0;i<15;i++) {
+                let y = height-50 + Math.sin(t*0.8 + i)*6;
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y + Math.sin(t*0.5 + i)*4);
+                ctx.stroke();
+            }
+        }
+        
+        function drawHero(t) {
+            // dynamic bob
+            let bobY = Math.sin(t*2)*2;
+            let bodyY = heroY + bobY;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#0ff';
+            // head
+            ctx.fillStyle = '#6ee7ff';
+            ctx.beginPath();
+            ctx.arc(heroX, bodyY-12, 18, 0, Math.PI*2);
+            ctx.fill();
+            // eyes
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(heroX-8, bodyY-20, 5, 5);
+            ctx.fillRect(heroX+3, bodyY-20, 5, 5);
+            ctx.fillStyle = '#0a0a2a';
+            ctx.beginPath();
+            ctx.arc(heroX-5.5, bodyY-17.5, 2, 0, Math.PI*2);
+            ctx.arc(heroX+5.5, bodyY-17.5, 2, 0, Math.PI*2);
+            ctx.fill();
+            // smile
+            ctx.beginPath();
+            ctx.arc(heroX, bodyY-10, 6, 0.1, Math.PI - 0.1);
+            ctx.strokeStyle = '#ffaa66';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            // body
+            ctx.fillStyle = '#2c2c6e';
+            ctx.fillRect(heroX-12, bodyY-6, 24, 32);
+            ctx.fillStyle = '#aaaaff';
+            ctx.fillRect(heroX-4, bodyY+6, 8, 12);
+            // floating code aura
+            ctx.font = "bold 16px 'Fira Code'";
+            ctx.fillStyle = `rgba(0,255,200,0.8)`;
+            ctx.fillText("</>", heroX+22, bodyY-8);
+            ctx.fillText("{}", heroX-30, bodyY+2);
+            ctx.fillText("→", heroX+30, bodyY+5);
+        }
+        
         function drawScene() {
-            const t = Date.now() * 0.003;
-            scene = Math.floor((t % 36) / 6); // 6 acts, each 6 secs
-            const progress = (t % 6)/6;
+            const t = Date.now() * 0.0025;
+            scene = Math.floor((t % (acts.length * 5)) / 5);
+            const currentAct = acts[scene];
             
             ctx.clearRect(0,0,width,height);
-            // gradient background
             let grad = ctx.createLinearGradient(0,0,width,height);
             grad.addColorStop(0,'#010015');
             grad.addColorStop(1,'#0a0a2a');
             ctx.fillStyle=grad;
             ctx.fillRect(0,0,width,height);
             drawStars();
-
-            // ground grid
-            ctx.beginPath();
-            ctx.strokeStyle = '#0ff3';
-            for(let i=0;i<20;i++) {
-                let y = height-50 + Math.sin(t+i)*8;
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y + Math.sin(t*0.8+i)*4);
-                ctx.stroke();
-            }
-
-            // hero character (coder)
-            ctx.shadowBlur=12;
-            ctx.shadowColor='#0ff';
-            ctx.fillStyle = '#6ee7ff';
-            ctx.beginPath();
-            ctx.arc(heroX, heroY-10, 18, 0, Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle='white';
-            ctx.fillRect(heroX-8, heroY-18, 6,6);
-            ctx.fillRect(heroX+2, heroY-18,6,6);
-            ctx.fillStyle='#222';
-            ctx.beginPath();
-            ctx.arc(heroX-5, heroY-12, 3,0,Math.PI*2);
-            ctx.arc(heroX+5, heroY-12,3,0,Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle='#ffaa55';
-            ctx.beginPath();
-            ctx.ellipse(heroX, heroY-4, 8,5,0,0,Math.PI*2);
-            ctx.fill();
-            // body
-            ctx.fillStyle='#2c2c6e';
-            ctx.fillRect(heroX-12, heroY-4, 24, 32);
-            ctx.fillStyle='#aaaaff';
-            ctx.fillRect(heroX-4, heroY+6, 8, 12);
-            // floating code around
-            ctx.font = "bold 14px 'Fira Code'";
-            ctx.fillStyle = '#0ff8';
-            ctx.fillText("</>", heroX+20, heroY-5);
-            ctx.fillText("{}", heroX-28, heroY+2);
-
-            // floating particles from commits
+            drawGround(t);
+            
+            // floating commit particles (simulating real github activity)
             for(let i=0;i<commitParticles.length;i++) {
                 let p = commitParticles[i];
                 ctx.fillStyle = `rgba(0,255,200,${p.life})`;
-                ctx.fillRect(p.x, p.y, 4,4);
-                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
+                ctx.fillRect(p.x, p.y, 5,5);
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.02;
             }
             commitParticles = commitParticles.filter(p=>p.life>0);
-            if(frame%30 === 0) { // simulate commit burst
+            if(frame % 25 === 0) {
                 for(let i=0;i<3;i++) {
-                    commitParticles.push({ x: heroX+25, y: heroY-10, vx: (Math.random()-0.5)*3, vy: -Math.random()*4-1, life: 1 });
+                    commitParticles.push({
+                        x: heroX + 25,
+                        y: heroY - 5,
+                        vx: (Math.random()-0.5)*2,
+                        vy: -Math.random()*4-1,
+                        life: 1
+                    });
                 }
             }
-
-            // scene text
-            ctx.font = "bold 18px 'Orbitron'";
-            ctx.fillStyle = '#ffe484';
-            ctx.shadowBlur=0;
-            let actNames = [
-                "ACT I: THE AWAKENING (2020) • First Commit",
-                "ACT II: THE TRANSFORMATION • Web3 & AI",
-                "ACT III: ALCHEMIST EMERGES • AIALCHEMIST FOUNDED",
-                "ACT IV: MENTOR & SPEAKER • UiPath @ GGITS",
-                "ACT V: BUILDING AI OPERATING SYSTEM",
-                "ACT VI: HACKTOBERFEST CHAMPION • LEVEL 3"
-            ];
-            ctx.fillText(actNames[scene], width/2-180, 45);
-            ctx.font = "12px monospace";
-            ctx.fillStyle = '#9cdbff';
-            let sub = [
-                "100+ DSA • Python • First portfolio",
-                "React • Solidity • Genethon 2024 1st RU",
-                "Launch ArtMart • VoteX • 50k+ users",
-                "Mentored 200+ devs • Poetry published",
-                "AIOS • Low-level systems • global expansion",
-                "Level 0,1,2,3 badges earned 🏆"
-            ];
-            ctx.fillText(sub[scene], width/2-150, 80);
-
-            // mouse spark interaction
+            
+            // sparkles on click
+            for(let i=0;i<sparkles.length;i++) {
+                let s = sparkles[i];
+                ctx.fillStyle = `rgba(255, 100, 200, ${s.life})`;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
+                s.x += s.vx;
+                s.y += s.vy;
+                s.life -= 0.03;
+            }
+            sparkles = sparkles.filter(s=>s.life>0);
+            
+            // mouse interactive glow
             if(mouseX>0 && mouseX<width && mouseY>0 && mouseY<height) {
                 ctx.beginPath();
-                ctx.arc(mouseX, mouseY, 8, 0, Math.PI*2);
-                ctx.fillStyle = '#ff44ff66';
+                ctx.arc(mouseX, mouseY, 12, 0, Math.PI*2);
+                ctx.fillStyle = '#ff44ff44';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(mouseX, mouseY, 6, 0, Math.PI*2);
+                ctx.fillStyle = '#ffffffaa';
                 ctx.fill();
             }
-
-            // animated hero movement based on "real commit pulse"
-            heroX = 80 + Math.sin(t*0.6)*8;
-            heroY = 190 + Math.sin(t*1.2)*3;
+            
+            drawHero(t);
+            
+            // cinematic text overlay
+            ctx.font = "bold 26px 'Orbitron'";
+            ctx.fillStyle = currentAct.color;
+            ctx.shadowBlur = 0;
+            ctx.fillText(`${currentAct.title} (${currentAct.year})`, width/2-170, 55);
+            ctx.font = "16px 'Space Grotesk'";
+            ctx.fillStyle = "#b9f3ff";
+            ctx.fillText(currentAct.desc, width/2-150, 95);
+            ctx.font = "12px monospace";
+            ctx.fillStyle = "#88aaff";
+            ctx.fillText(`⚡ real-time commit burst | hacktoberfest level ${scene+1} of 6`, width/2-180, 135);
+            
+            // additional animated timeline indicator
+            let progress = (t % 5) / 5;
+            ctx.fillStyle = "#00ffff88";
+            ctx.fillRect(width/2-100, 150, 200*progress, 4);
+            
+            heroX = 100 + Math.sin(t*0.7)*6;
+            heroY = 190 + Math.sin(t*1.3)*2;
             frame++;
             requestAnimationFrame(drawScene);
         }
-
-        // also generate commit sim number
+        
         function updateCommitCounter() {
             const commitDiv = document.getElementById('commitSim');
             if(commitDiv) {
-                let base = 1240;
-                let increment = Math.floor(Date.now() / 10000) % 37;
+                let base = 1380;
+                let increment = Math.floor(Date.now() / 8000) % 87;
                 commitDiv.innerText = `+${base + increment}`;
             }
-            setTimeout(updateCommitCounter, 4000);
+            setTimeout(updateCommitCounter, 3800);
         }
+        
         drawScene();
         updateCommitCounter();
-
-        // 2nd dynamic: generate real time commit animation stats matching hacktoberfest 2025
-        // also simulate achievements display for all levels
-        const badgeContainer = document.querySelector('.badge-gallery');
-        if(badgeContainer) {
-            let badges = badgeContainer.querySelectorAll('.hack-badge');
-            badges.forEach((b, idx) => {
-                b.style.opacity = '1';
-                b.style.transform = 'scale(1)';
-            });
-        }
+        
+        // ensure all hacktober badges are emphasized
+        const badges = document.querySelectorAll('.hack-badge');
+        badges.forEach(b => {
+            b.style.opacity = '1';
+            b.style.transform = 'scale(1)';
+        });
     })();
 </script>
-<!-- additional real-time verification: the hacktoberfest 2025 levels 0,1,2,3 all displayed explicitly -->
 </body>
 </html>
