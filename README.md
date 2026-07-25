@@ -28,7 +28,7 @@
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-0F172A?style=for-the-badge&logo=vercel&logoColor=white)](https://worksofsayman.vercel.app)
 [![X](https://img.shields.io/badge/X-@saymanlal-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/saymanlal)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/worksofsayman)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/saymanlal)
 
 📩 [Email](mailto:businesssayman@gmail.com) · 💬 [WhatsApp](https://wa.me/+919179387285?text=Hi%20Sayman!%20I%20saw%20your%20GitHub%20profile)
 
