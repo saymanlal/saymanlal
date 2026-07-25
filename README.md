@@ -2,56 +2,29 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,100:06B6D4&height=200&section=header&text=Sayman%20Lal&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=Blockchain%20Infrastructure%20Researcher%20%7C%20Builder%20%7C%20Founder&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
 
-</div>
+```
+
+┌──(sayman㉿kali)-[~]
+└─$ whoami
+
+███████╗ █████╗ ██╗   ██╗███╗   ███╗ █████╗ ███╗   ██╗
+██╔════╝██╔══██╗╚██╗ ██╔╝████╗ ████║██╔══██╗████╗  ██║
+███████╗███████║ ╚████╔╝ ██╔████╔██║███████║██╔██╗ ██║
+╚════██║██╔══██║  ╚██╔╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║
+███████║██║  ██║   ██║   ██║ ╚═╝ ██║██║  ██║██║ ╚████║
+╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+
+  > AI Solutions Engineer @Cybokrafts
+  > Building SAYMAN — a self-hosted Layer-1 blockchain
+  > Based in Jabalpur, Madhya Pradesh, India
+
+└─$ ▊
+
+```
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Co-Founder+%40MPdao+%28EthMP%29;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
 
 <br/>
-
-<table>
-<tr>
-<td width="40%" valign="top">
-
-```
-..........:-*%#%@%##%%%%####%##=..................
-...........:-*%#%@###%%@@@@@@@%%#+=:..............
-............:-#%#%@#%@@@@@@@%%@@@@@#-.............
-.............:=%%#@@@@@@@@@@@@@@@@@@@#=:..........
-..............:=%#%@@@@@@@@@@@@@@@@@@@@*:.........
-...............-+%@@@@@@@@%%%%%##*%@@@@@-.........
-................-+@@@@%%%%%#+=+##*#@@@@#:.........
-................:-+%@#=+++++==**#*+%@%+:....... ..
-.................:-+#+--::-=--=---=##-............
-..................:=**+===+*+*+---=*- ............
-.........:.........:+*+++***++**++*=.......... ...
-....................:+**+======+**#*:.............
-.....................++##*++++++*%%*=.............
-................ .::=+=+*#%@%#*+#%%#*-....  ......
-............ .:-+*++++==+++**+=*@%%@@@%#**+:. ....
-....... ..:-+#%@@*=======++===+%@%@@@@%%%@@%#*+-:.
-......-=*%@@@@@%%%%*+===-=+++*%%%%%@@%#%%%%%@@@@%*
-:::-*%@@@@@%%%%%%%%%%%%##%%%%%%####%%%#%%%%%@@@@@@
-==#@@@@%%%%%%%%%%%%%%%%%%%%##%%####%%%%%@%%@@@@@@@
-:+@@@@@@%%%%%%%%@@%%%%%##%%#%%####%%%##%@%%@@@@@@@
-:#@@@@%@@@%%%%%@%%%%%%%##%#%%%%%%%%####@##%@@@@@@@
--@@@@@@@@@@%%%@%%%%%%%%##%%%%%%%%%%###%%-+@@@@@@@@
-+@@%@@@@@%@@%@%%%%%%%%%%%%%%%%%%%%%%%%@#=%@##%@@@@
-```
-
-</td>
-<td width="60%" valign="top">
-
-```yaml
-name: Sayman Lal
-role: AI Solutions Engineer @Cybokrafts
-based_in: Jabalpur, Madhya Pradesh, India
-building:
-  - MPDAO (@MPdao_)
-  - Veridion (@Veridion_social)
-  - SAYMAN — self-built Layer-1 blockchain
-inspired_by: [Ratan Tata, Nikola Tesla]
-vision: Atmanirbhar Bharat
-```
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=17&duration=2800&pause=900&color=06B6D4&vCenter=true&width=420&lines=Building+SAYMAN+%E2%80%94+a+Layer-1+Blockchain;Co-Founder+%40MPdao+%28EthMP%29;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-0F172A?style=for-the-badge&logo=vercel&logoColor=white)](https://worksofsayman.vercel.app)
 [![X](https://img.shields.io/badge/X-@saymanlal-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/saymanlal)
@@ -61,9 +34,23 @@ vision: Atmanirbhar Bharat
 
 <img src="https://komarev.com/ghpvc/?username=saymanlal&label=Profile+Views&color=06B6D4&style=for-the-badge" alt="Profile Views"/>
 
-</td>
-</tr>
-</table>
+</div>
+
+<br/>
+
+### <img src="https://img.shields.io/badge/-About-06B6D4?style=flat-square&logo=aboutdotme&logoColor=white" height="24"/>
+
+```yaml
+name: Sayman Lal
+role: AI Solutions Engineer @Cybokrafts
+based_in: Jabalpur, Madhya Pradesh, India
+building:
+  - MPDAO (@MPdao_) — growing Web3 across Madhya Pradesh
+  - Veridion (@Veridion_social)
+  - SAYMAN — a self-built Layer-1 blockchain
+inspired_by: [Ratan Tata, Nikola Tesla]
+vision: Atmanirbhar Bharat — indigenous, self-reliant tech infrastructure
+```
 
 <br/>
 
@@ -172,8 +159,14 @@ OpenPulse
 
 <div align="center">
 
-<img height="165em" src="https://github-readme-stats.vercel.app/api?username=saymanlal&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&cache_seconds=86400" />
-<img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=tokyonight&hide_border=true&bg_color=0D1117&cache_seconds=86400" />
+<picture>
+  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/stats.svg">
+  <img height="165em" src="https://github-stats-extended.vercel.app/api?username=saymanlal&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" />
+</picture>
+<picture>
+  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/top-langs.svg">
+  <img height="165em" src="https://github-stats-extended.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=tokyonight&hide_border=true&bg_color=0D1117" />
+</picture>
 
 <img src="https://streak-stats.demolab.com?user=saymanlal&theme=tokyonight&hide_border=true&background=0D1117" alt="GitHub Streak"/>
 
@@ -181,7 +174,7 @@ OpenPulse
 
 </div>
 
-<sub>Dropped <code>count_private</code> and <code>include_all_commits</code> from the stats card — those two flags trigger extra GitHub API calls on the shared instance and were almost certainly why those two cards kept showing blank. Added <code>cache_seconds</code> so results stay cached instead of re-fetching (and failing) on every view.</sub>
+<sub>The two cards above were broken because <code>github-readme-stats.vercel.app</code> — the whole public instance, not just your query — is paused by its own maintainers (confirmed <code>503 DEPLOYMENT_PAUSED</code>, tracked in their repo's issues). No parameter fixes that. Switched the live fallback to <code>github-stats-extended.vercel.app</code>, a separately-hosted, fully-compatible mirror that's actually up. Primary source is now self-hosted: <code>.github/workflows/profile-cards.yml</code> generates <code>profile/stats.svg</code> + <code>profile/top-langs.svg</code> directly in this repo daily, so once you run it once, these never touch a third-party server again.</sub>
 
 <br/>
 
@@ -197,14 +190,19 @@ OpenPulse
 
 <div align="center">
 
+<picture>
+  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/trophy.svg">
+  <img src="https://github-profile-trophy.vercel.app/?username=saymanlal&theme=tokyonight&no-frame=true&row=1&column=6&margin-w=8" alt="trophies"/>
+</picture>
+
+</div>
+
 ![Genethon 2024](https://img.shields.io/badge/Genethon%202024-1st%20Runner--Up-C0C0C0?style=for-the-badge&logo=trophy&logoColor=white)
 ![UiPath GGITS](https://img.shields.io/badge/UiPath%20GGITS-Speaker%202025-06B6D4?style=for-the-badge&logo=uipath&logoColor=white)
 ![MPDAO](https://img.shields.io/badge/MPDAO%20(EthMP)-Co--Founder-0F172A?style=for-the-badge&logo=ethereum&logoColor=white)
 ![Poetry](https://img.shields.io/badge/Poetry%20Book-Published-8B5CF6?style=for-the-badge&logo=bookstack&logoColor=white)
 
-</div>
-
-<sub>Switched Achievements to static shields.io badges — the live trophy API (<code>github-profile-trophy.vercel.app</code>) is currently returning a <b>402 error</b> for everyone, not just cold-starting, so no amount of refreshing fixes it. Badges above render instantly with zero external-API dependency. If you still want the animated trophy card, run <code>.github/workflows/trophy.yml</code> once (Actions tab → Run workflow) — it self-hosts <code>trophy.svg</code> in this repo so it never touches the broken vercel instance, then swap the badges above for:<br><br><code>&lt;img src="https://raw.githubusercontent.com/saymanlal/saymanlal/main/trophy.svg" /&gt;</code></sub>
+<sub>The trophy card is fixed the same way — <code>github-profile-trophy.vercel.app</code> is returning a hard <code>402</code> to everyone right now. The badges above always render regardless (zero external API). Once you run the workflow below, the self-hosted <code>trophy.svg</code> takes over automatically via the <code>&lt;picture&gt;</code> fallback — no README edit needed.</sub>
 
 <br/>
 
