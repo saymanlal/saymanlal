@@ -1,39 +1,78 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,100:06B6D4&height=220&section=header&text=Sayman%20Lal&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Blockchain%20Infrastructure%20Researcher%20%7C%20Builder%20%7C%20Founder&descAlignY=58&descSize=18&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,100:06B6D4&height=200&section=header&text=Sayman%20Lal&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=Blockchain%20Infrastructure%20Researcher%20%7C%20Builder%20%7C%20Founder&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Building+SAYMAN+%E2%80%94+a+Layer-1+Blockchain;Co-Founder+%40MPDAO+%2F+EthMP;Founder+%40Cybokrafts+Universal+Innovations;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+an+Atmanirbhar+Bharat+vision" alt="Typing SVG" />
+```
+
+                           .....
+                     .:=+*##%%%%*+==:.
+                 .:+#%@@@@@@@@@%%@%%%#*=:
+               .=#@@@@@@@@@%%%%%%%@@@@@@%*-.
+              -%@@@@@@@@@@%%%%%%@@@@@@@@@@@#:
+            :*@@@@@@@@@%%##%%%****#%%@@@@@@@%:
+           +@@@@@@@@@@@@%#*+=-:::::-+*%@@@@@@+
+          .#@@@@@@@@@%#*+=-:::::::::-=+#@@@@@*
+           -@@@@@@@%*=--::::::::::::--=+#%@@@*
+           .#@@@@@%*=--::::..:...:::--==*%%@@*.
+            :@@@@%*+===--::::::--=+++===+#%@@#.
+             +@@@%**#####*=-:-=+***++++==+#%@*
+             .*@@###****##*=::-====**+++=-+%#+=.
+             .*@#+*#***=-=+=::---:---------++==.
+             .#@*+====---==-.::--:::::::::-+=:: .
+              -%*=----::-=-:..:::::...::::-+::.
+               *#+=---::==+=-====-:::::---==::
+               -@#+=----+**++=----------===*#**+==-:.
+               .=##*+==++++=---===++======+%@@@@@@@@%*=:
+                 .*#**+***+==---===--=====*@@@@@%@@@@@@%*-.
+                 .*%#*+==++=----=---===++**@@@@%%%%@@@@@@#+
+                 +@@%%*++=====------==+**==%@@@%@@@@@@@@@@@@
+                :@@@@@%*==--:::::---=*#*--=#@@@@@@@@%%@@@@@@
+                -@@@@@@%*+=-------=+##=---*%@@@@@@@@@@@@@@@@
+                -@@@@@@@@%#*****##%%*----*@@@@@@@@@@@@@%%@@@
+                :%@@@@@@@@@@@%%@@%#+----*@@@@@@@@@@@@@@@@@@@
+               .=@@@@@@@@@@@@%%%*+=----#@@@@@@@@@@@@@@@@@@@@
+            :=#%@@@@@@@@@@@@%*+=-----+#@@@@@@@@@@@@@@@@@@@@@
+         .=*%@@%%@@@@@@@@@#***+++==*%@@@@@@@@@@@@@@@@@@@%%%%
+       -*%@@%%%%%%@@%%@@#*#+=+++++#@@@@@@@@@@@@%%%%%%%%%%%%%
+     .*%@%%%%%%%%%%@#@@%#++*=--=#%@@##%@@%%%%%%%%%%%%%%%%%%@
+    -%@%%%%%%%%%%%%%*%@@@#**++*%@@@@%*#%%%%%%%%%%%%%%%%%%%@@
+   =@%%%%%%%%%%%%%%##%%%@@%##%@%%%%%%*%%%%%%%%%%%%%%%%%%%@@@
+  :%%%%%%%%%%%%%%%%*#%%%%%%##%%%%%%%%*%%%%%%%%%%%%%%%%%%%@@%
+
+```
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Building+SAYMAN+%E2%80%94+a+Layer-1+Blockchain;Co-Founder+%40MPdao+%28EthMP%29;Blockchain+Infrastructure+Researcher;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
 
 <br/>
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-worksofsayman.vercel.app-0F172A?style=for-the-badge&logo=vercel&logoColor=white)](https://worksofsayman.vercel.app)
 [![X](https://img.shields.io/badge/X-@saymanlal-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/saymanlal)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-worksofsayman-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/worksofsayman)
-[![Gmail](https://img.shields.io/badge/Email-businesssayman-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:businesssayman@gmail.com)
-[![WhatsApp](https://img.shields.io/badge/WhatsApp-Chat-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/+919179387285?text=Hi%20Sayman!%20I%20saw%20your%20GitHub%20profile)
+
+📩 [Email](mailto:businesssayman@gmail.com) · 💬 [WhatsApp](https://wa.me/+919179387285?text=Hi%20Sayman!%20I%20saw%20your%20GitHub%20profile)
 
 <img src="https://komarev.com/ghpvc/?username=saymanlal&label=Profile+Views&color=06B6D4&style=for-the-badge" alt="Profile Views"/>
 
 </div>
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-About-06B6D4?style=flat-square&logo=aboutdotme&logoColor=white" height="24"/>
 
 ```yaml
 name: Sayman Lal
-role: Blockchain Infrastructure Researcher · BD & Creator · AI/ML Entrepreneur
+role: Blockchain Infrastructure Researcher · BD & Creator
 based_in: Jabalpur, Madhya Pradesh, India
 building:
   - MPDAO (@MPdao_) — growing Web3 across Madhya Pradesh
   - Veridion (@Veridion_social)
   - SAYMAN — a self-built Layer-1 blockchain
-founder_of: Cybokrafts Universal Innovations Pvt. Ltd. (DPIIT-recognised deep-tech startup, incubated at IIT Indore)
+founder_at: Cybokrafts Universal Innovations Pvt. Ltd. (DPIIT-recognised deep-tech startup, incubated at IIT Indore)
 inspired_by: [Ratan Tata, Nikola Tesla]
 vision: Atmanirbhar Bharat — indigenous, self-reliant tech infrastructure
 ```
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Currently%20Building-0F172A?style=flat-square&logo=rocket&logoColor=white" height="24"/>
 
@@ -42,7 +81,7 @@ vision: Atmanirbhar Bharat — indigenous, self-reliant tech infrastructure
 <td width="50%" valign="top">
 
 **⛓️ SAYMAN L1 Blockchain**
-Full-stack chain: sandboxed JS contract engine, REST API, CLI wallet, JS SDK, faucet, and explorer — with SAYN native token, three-mode gas policy, and a live admin dashboard with Three.js validator/mempool visualizations.
+Full-stack chain — sandboxed JS contract engine, REST API, CLI wallet, JS SDK, faucet, and explorer — with SAYN native token, three-mode gas policy, and a live admin dashboard with Three.js validator/mempool visualizations.
 
 </td>
 <td width="50%" valign="top">
@@ -68,7 +107,7 @@ Growing Web3 across Madhya Pradesh with MPDAO, and organizing SAYMAN Genesis —
 </tr>
 </table>
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Tech%20Stack-06B6D4?style=flat-square&logo=stackshare&logoColor=white" height="24"/>
 
@@ -109,25 +148,23 @@ Growing Web3 across Madhya Pradesh with MPDAO, and organizing SAYMAN Genesis —
 ![VS Code](https://img.shields.io/badge/-VS_Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)
 ![Figma](https://img.shields.io/badge/-Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Architecture%20Snapshot-0F172A?style=flat-square&logo=diagramsdotnet&logoColor=white" height="24"/>
 
-```mermaid
-graph LR
-    A[SAYMAN L1 Core] --> B[Contract VM]
-    A --> C[REST API + SDK]
-    A --> D[Explorer]
-    B --> E[SAYN Token]
-    C --> F[PUKY Wallet]
-    D --> G[Admin Dashboard]
-    H[OpenPulse] --> I[Dependency Graph Engine]
-    I --> J[Risk Scoring]
-    style A fill:#0F172A,stroke:#06B6D4,color:#fff
-    style H fill:#0F172A,stroke:#06B6D4,color:#fff
+> Rendered as plain text on purpose — Mermaid diagrams don't render in the GitHub mobile app and blow out the page width on small screens. This is fully responsive everywhere.
+
+```text
+SAYMAN L1
+ ├─ Contract VM ───────▶ SAYN Token
+ ├─ REST API + SDK ────▶ PUKY Wallet
+ └─ Explorer ──────────▶ Admin Dashboard (Three.js)
+
+OpenPulse
+ └─ Dependency Graph ──▶ Risk Scoring Engine
 ```
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Featured%20Work-06B6D4?style=flat-square&logo=github&logoColor=white" height="24"/>
 
@@ -136,9 +173,9 @@ graph LR
 | **SAYMAN** | Self-built Layer-1 blockchain — contract engine, explorer, faucet, SDK | Node.js, JS VM, Three.js |
 | **PUKY Wallet** | Mobile wallet for the SAYMAN network | Android, Capacitor |
 | **OpenPulse** | Dependency-graph explorer & risk visualizer (FOSS Hack 2026) | FastAPI, Next.js, react-three-fiber |
-| **CrowdPulse** | Civic complaint tracking & disaster-fund transparency dApp | Solidity, SAYMAN testnet |
+| **CivicChain** | Civic complaint tracking & disaster-fund transparency dApp | Solidity, SAYMAN testnet |
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-GitHub%20Analytics-0F172A?style=flat-square&logo=githubactions&logoColor=white" height="24"/>
 
@@ -153,9 +190,9 @@ graph LR
 
 </div>
 
-> **Note on the widgets above:** `github-readme-stats`, `streak-stats.demolab.com`, and `activity-graph` all run on shared free-tier Vercel deployments that occasionally cold-start or rate-limit — if a card shows blank, refresh the page or fork the respective repo (`anuraghazra/github-readme-stats`, `DenverCoder1/github-readme-streak-stats`) and self-host it under your own Vercel project for guaranteed uptime. The old `herokuapp.com` streak-stats endpoint used previously is fully decommissioned (Heroku killed free dynos) — this README now points to the maintained `demolab.com` mirror.
+<sub>These cards run on shared free-tier Vercel instances and can cold-start — if one shows blank, just refresh. Fork the repo and self-host under your own Vercel project for guaranteed uptime.</sub>
 
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Contribution%20Snake-06B6D4?style=flat-square&logo=snake&logoColor=white" height="24"/>
 
@@ -163,64 +200,32 @@ graph LR
 <img src="https://raw.githubusercontent.com/saymanlal/saymanlal/output/github-contribution-grid-snake-dark.svg" alt="Contribution Snake animation" />
 </div>
 
-<details>
-<summary><b>⚙️ One-time setup for the snake animation (only needs doing once)</b></summary>
-
-This animated snake eats your own contribution graph and needs a small GitHub Action to generate it — it isn't a hotlinked third-party service, so nothing here can silently go down. Create `.github/workflows/snake.yml` in this profile repo:
-
-```yaml
-name: generate snake
-on:
-  schedule:
-    - cron: "0 */6 * * *"
-  workflow_dispatch: {}
-  push:
-    branches: [ main ]
-
-permissions:
-  contents: write
-
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Platane/snk@v3
-        with:
-          github_user_name: saymanlal
-          outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-      - uses: crazy-max/ghaction-github-pages@v4
-        with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-Push it, run the workflow once manually from the Actions tab, and the `output` branch + image URL above go live.
-
-</details>
-
----
+<br/>
 
 ### <img src="https://img.shields.io/badge/-Achievements-0F172A?style=flat-square&logo=trophy&logoColor=white" height="24"/>
 
 <div align="center">
-<img src="https://github-profile-trophy.vercel.app/?username=saymanlal&theme=tokyonight&no-frame=true&row=1&column=6&margin-w=8" alt="trophies"/>
+
+<picture>
+  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/trophy.svg">
+  <img src="https://github-profile-trophy.vercel.app/?username=saymanlal&theme=tokyonight&no-frame=true&row=1&column=6&margin-w=8" alt="trophies"/>
+</picture>
+
 </div>
+
+<sub>Self-hosted primary, live-service fallback — see <code>.github/workflows/trophy.yml</code> so this card never shows a broken image again.</sub>
 
 - 🥈 1st Runner-Up, Genethon 2024 (Team Lead)
 - 🎤 Speaker, UiPath GGITS Introduction Session (2025)
-- 🏛️ Founder, Cybokrafts Universal Innovations Pvt. Ltd. (DPIIT-recognised, incubated at IIT Indore)
+- 🏛️ Co-Founder, MPDAO (EthMP)
 - 📚 Published poetry book on love
 
----
+<br/>
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06B6D4,100:0F172A&height=150&section=footer&fontColor=ffffff" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06B6D4,100:0F172A&height=140&section=footer&fontColor=ffffff" width="100%"/>
 
-**Vibe coding is real fun — building it Atmanirbhar style. 🇮🇳**
+**Vibe coding is real fun**
 
 </div>
