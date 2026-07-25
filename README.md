@@ -22,7 +22,7 @@
 
 ```
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Co-Founder+%40MPdao+%28EthMP%29;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Co-Founder+%40MPdao+%28EthMP%29;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Innovations" alt="Typing SVG" />
 
 <br/>
 
@@ -159,22 +159,11 @@ OpenPulse
 
 <div align="center">
 
-<picture>
-  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/stats.svg">
-  <img height="165em" src="https://github-stats-extended.vercel.app/api?username=saymanlal&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" />
-</picture>
-<picture>
-  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/top-langs.svg">
-  <img height="165em" src="https://github-stats-extended.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=tokyonight&hide_border=true&bg_color=0D1117" />
-</picture>
-
 <img src="https://streak-stats.demolab.com?user=saymanlal&theme=tokyonight&hide_border=true&background=0D1117" alt="GitHub Streak"/>
 
 <img src="https://github-readme-activity-graph.vercel.app/graph?username=saymanlal&theme=tokyo-night&hide_border=true&bg_color=0D1117&area=true" width="95%"/>
 
 </div>
-
-<sub>The two cards above were broken because <code>github-readme-stats.vercel.app</code> — the whole public instance, not just your query — is paused by its own maintainers (confirmed <code>503 DEPLOYMENT_PAUSED</code>, tracked in their repo's issues). No parameter fixes that. Switched the live fallback to <code>github-stats-extended.vercel.app</code>, a separately-hosted, fully-compatible mirror that's actually up. Primary source is now self-hosted: <code>.github/workflows/profile-cards.yml</code> generates <code>profile/stats.svg</code> + <code>profile/top-langs.svg</code> directly in this repo daily, so once you run it once, these never touch a third-party server again.</sub>
 
 <br/>
 
@@ -187,15 +176,6 @@ OpenPulse
 <br/>
 
 ### <img src="https://img.shields.io/badge/-Achievements-0F172A?style=flat-square&logo=trophy&logoColor=white" height="24"/>
-
-<div align="center">
-
-<picture>
-  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/profile/trophy.svg">
-  <img src="https://github-profile-trophy.vercel.app/?username=saymanlal&theme=tokyonight&no-frame=true&row=1&column=6&margin-w=8" alt="trophies"/>
-</picture>
-
-</div>
 
 ![Genethon 2024](https://img.shields.io/badge/Genethon%202024-1st%20Runner--Up-C0C0C0?style=for-the-badge&logo=trophy&logoColor=white)
 ![UiPath GGITS](https://img.shields.io/badge/UiPath%20GGITS-Speaker%202025-06B6D4?style=for-the-badge&logo=uipath&logoColor=white)
