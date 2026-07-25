@@ -182,8 +182,6 @@ OpenPulse
 ![MPDAO](https://img.shields.io/badge/MPDAO%20(EthMP)-Co--Founder-0F172A?style=for-the-badge&logo=ethereum&logoColor=white)
 ![Poetry](https://img.shields.io/badge/Poetry%20Book-Published-8B5CF6?style=for-the-badge&logo=bookstack&logoColor=white)
 
-<sub>The trophy card is fixed the same way — <code>github-profile-trophy.vercel.app</code> is returning a hard <code>402</code> to everyone right now. The badges above always render regardless (zero external API). Once you run the workflow below, the self-hosted <code>trophy.svg</code> takes over automatically via the <code>&lt;picture&gt;</code> fallback — no README edit needed.</sub>
-
 <br/>
 
 <div align="center">
