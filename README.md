@@ -48,8 +48,8 @@ building:
   - MPDAO (@MPdao_) — growing Web3 across Madhya Pradesh
   - Veridion (@Veridion_social)
   - SAYMAN — a self-built Layer-1 blockchain
-inspired_by: [Ratan Tata, Nikola Tesla]
-vision: Atmanirbhar Bharat — indigenous, self-reliant tech infrastructure
+inspired_by: [Linus Torvalds & Tony Stark]
+vision: Innovations — indigenous, self-reliant tech infrastructure
 ```
 
 <br/>
