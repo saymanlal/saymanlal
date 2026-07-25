@@ -2,75 +2,68 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F172A,100:06B6D4&height=200&section=header&text=Sayman%20Lal&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=Blockchain%20Infrastructure%20Researcher%20%7C%20Builder%20%7C%20Founder&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
 
-```
-
-                           .....
-                     .:=+*##%%%%*+==:.
-                 .:+#%@@@@@@@@@%%@%%%#*=:
-               .=#@@@@@@@@@%%%%%%%@@@@@@%*-.
-              -%@@@@@@@@@@%%%%%%@@@@@@@@@@@#:
-            :*@@@@@@@@@%%##%%%****#%%@@@@@@@%:
-           +@@@@@@@@@@@@%#*+=-:::::-+*%@@@@@@+
-          .#@@@@@@@@@%#*+=-:::::::::-=+#@@@@@*
-           -@@@@@@@%*=--::::::::::::--=+#%@@@*
-           .#@@@@@%*=--::::..:...:::--==*%%@@*.
-            :@@@@%*+===--::::::--=+++===+#%@@#.
-             +@@@%**#####*=-:-=+***++++==+#%@*
-             .*@@###****##*=::-====**+++=-+%#+=.
-             .*@#+*#***=-=+=::---:---------++==.
-             .#@*+====---==-.::--:::::::::-+=:: .
-              -%*=----::-=-:..:::::...::::-+::.
-               *#+=---::==+=-====-:::::---==::
-               -@#+=----+**++=----------===*#**+==-:.
-               .=##*+==++++=---===++======+%@@@@@@@@%*=:
-                 .*#**+***+==---===--=====*@@@@@%@@@@@@%*-.
-                 .*%#*+==++=----=---===++**@@@@%%%%@@@@@@#+
-                 +@@%%*++=====------==+**==%@@@%@@@@@@@@@@@@
-                :@@@@@%*==--:::::---=*#*--=#@@@@@@@@%%@@@@@@
-                -@@@@@@%*+=-------=+##=---*%@@@@@@@@@@@@@@@@
-                -@@@@@@@@%#*****##%%*----*@@@@@@@@@@@@@%%@@@
-                :%@@@@@@@@@@@%%@@%#+----*@@@@@@@@@@@@@@@@@@@
-               .=@@@@@@@@@@@@%%%*+=----#@@@@@@@@@@@@@@@@@@@@
-            :=#%@@@@@@@@@@@@%*+=-----+#@@@@@@@@@@@@@@@@@@@@@
-         .=*%@@%%@@@@@@@@@#***+++==*%@@@@@@@@@@@@@@@@@@@%%%%
-       -*%@@%%%%%%@@%%@@#*#+=+++++#@@@@@@@@@@@@%%%%%%%%%%%%%
-     .*%@%%%%%%%%%%@#@@%#++*=--=#%@@##%@@%%%%%%%%%%%%%%%%%%@
-    -%@%%%%%%%%%%%%%*%@@@#**++*%@@@@%*#%%%%%%%%%%%%%%%%%%%@@
-   =@%%%%%%%%%%%%%%##%%%@@%##%@%%%%%%*%%%%%%%%%%%%%%%%%%%@@@
-  :%%%%%%%%%%%%%%%%*#%%%%%%##%%%%%%%%*%%%%%%%%%%%%%%%%%%%@@%
-
-```
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=06B6D4&center=true&vCenter=true&width=650&lines=Building+SAYMAN+%E2%80%94+a+Layer-1+Blockchain;Co-Founder+%40MPdao+%28EthMP%29;Blockchain+Infrastructure+Researcher;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
+</div>
 
 <br/>
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-worksofsayman.vercel.app-0F172A?style=for-the-badge&logo=vercel&logoColor=white)](https://worksofsayman.vercel.app)
+<table>
+<tr>
+<td width="40%" valign="top">
+
+```
+..........:-*%#%@%##%%%%####%##=..................
+...........:-*%#%@###%%@@@@@@@%%#+=:..............
+............:-#%#%@#%@@@@@@@%%@@@@@#-.............
+.............:=%%#@@@@@@@@@@@@@@@@@@@#=:..........
+..............:=%#%@@@@@@@@@@@@@@@@@@@@*:.........
+...............-+%@@@@@@@@%%%%%##*%@@@@@-.........
+................-+@@@@%%%%%#+=+##*#@@@@#:.........
+................:-+%@#=+++++==**#*+%@%+:....... ..
+.................:-+#+--::-=--=---=##-............
+..................:=**+===+*+*+---=*- ............
+.........:.........:+*+++***++**++*=.......... ...
+....................:+**+======+**#*:.............
+.....................++##*++++++*%%*=.............
+................ .::=+=+*#%@%#*+#%%#*-....  ......
+............ .:-+*++++==+++**+=*@%%@@@%#**+:. ....
+....... ..:-+#%@@*=======++===+%@%@@@@%%%@@%#*+-:.
+......-=*%@@@@@%%%%*+===-=+++*%%%%%@@%#%%%%%@@@@%*
+:::-*%@@@@@%%%%%%%%%%%%##%%%%%%####%%%#%%%%%@@@@@@
+==#@@@@%%%%%%%%%%%%%%%%%%%%##%%####%%%%%@%%@@@@@@@
+:+@@@@@@%%%%%%%%@@%%%%%##%%#%%####%%%##%@%%@@@@@@@
+:#@@@@%@@@%%%%%@%%%%%%%##%#%%%%%%%%####@##%@@@@@@@
+-@@@@@@@@@@%%%@%%%%%%%%##%%%%%%%%%%###%%-+@@@@@@@@
++@@%@@@@@%@@%@%%%%%%%%%%%%%%%%%%%%%%%%@#=%@##%@@@@
+```
+
+</td>
+<td width="60%" valign="top">
+
+```yaml
+name: Sayman Lal
+role: AI Solutions Engineer @Cybokrafts
+based_in: Jabalpur, Madhya Pradesh, India
+building:
+  - MPDAO (@MPdao_)
+  - Veridion (@Veridion_social)
+  - SAYMAN — self-built Layer-1 blockchain
+inspired_by: [Ratan Tata, Nikola Tesla]
+vision: Atmanirbhar Bharat
+```
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=17&duration=2800&pause=900&color=06B6D4&vCenter=true&width=420&lines=Building+SAYMAN+%E2%80%94+a+Layer-1+Blockchain;Co-Founder+%40MPdao+%28EthMP%29;Architecting+PUKY+Wallet+%2B+OpenPulse;Rooted+in+Atmanirbhar+Bharat" alt="Typing SVG" />
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-0F172A?style=for-the-badge&logo=vercel&logoColor=white)](https://worksofsayman.vercel.app)
 [![X](https://img.shields.io/badge/X-@saymanlal-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/saymanlal)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-worksofsayman-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/worksofsayman)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/worksofsayman)
 
 📩 [Email](mailto:businesssayman@gmail.com) · 💬 [WhatsApp](https://wa.me/+919179387285?text=Hi%20Sayman!%20I%20saw%20your%20GitHub%20profile)
 
 <img src="https://komarev.com/ghpvc/?username=saymanlal&label=Profile+Views&color=06B6D4&style=for-the-badge" alt="Profile Views"/>
 
-</div>
-
-<br/>
-
-### <img src="https://img.shields.io/badge/-About-06B6D4?style=flat-square&logo=aboutdotme&logoColor=white" height="24"/>
-
-```yaml
-name: Sayman Lal
-role: Blockchain Infrastructure Researcher · BD & Creator
-based_in: Jabalpur, Madhya Pradesh, India
-building:
-  - MPDAO (@MPdao_) — growing Web3 across Madhya Pradesh
-  - Veridion (@Veridion_social)
-  - SAYMAN — a self-built Layer-1 blockchain
-founder_at: Cybokrafts Universal Innovations Pvt. Ltd. (DPIIT-recognised deep-tech startup, incubated at IIT Indore)
-inspired_by: [Ratan Tata, Nikola Tesla]
-vision: Atmanirbhar Bharat — indigenous, self-reliant tech infrastructure
-```
+</td>
+</tr>
+</table>
 
 <br/>
 
@@ -101,7 +94,7 @@ Open-source dependency-graph explorer built on FastAPI + Next.js + react-three-f
 <td width="50%" valign="top">
 
 **🏛️ MPDAO / SAYMAN Genesis 2026**
-Growing Web3 across Madhya Pradesh with MPDAO, and organizing SAYMAN Genesis — a 48-hour hackathon under Cybokrafts / Vizkus Groups.
+Growing Web3 across Madhya Pradesh with MPDAO, and organizing SAYMAN Genesis — a 48-hour hackathon.
 
 </td>
 </tr>
@@ -152,8 +145,6 @@ Growing Web3 across Madhya Pradesh with MPDAO, and organizing SAYMAN Genesis —
 
 ### <img src="https://img.shields.io/badge/-Architecture%20Snapshot-0F172A?style=flat-square&logo=diagramsdotnet&logoColor=white" height="24"/>
 
-> Rendered as plain text on purpose — Mermaid diagrams don't render in the GitHub mobile app and blow out the page width on small screens. This is fully responsive everywhere.
-
 ```text
 SAYMAN L1
  ├─ Contract VM ───────▶ SAYN Token
@@ -181,8 +172,8 @@ OpenPulse
 
 <div align="center">
 
-<img height="165em" src="https://github-readme-stats.vercel.app/api?username=saymanlal&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&hide_border=true&bg_color=0D1117" />
-<img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=tokyonight&hide_border=true&bg_color=0D1117" />
+<img height="165em" src="https://github-readme-stats.vercel.app/api?username=saymanlal&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&cache_seconds=86400" />
+<img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=saymanlal&layout=compact&langs_count=8&theme=tokyonight&hide_border=true&bg_color=0D1117&cache_seconds=86400" />
 
 <img src="https://streak-stats.demolab.com?user=saymanlal&theme=tokyonight&hide_border=true&background=0D1117" alt="GitHub Streak"/>
 
@@ -190,7 +181,7 @@ OpenPulse
 
 </div>
 
-<sub>These cards run on shared free-tier Vercel instances and can cold-start — if one shows blank, just refresh. Fork the repo and self-host under your own Vercel project for guaranteed uptime.</sub>
+<sub>Dropped <code>count_private</code> and <code>include_all_commits</code> from the stats card — those two flags trigger extra GitHub API calls on the shared instance and were almost certainly why those two cards kept showing blank. Added <code>cache_seconds</code> so results stay cached instead of re-fetching (and failing) on every view.</sub>
 
 <br/>
 
@@ -206,19 +197,14 @@ OpenPulse
 
 <div align="center">
 
-<picture>
-  <source srcset="https://raw.githubusercontent.com/saymanlal/saymanlal/main/trophy.svg">
-  <img src="https://github-profile-trophy.vercel.app/?username=saymanlal&theme=tokyonight&no-frame=true&row=1&column=6&margin-w=8" alt="trophies"/>
-</picture>
+![Genethon 2024](https://img.shields.io/badge/Genethon%202024-1st%20Runner--Up-C0C0C0?style=for-the-badge&logo=trophy&logoColor=white)
+![UiPath GGITS](https://img.shields.io/badge/UiPath%20GGITS-Speaker%202025-06B6D4?style=for-the-badge&logo=uipath&logoColor=white)
+![MPDAO](https://img.shields.io/badge/MPDAO%20(EthMP)-Co--Founder-0F172A?style=for-the-badge&logo=ethereum&logoColor=white)
+![Poetry](https://img.shields.io/badge/Poetry%20Book-Published-8B5CF6?style=for-the-badge&logo=bookstack&logoColor=white)
 
 </div>
 
-<sub>Self-hosted primary, live-service fallback — see <code>.github/workflows/trophy.yml</code> so this card never shows a broken image again.</sub>
-
-- 🥈 1st Runner-Up, Genethon 2024 (Team Lead)
-- 🎤 Speaker, UiPath GGITS Introduction Session (2025)
-- 🏛️ Co-Founder, MPDAO (EthMP)
-- 📚 Published poetry book on love
+<sub>Switched Achievements to static shields.io badges — the live trophy API (<code>github-profile-trophy.vercel.app</code>) is currently returning a <b>402 error</b> for everyone, not just cold-starting, so no amount of refreshing fixes it. Badges above render instantly with zero external-API dependency. If you still want the animated trophy card, run <code>.github/workflows/trophy.yml</code> once (Actions tab → Run workflow) — it self-hosts <code>trophy.svg</code> in this repo so it never touches the broken vercel instance, then swap the badges above for:<br><br><code>&lt;img src="https://raw.githubusercontent.com/saymanlal/saymanlal/main/trophy.svg" /&gt;</code></sub>
 
 <br/>
 
